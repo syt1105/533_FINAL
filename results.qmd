@@ -1,0 +1,43 @@
+---
+title: "Backtest Results"
+jupyter: python3
+---
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+from IPython.display import display
+
+analysis = run_analysis()
+display(analysis["metrics_display"])
+```
+
+## What The Metrics Mean
+
+```{python}
+from IPython.display import Markdown
+
+metric_notes = "\n".join(
+    f"- **{row.Metric}:** {row.Explanation}"
+    for row in analysis["metric_explanations"].itertuples(index=False)
+)
+display(Markdown(metric_notes))
+```
+
+## Strategy Performance
+
+This page is scaffolded for the final performance visuals and tables. It will eventually compare:
+
+- baseline breakout results
+- ML-filtered breakout results
+- trade outcome distributions
+- equity and drawdown behavior
+
+## Trade Outcome Analysis
+
+```{python}
+display(analysis["outcome_summary"])
+```
+
+## Interpretation
+
+The finished version of this page should answer whether the breakout rules produce a tradable return stream after realistic costs, and whether the supervised learning filter improves trade quality rather than just overfitting.

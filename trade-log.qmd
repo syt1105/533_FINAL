@@ -1,0 +1,40 @@
+---
+title: "Trade Log"
+jupyter: python3
+---
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+from IPython.display import HTML, display
+
+analysis = run_analysis()
+display(analysis["blotter_display"])
+```
+
+## Downloads
+
+```{python}
+export_paths = analysis["export_paths"]
+
+HTML(
+    f'''
+    <p><a href="{export_paths["blotter_csv_href"]}" download>Download trade blotter CSV</a></p>
+    <p><a href="{export_paths["ledger_csv_href"]}" download>Download trade ledger CSV</a></p>
+    '''
+)
+```
+
+## Ledger Preview
+
+```{python}
+display(analysis["ledger_display"])
+```
+
+## Why The Trade Log Matters
+
+The trade log is where the backtest becomes auditable. It should show:
+
+- when entries and exits occurred
+- how long trades stayed open
+- whether exits came from success, stop-loss, timeout, or breakout failure
+- how profits and losses were distributed across trades

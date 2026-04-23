@@ -1,0 +1,34 @@
+---
+title: "Monitoring"
+jupyter: python3
+---
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+from IPython.display import display
+
+analysis = run_analysis()
+display(analysis["monitoring_display"])
+```
+
+## How We Will Know Performance Is Still In Line
+
+Going forward, the strategy should be monitored through rolling behavior rather than one-off wins and losses. The final project will compare live or forward results against the out-of-sample backtest using:
+
+- rolling expectancy
+- rolling hit rate
+- rolling Sharpe ratio
+- drawdown depth
+- holding-period distribution
+- outcome mix by trade fate
+
+## How We Will Quantify Breakdown
+
+The strategy will be considered impaired when key rolling metrics fall materially outside their validated range for long enough to suggest regime failure rather than routine noise.
+
+Typical triggers include:
+
+- expectancy turning negative
+- hit rate leaving the backtest confidence band
+- drawdown exceeding a historical stress threshold
+- the model filter no longer improving the baseline breakout rule

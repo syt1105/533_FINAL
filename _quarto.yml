@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Volatility Breakout Final Project"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Overview
+      - asset-selection.qmd
+      - methodology.qmd
+      - results.qmd
+      - trade-log.qmd
+      - monitoring.qmd
+  page-footer:
+    left: "FINTECH 533 • Volatility Breakout Final Project"
+
+format:
+  html:
+    theme:
+      - cosmo
+    css: styles.css
+    toc: true
+    code-fold: false
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: false

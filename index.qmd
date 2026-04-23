@@ -1,0 +1,38 @@
+---
+title: "Volatility Breakout Final Project"
+jupyter: python3
+---
+
+::: {.hero-banner}
+## Developing and Backtesting a Volatility Breakout Strategy
+
+This project is a FINTECH 533 final-project scaffold for a volatility and channel breakout strategy. It is organized as a Quarto website backed by an `analysis/` Python package and a `shinybroker`-compatible research pipeline.
+:::
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+
+analysis = run_analysis()
+overview = analysis["overview"]
+metrics = analysis["metrics_display"]
+overview
+```
+
+## Project Scope
+
+- Build a transparent breakout strategy with explicit entry and exit rules.
+- Backtest the strategy on historical price data using a repeatable Python workflow.
+- Log every trade so entries, exits, and holding periods are auditable.
+- Extend the baseline strategy with a supervised learning filter for breakout quality.
+
+## Strategy Snapshot
+
+The current project setup targets liquid ETFs and focuses on volatility expansion after price leaves a recent channel. The site and package are structured to support both a baseline breakout engine and a later model-based filter that decides which breakout setups are worth taking.
+
+## What To Review
+
+- [Asset Selection](asset-selection.qmd) describes the planned universe and screening logic.
+- [Methodology](methodology.qmd) documents the trading rules, assumptions, and intended implementation choices.
+- [Results](results.qmd) is where equity growth, drawdown, and performance statistics will appear.
+- [Trade Log](trade-log.qmd) will hold the blotter, ledger preview, and download links.
+- [Monitoring](monitoring.qmd) defines how to judge whether the strategy is still behaving as expected after deployment.

@@ -1,0 +1,49 @@
+---
+title: "Methodology"
+jupyter: python3
+---
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+from IPython.display import display
+
+analysis = run_analysis()
+display(analysis["parameter_table"])
+```
+
+## Data Pipeline
+
+- The analysis package is designed to read the selected asset metadata from `data/selected_asset.json`.
+- Historical prices will ultimately come from `shinybroker` and be stored in `data/historical_prices.csv` or regenerated from IBKR on demand.
+- Dates, OHLCV fields, and breakout features will be normalized before signal generation.
+- The trade log will include explicit fields such as entry timestamp, exit timestamp, quantity, direction, and exit reason.
+
+## Trading Rules
+
+1. Enter long when price closes above the upper breakout channel.
+2. Enter short when price closes below the lower breakout channel if shorting is enabled.
+3. Apply a volatility-aware stop-loss, trailing stop, timeout, or breakout-failure exit.
+4. Include transaction-cost assumptions so frequent breakout trading is evaluated realistically.
+
+This structure is meant to capture genuine volatility expansion while remaining auditable enough for a course project.
+
+## Planned Feature Set
+
+- breakout distance relative to the channel
+- ATR and recent realized volatility
+- trend slope and recent returns
+- market regime context such as `VIX`-style signals
+- optional implied-volatility proxies if feasible
+
+## Walk-Forward Validation
+
+The project is planned as a rolling walk-forward study:
+
+1. fit the baseline or filter model on a trailing training window,
+2. evaluate on the next out-of-sample segment,
+3. roll forward and repeat,
+4. compare the baseline breakout system against the filtered version.
+
+## Implementation Notes
+
+The final implementation is intended to live in the `analysis/` package, with separate modules for configuration, asset selection, breakout analysis, and pipeline orchestration.

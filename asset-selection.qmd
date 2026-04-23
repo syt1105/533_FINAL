@@ -1,0 +1,37 @@
+---
+title: "Asset Selection"
+jupyter: python3
+---
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+from IPython.display import display
+
+analysis = run_analysis()
+display(analysis["asset_screen_display"])
+```
+
+## Planned Universe
+
+The initial research universe is:
+
+- `SPY`
+- `QQQ`
+- `IWM`
+- `XLE`
+- `GLD`
+- `TLT`
+
+These ETFs are liquid, broad enough to produce different regimes, and realistic to source through Interactive Brokers with `shinybroker`.
+
+## Why Asset Selection Matters
+
+Breakout behavior is not equally strong in every instrument. Some assets trend after volatility expansion, while others mean-revert quickly. This page is intended to show which assets have the most promising historical breakout profile before the final strategy is selected or ranked.
+
+## Current Status
+
+The screening table is still placeholder data, but the project is structured to evolve toward:
+
+- universe-level screening metrics
+- selected asset metadata
+- exportable screening results in `data/asset_screening.csv`
