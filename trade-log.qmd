@@ -24,6 +24,40 @@ HTML(
 )
 ```
 
+## Interactive Trade Return View
+
+```{python}
+import plotly.express as px
+
+blotter = analysis["blotter"]
+
+fig = px.scatter(
+    blotter,
+    x="entry_timestamp",
+    y="trade_return",
+    size="qty",
+    color="trade_outcome",
+    hover_data=["exit_timestamp", "entry_price", "exit_price", "pnl", "holding_periods", "exit_reason"],
+    title="Baseline Breakout Trade Returns",
+    labels={"entry_timestamp": "Entry Date", "trade_return": "Trade Return"},
+)
+fig.update_layout(height=460)
+fig.show()
+```
+
+## Best And Worst Trades
+
+```{python}
+best_trade = blotter.loc[:, ["entry_timestamp", "exit_timestamp", "entry_price", "exit_price", "trade_return", "pnl", "exit_reason"]].sort_values("trade_return", ascending=False).head(3)
+worst_trade = blotter.loc[:, ["entry_timestamp", "exit_timestamp", "entry_price", "exit_price", "trade_return", "pnl", "exit_reason"]].sort_values("trade_return", ascending=True).head(3)
+
+print("Best trades")
+display(best_trade)
+
+print("Worst trades")
+display(worst_trade)
+```
+
 ## Ledger Preview
 
 ```{python}
@@ -32,9 +66,10 @@ display(analysis["ledger_display"])
 
 ## Why The Trade Log Matters
 
-The trade log is where the backtest becomes auditable. It should show:
+The trade log is where the backtest becomes auditable. In this project it shows:
 
 - when entries and exits occurred
 - how long trades stayed open
 - whether exits came from success, stop-loss, timeout, or breakout failure
 - how profits and losses were distributed across trades
+- whether the tuned breakout-failure delay helped the strategy hold winners longer instead of exiting on day one

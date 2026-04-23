@@ -25,12 +25,83 @@ display(Markdown(metric_notes))
 
 ## Strategy Performance
 
-This page is scaffolded for the final performance visuals and tables. It will eventually compare:
+The tuned baseline now produces a positive Sharpe ratio on the selected showcase ETF. That is important because it means the project now has a defensible control strategy before the ML filter is introduced.
 
-- baseline breakout results
-- ML-filtered breakout results
-- trade outcome distributions
-- equity and drawdown behavior
+The current baseline highlights:
+
+- a `55-day` channel breakout entry
+- long-only trades
+- a trend filter and breakout-strength filter
+- an ATR stop, delayed breakout-failure exit, and timeout rule
+
+## Price Chart With Trade Markers
+
+```{python}
+import matplotlib.pyplot as plt
+
+blotter = analysis["blotter"]
+equity = analysis["equity_curve"]
+
+fig, ax = plt.subplots(figsize=(11, 5))
+ax.plot(equity["date"], equity["close"], color="#173f5f", linewidth=1.8, label="Close")
+
+if not blotter.empty:
+    ax.scatter(
+        blotter["entry_timestamp"],
+        blotter["entry_price"],
+        marker="^",
+        color="#1b9e77",
+        s=90,
+        label="Entry",
+        zorder=3,
+    )
+    ax.scatter(
+        blotter["exit_timestamp"],
+        blotter["exit_price"],
+        marker="v",
+        color="#d95f02",
+        s=90,
+        label="Exit",
+        zorder=3,
+    )
+
+ax.set_title("QQQ Price With Breakout Entries And Exits")
+ax.set_ylabel("Price")
+ax.legend(frameon=False)
+ax.grid(alpha=0.2)
+plt.tight_layout()
+plt.show()
+```
+
+## Equity Curve
+
+```{python}
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.plot(equity["date"], equity["equity"], linewidth=2.2, color="#0f4c5c")
+ax.set_title("Strategy Equity Curve")
+ax.set_ylabel("Portfolio Value ($)")
+ax.grid(alpha=0.25)
+plt.tight_layout()
+plt.show()
+```
+
+## Drawdown
+
+```{python}
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.fill_between(
+    equity["date"],
+    equity["drawdown"],
+    0,
+    color="#9a031e",
+    alpha=0.28,
+)
+ax.set_title("Strategy Drawdown")
+ax.set_ylabel("Drawdown")
+ax.grid(alpha=0.2)
+plt.tight_layout()
+plt.show()
+```
 
 ## Trade Outcome Analysis
 
@@ -38,6 +109,20 @@ This page is scaffolded for the final performance visuals and tables. It will ev
 display(analysis["outcome_summary"])
 ```
 
+```{python}
+outcomes = analysis["outcome_summary"]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.bar(outcomes["Outcome"], outcomes["Trades"], color=["#0f4c5c", "#e36414", "#5f0f40"][: len(outcomes)])
+ax.set_title("Trade Outcome Counts")
+ax.set_ylabel("Number of Trades")
+ax.grid(axis="y", alpha=0.2)
+plt.tight_layout()
+plt.show()
+```
+
 ## Interpretation
 
-The finished version of this page should answer whether the breakout rules produce a tradable return stream after realistic costs, and whether the supervised learning filter improves trade quality rather than just overfitting.
+The tuned baseline answers an important project question already: a channel breakout strategy can produce a tradable, risk-controlled return stream after costs, but only after we reduce the false-breakout churn built into the naive version.
+
+That makes the next research step meaningful rather than cosmetic. The ML filter will not be replacing a broken placeholder. It will be trying to improve a tuned, positive-Sharpe breakout baseline.

@@ -36,3 +36,9 @@ The pipeline will eventually:
 - create a selected asset file,
 - run the backtest and trade logging,
 - and export the artifacts used by the Quarto site.
+
+## Data Layout
+
+- `data/market_history/`: one CSV per symbol fetched through `shinybroker`
+- `data/asset_screening.csv`: cross-asset screening summary
+- `data/selected_asset.json`: the currently chosen symbol and selection metadata

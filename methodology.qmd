@@ -13,37 +13,62 @@ display(analysis["parameter_table"])
 
 ## Data Pipeline
 
-- The analysis package is designed to read the selected asset metadata from `data/selected_asset.json`.
-- Historical prices will ultimately come from `shinybroker` and be stored in `data/historical_prices.csv` or regenerated from IBKR on demand.
-- Dates, OHLCV fields, and breakout features will be normalized before signal generation.
-- The trade log will include explicit fields such as entry timestamp, exit timestamp, quantity, direction, and exit reason.
+- Historical price data is pulled from Interactive Brokers through `shinybroker`.
+- Each symbol is stored separately in `data/market_history/` as a daily OHLCV CSV.
+- The baseline strategy screens the ETF universe and then selects the strongest asset under the tuned breakout rules.
+- The current showcase asset is `{python} analysis["overview"].loc[analysis["overview"]["Field"] == "Selected symbol", "Value"].iloc[0]`.
+- The trade log records entry timestamp, exit timestamp, quantity, direction, stop level, breakout strength, exit reason, and net PnL.
 
 ## Trading Rules
 
-1. Enter long when price closes above the upper breakout channel.
-2. Enter short when price closes below the lower breakout channel if shorting is enabled.
-3. Apply a volatility-aware stop-loss, trailing stop, timeout, or breakout-failure exit.
-4. Include transaction-cost assumptions so frequent breakout trading is evaluated realistically.
+1. Enter long when the closing price breaks above the previous `55`-day price channel high.
+2. Require the breakout to be confirmed by trend and strength filters:
+   - close must be above the `50`-day moving average
+   - breakout distance must exceed `0.25 ATR`
+3. Enter at the next trading day's open.
+4. Size positions using a `1%` risk budget relative to the ATR stop distance, capped at `95%` capital deployment.
+5. Apply `10 bps` of total transaction costs across entry and exit.
 
-This structure is meant to capture genuine volatility expansion while remaining auditable enough for a course project.
+This is still a channel breakout strategy. The filters do not replace the channel rule; they only try to reduce false breakouts.
 
-## Planned Feature Set
+## Exit Logic And Trade Fates
 
-- breakout distance relative to the channel
-- ATR and recent realized volatility
-- trend slope and recent returns
-- market regime context such as `VIX`-style signals
-- optional implied-volatility proxies if feasible
+Each trade can end in one of four explicit ways:
 
-## Walk-Forward Validation
+1. `Successful`
+   - the trailing stop locks in a profitable move after the breakout develops
+2. `Stop-loss triggered`
+   - price hits the initial stop at `2.5 ATR` below entry
+3. `Timed out`
+   - the trade reaches the maximum holding window of `15` trading days
+4. `Breakout failure`
+   - after a `4`-day grace period, price closes back inside the breakout channel
 
-The project is planned as a rolling walk-forward study:
+The failure-delay rule was added during tuning because immediate breakout-failure exits were cutting trades too early and producing excessive churn.
 
-1. fit the baseline or filter model on a trailing training window,
-2. evaluate on the next out-of-sample segment,
-3. roll forward and repeat,
-4. compare the baseline breakout system against the filtered version.
+## Why These Parameters
 
-## Implementation Notes
+- `55-day` channel:
+  a longer breakout window was more selective and reduced noisy signals compared with short lookbacks.
+- `50-day` trend filter:
+  only taking breakouts in the direction of the medium-term trend improved trade quality.
+- `0.25 ATR` breakout-strength filter:
+  tiny channel pokes were often false breakouts, so requiring some distance past the channel helped.
+- `2.5 ATR` stop:
+  a wider stop fit the slower, trend-following nature of the breakout better than a tight stop.
+- `15-day` maximum hold:
+  gives valid breakouts time to work while still preventing indefinite holding.
+- `4-day` breakout-failure delay:
+  avoids labeling almost every trade as a failure on day one.
 
-The final implementation is intended to live in the `analysis/` package, with separate modules for configuration, asset selection, breakout analysis, and pipeline orchestration.
+## Baseline Selection Logic
+
+The baseline report does not simply showcase the ETF with the strongest recent momentum. Instead, it screens the universe under the same tuned breakout rules and picks the ETF with the strongest strategy-level risk-adjusted performance. This is why the current baseline showcase asset is `QQQ`, even though earlier screens favored other symbols on raw momentum.
+
+```{python}
+display(analysis["asset_screen_display"])
+```
+
+## Next Step Beyond Baseline
+
+The next extension is a supervised-learning filter that labels historical breakout setups and predicts which breakouts are worth taking. The tuned baseline on this page is therefore the control strategy that the later ML version will need to beat.
