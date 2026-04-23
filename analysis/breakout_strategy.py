@@ -21,16 +21,16 @@ MIN_TRADES_FOR_SELECTION = 15
 
 @dataclass(frozen=True)
 class BaselineParams:
-    channel_lookback: int = 55
+    channel_lookback: int = 20
     atr_window: int = 14
-    stop_atr: float = 2.5
+    stop_atr: float = 2.25
     trailing_stop_atr: float = 3.0
     max_hold_days: int = 15
     risk_per_trade: float = 0.01
     max_capital_fraction: float = 0.95
     transaction_cost_bps: float = 10.0
     allow_shorts: bool = False
-    min_breakout_strength: float = 0.25
+    min_breakout_strength: float = 0.18
     trend_filter_window: int = 50
     breakout_failure_wait_days: int = 4
     min_bars_before_trailing_exit: int = 2
@@ -135,12 +135,35 @@ def _position_size(entry_price: float, atr_value: float, equity: float, params: 
 
 
 def _simulate_trades(featured: pd.DataFrame, symbol: str, params: BaselineParams) -> pd.DataFrame:
+    return _simulate_trades_with_filters(featured, symbol, params)
+
+
+def _simulate_trades_with_filters(
+    featured: pd.DataFrame,
+    symbol: str,
+    params: BaselineParams,
+    allowed_signal_dates: set[pd.Timestamp] | None = None,
+    signal_start_date: pd.Timestamp | None = None,
+    signal_end_date: pd.Timestamp | None = None,
+    initial_capital: float = INITIAL_CAPITAL,
+) -> pd.DataFrame:
     trades: list[dict[str, object]] = []
-    equity = INITIAL_CAPITAL
+    equity = initial_capital
     i = params.channel_lookback
 
     while i < len(featured) - 1:
         signal_row = featured.iloc[i]
+        signal_date = pd.Timestamp(signal_row["date"]).normalize()
+        if signal_start_date is not None and signal_date < pd.Timestamp(signal_start_date).normalize():
+            i += 1
+            continue
+        if signal_end_date is not None and signal_date > pd.Timestamp(signal_end_date).normalize():
+            i += 1
+            continue
+        if allowed_signal_dates is not None and signal_date not in allowed_signal_dates:
+            i += 1
+            continue
+
         direction = 0
         if bool(signal_row["long_signal"]):
             direction = 1
@@ -279,6 +302,15 @@ def _simulate_trades(featured: pd.DataFrame, symbol: str, params: BaselineParams
 
 
 def _build_ledger(df: pd.DataFrame, trades: pd.DataFrame, params: BaselineParams) -> pd.DataFrame:
+    return _build_ledger_with_initial_capital(df, trades, params, INITIAL_CAPITAL)
+
+
+def _build_ledger_with_initial_capital(
+    df: pd.DataFrame,
+    trades: pd.DataFrame,
+    params: BaselineParams,
+    initial_capital: float,
+) -> pd.DataFrame:
     ledger = df.loc[:, ["date", "close"]].copy()
     ledger["cash_flow"] = 0.0
     ledger["position_delta"] = 0
@@ -304,7 +336,7 @@ def _build_ledger(df: pd.DataFrame, trades: pd.DataFrame, params: BaselineParams
             ledger.loc[entry_mask, "position_delta"] -= qty
             ledger.loc[exit_mask, "position_delta"] += qty
 
-    ledger["cash"] = INITIAL_CAPITAL + ledger["cash_flow"].cumsum()
+    ledger["cash"] = initial_capital + ledger["cash_flow"].cumsum()
     ledger["position_shares"] = ledger["position_delta"].cumsum()
     ledger["market_value"] = ledger["position_shares"] * ledger["close"]
     ledger["equity"] = ledger["cash"] + ledger["market_value"]
@@ -316,7 +348,8 @@ def _build_ledger(df: pd.DataFrame, trades: pd.DataFrame, params: BaselineParams
 
 
 def _compute_metrics(trades: pd.DataFrame, ledger: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, float | int]]:
-    total_return = ledger["equity"].iloc[-1] / INITIAL_CAPITAL - 1.0 if not ledger.empty else 0.0
+    initial_equity = float(ledger["equity"].iloc[0]) if not ledger.empty else INITIAL_CAPITAL
+    total_return = ledger["equity"].iloc[-1] / initial_equity - 1.0 if not ledger.empty else 0.0
     benchmark_return = ledger["close"].iloc[-1] / ledger["close"].iloc[0] - 1.0 if len(ledger) > 1 else 0.0
     daily_returns = ledger["daily_return"] if "daily_return" in ledger else pd.Series(dtype=float)
     daily_std = daily_returns.std(ddof=0) if not daily_returns.empty else 0.0

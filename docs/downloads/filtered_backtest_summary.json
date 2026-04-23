@@ -1,0 +1,35 @@
+{
+  "selected_symbol": "QQQ",
+  "test_start": "2025-06-24",
+  "test_end": "2026-04-22",
+  "probability_threshold": 0.55,
+  "predicted_trade_dates": 1,
+  "baseline_trade_count": 7,
+  "filtered_trade_count": 1,
+  "baseline_metrics": {
+    "Sharpe Ratio": 0.6527646887270356,
+    "Sortino Ratio": 0.534953573976808,
+    "Total Return": 0.007512852100000078,
+    "Benchmark Return": 0.2068250027789098,
+    "Expected Return Per Trade": 0.002861238539296848,
+    "Expected PnL Per Trade": 107.32645857143007,
+    "Average Trade Lifetime": 5.857142857142857,
+    "Win Rate": 0.8571428571428571,
+    "Profit Factor": 2.9021204921477635,
+    "Max Drawdown": -0.00642944730380024,
+    "Trade Count": 7
+  },
+  "filtered_metrics": {
+    "Sharpe Ratio": 0.5036205027607005,
+    "Sortino Ratio": 0.156428755595071,
+    "Total Return": 0.0022277509999999445,
+    "Benchmark Return": 0.2068250027789098,
+    "Expected Return Per Trade": 0.007085839205992075,
+    "Expected PnL Per Trade": 222.7751000000037,
+    "Average Trade Lifetime": 7.0,
+    "Win Rate": 1.0,
+    "Profit Factor": 0.0,
+    "Max Drawdown": -0.0029985358594324385,
+    "Trade Count": 1
+  }
+}

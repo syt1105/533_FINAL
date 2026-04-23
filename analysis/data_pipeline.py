@@ -7,6 +7,7 @@ import pandas as pd
 
 from analysis.strategy_config import (
     BAR_SIZE,
+    CONTEXT_SYMBOLS,
     HISTORY_DURATION,
     IBKR_CLIENT_ID,
     IBKR_HOST,
@@ -16,6 +17,15 @@ from analysis.strategy_config import (
     USE_RTH,
     WHAT_TO_SHOW,
 )
+
+CONTRACT_SPECS: dict[str, dict[str, str]] = {
+    "VIX": {
+        "symbol": "VIX",
+        "secType": "IND",
+        "exchange": "CBOE",
+        "currency": "USD",
+    }
+}
 
 
 @dataclass(frozen=True)
@@ -81,12 +91,15 @@ def fetch_symbol_history(symbol: str, config: FetchConfig | None = None) -> pd.D
     Contract, fetch_historical_data = _load_shinybroker()
 
     contract = Contract(
-        {
-            "symbol": symbol,
-            "secType": "STK",
-            "exchange": "SMART",
-            "currency": "USD",
-        }
+        CONTRACT_SPECS.get(
+            symbol,
+            {
+                "symbol": symbol,
+                "secType": "STK",
+                "exchange": "SMART",
+                "currency": "USD",
+            },
+        )
     )
 
     raw_data = fetch_historical_data(
@@ -109,6 +122,11 @@ def fetch_universe_history(symbols: list[str], config: FetchConfig | None = None
     for symbol in symbols:
         histories[symbol] = fetch_symbol_history(symbol, config=config)
     return histories
+
+
+def fetch_project_histories(asset_symbols: list[str], config: FetchConfig | None = None) -> dict[str, pd.DataFrame]:
+    ordered_symbols = list(dict.fromkeys(asset_symbols + CONTEXT_SYMBOLS))
+    return fetch_universe_history(ordered_symbols, config=config)
 
 
 def screen_asset_history(history: pd.DataFrame) -> dict[str, object]:

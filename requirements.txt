@@ -1,3 +1,4 @@
 pandas
 plotly
 shinybroker
+scikit-learn

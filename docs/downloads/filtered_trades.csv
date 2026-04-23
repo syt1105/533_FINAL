@@ -1,0 +1,2 @@
+symbol,entry_timestamp,exit_timestamp,direction,side,qty,entry_price,exit_price,stop_price,trailing_stop_exit,atr_at_entry,entry_channel_high,entry_channel_low,breakout_strength,holding_periods,exit_reason,trade_outcome,gross_pnl,transaction_cost,pnl,trade_return
+QQQ,2025-06-25,2025-07-01,LONG,1,58,542.06,546.99,525.0564285714286,532.3114285714287,6.801428571428557,536.78,402.39,0.4410838059231263,7,breakout_failure,Successful,285.9400000000037,63.16489999999999,222.7751000000037,0.007085839205992075

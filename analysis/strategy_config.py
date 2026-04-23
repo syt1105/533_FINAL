@@ -9,6 +9,7 @@ DOWNLOADS_DIR = DOCS_DIR / "downloads"
 
 PROJECT_TITLE = "Volatility Breakout Final Project"
 ASSET_UNIVERSE = ["SPY", "QQQ", "IWM", "XLE", "GLD", "TLT"]
+CONTEXT_SYMBOLS = ["SHY", "VIX"]
 DEFAULT_SELECTED_SYMBOL = "XLE"
 
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
