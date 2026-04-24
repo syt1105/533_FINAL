@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 MARKET_HISTORY_DIR = DATA_DIR / "market_history"
+OPTIONS_HISTORY_DIR = DATA_DIR / "options_history"
 DOCS_DIR = ROOT / "docs"
 DOWNLOADS_DIR = DOCS_DIR / "downloads"
 

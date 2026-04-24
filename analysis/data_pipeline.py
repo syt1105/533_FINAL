@@ -117,6 +117,55 @@ def fetch_symbol_history(symbol: str, config: FetchConfig | None = None) -> pd.D
     return _normalize_history(raw_data, symbol)
 
 
+def fetch_symbol_volatility_history(
+    symbol: str,
+    what_to_show: str,
+    config: FetchConfig | None = None,
+) -> pd.DataFrame:
+    config = config or FetchConfig()
+    Contract, fetch_historical_data = _load_shinybroker()
+
+    contract = Contract(
+        CONTRACT_SPECS.get(
+            symbol,
+            {
+                "symbol": symbol,
+                "secType": "STK",
+                "exchange": "SMART",
+                "currency": "USD",
+            },
+        )
+    )
+
+    raw_data = fetch_historical_data(
+        contract=contract,
+        durationStr=config.duration,
+        barSizeSetting=config.bar_size,
+        whatToShow=what_to_show,
+        useRTH=config.use_rth,
+        host=config.host,
+        port=config.port,
+        client_id=config.client_id,
+        timeout=config.timeout,
+    )
+
+    df = _normalize_history(raw_data, symbol)
+    df["metric"] = what_to_show
+    return df
+
+
+def fetch_project_options_histories(
+    asset_symbols: list[str],
+    config: FetchConfig | None = None,
+) -> dict[str, pd.DataFrame]:
+    option_histories: dict[str, pd.DataFrame] = {}
+    for symbol in asset_symbols:
+        for metric_name in ["OPTION_IMPLIED_VOLATILITY", "HISTORICAL_VOLATILITY"]:
+            key = f"{symbol}_{metric_name}"
+            option_histories[key] = fetch_symbol_volatility_history(symbol, metric_name, config=config)
+    return option_histories
+
+
 def fetch_universe_history(symbols: list[str], config: FetchConfig | None = None) -> dict[str, pd.DataFrame]:
     histories: dict[str, pd.DataFrame] = {}
     for symbol in symbols:

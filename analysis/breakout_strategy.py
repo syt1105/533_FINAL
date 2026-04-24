@@ -23,15 +23,15 @@ MIN_TRADES_FOR_SELECTION = 15
 class BaselineParams:
     channel_lookback: int = 20
     atr_window: int = 14
-    stop_atr: float = 2.25
+    stop_atr: float = 2.0
     trailing_stop_atr: float = 3.0
     max_hold_days: int = 15
     risk_per_trade: float = 0.01
     max_capital_fraction: float = 0.95
     transaction_cost_bps: float = 10.0
     allow_shorts: bool = False
-    min_breakout_strength: float = 0.18
-    trend_filter_window: int = 50
+    min_breakout_strength: float = 0.20
+    trend_filter_window: int = 20
     breakout_failure_wait_days: int = 4
     min_bars_before_trailing_exit: int = 2
 
@@ -143,6 +143,7 @@ def _simulate_trades_with_filters(
     symbol: str,
     params: BaselineParams,
     allowed_signal_dates: set[pd.Timestamp] | None = None,
+    signal_size_multipliers: dict[pd.Timestamp, float] | None = None,
     signal_start_date: pd.Timestamp | None = None,
     signal_end_date: pd.Timestamp | None = None,
     initial_capital: float = INITIAL_CAPITAL,
@@ -179,6 +180,10 @@ def _simulate_trades_with_filters(
         entry_price = float(entry_row["open"])
         atr_value = float(signal_row["atr"])
         qty = _position_size(entry_price, atr_value, equity, params)
+        size_multiplier = 1.0
+        if signal_size_multipliers is not None:
+            size_multiplier = float(signal_size_multipliers.get(signal_date, 1.0))
+        qty = float(qty) * max(0.0, size_multiplier)
         if qty <= 0:
             i += 1
             continue
@@ -277,7 +282,8 @@ def _simulate_trades_with_filters(
                 "exit_timestamp": exit_date,
                 "direction": "LONG" if direction == 1 else "SHORT",
                 "side": direction,
-                "qty": int(qty),
+                "qty": float(qty),
+                "size_multiplier": float(size_multiplier),
                 "entry_price": entry_price,
                 "exit_price": exit_price,
                 "stop_price": stop_price,
@@ -313,13 +319,13 @@ def _build_ledger_with_initial_capital(
 ) -> pd.DataFrame:
     ledger = df.loc[:, ["date", "close"]].copy()
     ledger["cash_flow"] = 0.0
-    ledger["position_delta"] = 0
+    ledger["position_delta"] = 0.0
 
     for trade in trades.to_dict("records"):
         entry_mask = ledger["date"] == pd.Timestamp(trade["entry_timestamp"])
         exit_mask = ledger["date"] == pd.Timestamp(trade["exit_timestamp"])
         direction = int(trade["side"])
-        qty = int(trade["qty"])
+        qty = float(trade["qty"])
         entry_notional = float(trade["entry_price"]) * qty
         exit_notional = float(trade["exit_price"]) * qty
         entry_cost = _per_side_cost(entry_notional, params)
@@ -348,6 +354,9 @@ def _build_ledger_with_initial_capital(
 
 
 def _compute_metrics(trades: pd.DataFrame, ledger: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, float | int]]:
+    if trades.empty:
+        trades = pd.DataFrame(columns=["pnl", "trade_return", "holding_periods"])
+
     initial_equity = float(ledger["equity"].iloc[0]) if not ledger.empty else INITIAL_CAPITAL
     total_return = ledger["equity"].iloc[-1] / initial_equity - 1.0 if not ledger.empty else 0.0
     benchmark_return = ledger["close"].iloc[-1] / ledger["close"].iloc[0] - 1.0 if len(ledger) > 1 else 0.0

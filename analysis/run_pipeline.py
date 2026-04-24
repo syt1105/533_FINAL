@@ -5,12 +5,17 @@ import json
 import pandas as pd
 
 from analysis.breakout_strategy import run_analysis
-from analysis.data_pipeline import build_asset_screen, fetch_project_histories, select_asset_from_screen
+from analysis.data_pipeline import (
+    build_asset_screen,
+    fetch_project_histories,
+    fetch_project_options_histories,
+    select_asset_from_screen,
+)
 from analysis.features import build_selected_asset_feature_dataset, build_universe_feature_dataset, save_feature_dataset
 from analysis.filtered_backtest import run_filtered_backtest, save_filtered_backtest_artifacts
 from analysis.labels import build_selected_asset_labeled_dataset, build_universe_labeled_dataset, save_labeled_breakout_dataset
 from analysis.model import save_model_artifacts, train_universe_model
-from analysis.strategy_config import ASSET_UNIVERSE, DATA_DIR, DOCS_DIR, DOWNLOADS_DIR, MARKET_HISTORY_DIR
+from analysis.strategy_config import ASSET_UNIVERSE, DATA_DIR, DOCS_DIR, DOWNLOADS_DIR, MARKET_HISTORY_DIR, OPTIONS_HISTORY_DIR
 
 
 def _save_csv(df: pd.DataFrame, path) -> None:
@@ -21,10 +26,12 @@ def _save_csv(df: pd.DataFrame, path) -> None:
 def main() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     MARKET_HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+    OPTIONS_HISTORY_DIR.mkdir(parents=True, exist_ok=True)
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
     histories = fetch_project_histories(ASSET_UNIVERSE)
+    option_histories = fetch_project_options_histories(ASSET_UNIVERSE)
     asset_histories = {symbol: histories[symbol] for symbol in ASSET_UNIVERSE}
     asset_screen = build_asset_screen(asset_histories)
     selected_asset = select_asset_from_screen(asset_screen)
@@ -34,6 +41,10 @@ def main() -> None:
         history_out = history.copy()
         history_out["date"] = pd.to_datetime(history_out["date"]).dt.strftime("%Y-%m-%d")
         _save_csv(history_out, MARKET_HISTORY_DIR / f"{symbol}.csv")
+    for key, history in option_histories.items():
+        history_out = history.copy()
+        history_out["date"] = pd.to_datetime(history_out["date"]).dt.strftime("%Y-%m-%d")
+        _save_csv(history_out, OPTIONS_HISTORY_DIR / f"{key}.csv")
     (DATA_DIR / "selected_asset.json").write_text(json.dumps(selected_asset, indent=2), encoding="utf-8")
     analysis = run_analysis(save_outputs=True)
     labeled_breakouts = build_selected_asset_labeled_dataset()
@@ -50,7 +61,7 @@ def main() -> None:
     save_filtered_backtest_artifacts(filtered_backtest_results)
 
     print(
-        f"Fetched history for {len(histories)} assets and selected "
+        f"Fetched history for {len(histories)} assets, {len(option_histories)} option-derived volatility series, and selected "
         f"{analysis['overview'].loc[analysis['overview']['Field'] == 'Selected symbol', 'Value'].iloc[0]} "
         "for downstream analysis."
     )
