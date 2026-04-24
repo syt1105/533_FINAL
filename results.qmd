@@ -5,34 +5,52 @@ jupyter: python3
 
 ```{python}
 from analysis.breakout_strategy import run_analysis
+from analysis.filtered_backtest import run_filtered_backtest
 from IPython.display import display
 
 analysis = run_analysis()
+ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
+
 display(analysis["metrics_display"])
+display(ml_overlay["comparison"])
 ```
 
-## What The Metrics Mean
+## Executive Summary
 
-```{python}
-from IPython.display import Markdown
+This project produced a two-layer final result. The core strategy is a tuned `QQQ` channel breakout system with explicit volatility and risk-control rules: a `20-day` breakout entry, a `20-day` trend filter, a `0.20 ATR` breakout-strength filter, a `2.0 ATR` stop-loss, a `3.0 ATR` trailing stop, a `15-day` time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of `1.34`, a total return of `2.91%`, a win rate of `81.8%`, and a max drawdown of `-0.81%`.
 
-metric_notes = "\n".join(
-    f"- **{row.Metric}:** {row.Explanation}"
-    for row in analysis["metric_explanations"].itertuples(index=False)
-)
-display(Markdown(metric_notes))
-```
+On top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a `QQQ`-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including `IV/HV spread`, `IV/HV ratio`, and `IV trend`, to scale position size up or down. Under the final `aggr4` scaling rule, the overlay improved the out-of-sample Sharpe ratio to `1.38` and total return to `3.40%`, while slightly increasing max drawdown to `-0.94%`. Overall, the evidence suggests that the ML overlay is a small but real enhancement to an already viable breakout baseline, rather than a wholesale replacement for the strategy.
 
-## Strategy Performance
+## Baseline Summary
 
-The tuned baseline now produces a positive Sharpe ratio on the selected showcase ETF. That is important because it means the project now has a defensible control strategy before the ML filter is introduced.
+The final baseline is a tuned channel breakout strategy on `QQQ` with:
 
-The current baseline highlights:
+- `20-day` channel breakout entry
+- `20-day` trend filter
+- `0.20 ATR` breakout-strength filter
+- `2.0 ATR` initial stop
+- `3.0 ATR` trailing stop
+- `15-day` timeout
+- `4-day` breakout-failure delay
 
-- a `55-day` channel breakout entry
-- long-only trades
-- a trend filter and breakout-strength filter
-- an ATR stop, delayed breakout-failure exit, and timeout rule
+This baseline is already positive after costs and serves as the control strategy for the ML extension.
+
+## ML Overlay Summary
+
+The final ML extension is not a fully separate strategy. It is a position-scaling overlay on top of the baseline breakout rule.
+
+- Asset scope:
+  `QQQ` only
+- Model type:
+  logistic classifier
+- Label framework:
+  `label then predict`
+- Feature set:
+  compact `core_iv` breakout and implied-volatility features
+- Use in backtest:
+  scale position size mildly up or down rather than deleting all low-score trades
+
+The resulting out-of-sample comparison shows a clear but still incremental improvement in both total return and Sharpe ratio relative to the baseline. The improvement comes from mild position scaling rather than a wholesale replacement of the breakout rule.
 
 ## Price Chart With Trade Markers
 
@@ -51,7 +69,7 @@ if not blotter.empty:
         blotter["entry_price"],
         marker="^",
         color="#1b9e77",
-        s=90,
+        s=80,
         label="Entry",
         zorder=3,
     )
@@ -60,12 +78,12 @@ if not blotter.empty:
         blotter["exit_price"],
         marker="v",
         color="#d95f02",
-        s=90,
+        s=80,
         label="Exit",
         zorder=3,
     )
 
-ax.set_title("QQQ Price With Breakout Entries And Exits")
+ax.set_title("QQQ Price With Baseline Breakout Entries And Exits")
 ax.set_ylabel("Price")
 ax.legend(frameon=False)
 ax.grid(alpha=0.2)
@@ -78,7 +96,7 @@ plt.show()
 ```{python}
 fig, ax = plt.subplots(figsize=(10, 5))
 ax.plot(equity["date"], equity["equity"], linewidth=2.2, color="#0f4c5c")
-ax.set_title("Strategy Equity Curve")
+ax.set_title("Baseline Strategy Equity Curve")
 ax.set_ylabel("Portfolio Value ($)")
 ax.grid(alpha=0.25)
 plt.tight_layout()
@@ -96,7 +114,7 @@ ax.fill_between(
     color="#9a031e",
     alpha=0.28,
 )
-ax.set_title("Strategy Drawdown")
+ax.set_title("Baseline Strategy Drawdown")
 ax.set_ylabel("Drawdown")
 ax.grid(alpha=0.2)
 plt.tight_layout()
@@ -109,20 +127,11 @@ plt.show()
 display(analysis["outcome_summary"])
 ```
 
-```{python}
-outcomes = analysis["outcome_summary"]
+## What The Final Result Means
 
-fig, ax = plt.subplots(figsize=(8, 4))
-ax.bar(outcomes["Outcome"], outcomes["Trades"], color=["#0f4c5c", "#e36414", "#5f0f40"][: len(outcomes)])
-ax.set_title("Trade Outcome Counts")
-ax.set_ylabel("Number of Trades")
-ax.grid(axis="y", alpha=0.2)
-plt.tight_layout()
-plt.show()
-```
+The project now has two meaningful layers:
 
-## Interpretation
+1. A tuned baseline breakout strategy that is already tradable and positive after costs.
+2. A compact implied-volatility-aware ML overlay that improves out-of-sample Sharpe and total return on the showcase asset, while accepting a slightly deeper drawdown.
 
-The tuned baseline answers an important project question already: a channel breakout strategy can produce a tradable, risk-controlled return stream after costs, but only after we reduce the false-breakout churn built into the naive version.
-
-That makes the next research step meaningful rather than cosmetic. The ML filter will not be replacing a broken placeholder. It will be trying to improve a tuned, positive-Sharpe breakout baseline.
+The improvement is not huge, and that is important to state honestly. This is not a magical black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline.

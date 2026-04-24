@@ -95,16 +95,16 @@ def _scaled_upside_signal_size_multipliers(symbol_predictions: pd.DataFrame) -> 
     multipliers: dict[pd.Timestamp, float] = {}
     for _, row in symbol_predictions.iterrows():
         upside_probability = float(row["predicted_probability"])
-        if upside_probability >= 0.75:
-            size = 1.25
-        elif upside_probability >= 0.60:
-            size = 1.12
-        elif upside_probability >= 0.45:
-            size = 1.00
-        elif upside_probability >= 0.30:
-            size = 0.95
+        if upside_probability >= 0.70:
+            size = 1.30
+        elif upside_probability >= 0.55:
+            size = 1.15
+        elif upside_probability >= 0.40:
+            size = 1.05
+        elif upside_probability >= 0.25:
+            size = 0.97
         else:
-            size = 0.90
+            size = 0.93
         multipliers[pd.Timestamp(row["signal_date"]).normalize()] = size
     return multipliers
 
@@ -141,7 +141,7 @@ def _train_selected_asset_core_iv_model() -> dict[str, object]:
         [
             ("imputer", SimpleImputer(strategy="median")),
             ("scaler", StandardScaler()),
-            ("model", LogisticRegression(max_iter=4000, C=1.0, class_weight=None)),
+            ("model", LogisticRegression(max_iter=4000, C=1.0, class_weight="balanced")),
         ]
     )
     pipeline.fit(train_df[SELECTED_ASSET_CORE_IV_FEATURES], train_df["label"].astype(int))

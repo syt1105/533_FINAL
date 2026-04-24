@@ -5,30 +5,61 @@ jupyter: python3
 
 ```{python}
 from analysis.breakout_strategy import run_analysis
+from analysis.filtered_backtest import run_filtered_backtest
 from IPython.display import display
 
 analysis = run_analysis()
+ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
 display(analysis["monitoring_display"])
+display(ml_overlay["comparison"])
 ```
 
 ## How We Will Know Performance Is Still In Line
 
-Going forward, the strategy should be monitored through rolling behavior rather than one-off wins and losses. The final project will compare live or forward results against the out-of-sample backtest using:
+Going forward, the strategy should be monitored through rolling behavior rather than single wins and losses. We would compare live or forward results against the out-of-sample backtest using:
 
 - rolling expectancy
 - rolling hit rate
 - rolling Sharpe ratio
 - drawdown depth
-- holding-period distribution
-- outcome mix by trade fate
+- average holding period
+- outcome mix across `Successful`, `Stop-loss triggered`, `Timed out`, and `Breakout failure`
 
-## How We Will Quantify Breakdown
+The key idea is that we do not expect each month to match the backtest exactly. We expect live behavior to stay inside a reasonable range around the validated backtest distribution.
 
-The strategy will be considered impaired when key rolling metrics fall materially outside their validated range for long enough to suggest regime failure rather than routine noise.
+## How We Will Quantify When The Strategy Stops Working
 
-Typical triggers include:
+The strategy will be treated as impaired when one or more of the following conditions persist long enough to suggest regime failure rather than normal noise:
 
-- expectancy turning negative
-- hit rate leaving the backtest confidence band
-- drawdown exceeding a historical stress threshold
-- the model filter no longer improving the baseline breakout rule
+1. `Rolling expectancy < 0`
+   - using the latest `50` trades
+2. `Rolling hit rate` falls materially below the backtest range
+   - for several consecutive months
+3. `Drawdown` exceeds a historical stress threshold
+   - for example worse than `1.5x` the historical max drawdown
+4. `ML overlay no longer improves the baseline`
+   - the scaling extension should continue to add value relative to the control strategy
+
+## Baseline Versus Overlay Monitoring
+
+The project should monitor both layers separately:
+
+- Baseline breakout strategy:
+  is the raw breakout rule still behaving like the original backtest?
+- ML overlay:
+  is the model-based position scaling still adding value relative to the tuned baseline?
+
+This matters because the ML extension is intentionally small. If the overlay stops helping, the baseline may still remain tradable.
+
+## Final Monitoring Interpretation
+
+The practical decision rule is:
+
+- keep trading if behavior remains inside expected ranges
+- reduce confidence if expectancy and hit rate weaken together
+- pause or re-estimate the strategy if drawdown and trade-quality diagnostics both break
+
+That gives the project a concrete answer to the two most important forward-looking questions:
+
+- how do we know performance is still consistent with the backtest?
+- how do we know when the strategy has stopped working?

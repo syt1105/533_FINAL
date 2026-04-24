@@ -30,8 +30,9 @@ Breakout behavior is not equally strong in every instrument. Some assets trend a
 
 ## Current Status
 
-The screening table is still placeholder data, but the project is structured to evolve toward:
+The screening table above is the live universe-level breakout screen. The project evaluates the same baseline rules across the ETF universe, then chooses the symbol with the strongest strategy-level risk-adjusted profile. That is why `QQQ` is the current showcase asset rather than simply the ETF with the highest raw momentum.
 
-- universe-level screening metrics
-- selected asset metadata
-- exportable screening results in `data/asset_screening.csv`
+The screening exports are saved in:
+
+- `data/asset_screening.csv`
+- `data/selected_asset.json`

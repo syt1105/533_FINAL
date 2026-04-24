@@ -6,7 +6,7 @@ jupyter: python3
 ::: {.hero-banner}
 ## Developing and Backtesting a Volatility Breakout Strategy
 
-This project is a FINTECH 533 final-project scaffold for a volatility and channel breakout strategy. It is organized as a Quarto website backed by an `analysis/` Python package and a `shinybroker`-compatible research pipeline.
+This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an `analysis/` Python package, a `shinybroker` data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers.
 :::
 
 ```{python}
@@ -23,16 +23,16 @@ overview
 - Build a transparent breakout strategy with explicit entry and exit rules.
 - Backtest the strategy on historical price data using a repeatable Python workflow.
 - Log every trade so entries, exits, and holding periods are auditable.
-- Extend the baseline strategy with a supervised learning filter for breakout quality.
+- Extend the baseline strategy with a supervised learning position-scaling overlay for breakout quality.
 
 ## Strategy Snapshot
 
-The current project setup targets liquid ETFs and focuses on volatility expansion after price leaves a recent channel. The site and package are structured to support both a baseline breakout engine and a later model-based filter that decides which breakout setups are worth taking.
+The final baseline is a tuned `QQQ` channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact `QQQ`-only logistic model that uses breakout quality plus options-implied-volatility features to scale position size up or down. In the current out-of-sample comparison, the ML overlay improves both total return and Sharpe ratio, with a slightly worse max drawdown.
 
 ## What To Review
 
-- [Asset Selection](asset-selection.qmd) describes the planned universe and screening logic.
-- [Methodology](methodology.qmd) documents the trading rules, assumptions, and intended implementation choices.
-- [Results](results.qmd) is where equity growth, drawdown, and performance statistics will appear.
-- [Trade Log](trade-log.qmd) will hold the blotter, ledger preview, and download links.
+- [Asset Selection](asset-selection.qmd) explains the ETF universe and why `QQQ` became the showcase asset.
+- [Methodology](methodology.qmd) documents the final trading rules, labels, feature set, and parameter choices.
+- [Results](results.qmd) summarizes the tuned baseline and the final `aggr4` ML overlay.
+- [Trade Log](trade-log.qmd) contains the blotter, ledger preview, and downloadable output files.
 - [Monitoring](monitoring.qmd) defines how to judge whether the strategy is still behaving as expected after deployment.

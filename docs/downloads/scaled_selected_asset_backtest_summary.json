@@ -22,16 +22,16 @@
     "Trade Count": 11
   },
   "filtered_metrics": {
-    "Sharpe Ratio": 1.342864949471661,
-    "Sortino Ratio": 1.0738804254112242,
-    "Total Return": 0.029949968290000184,
+    "Sharpe Ratio": 1.3849564383731638,
+    "Sortino Ratio": 1.1576941095498945,
+    "Total Return": 0.03404003525600019,
     "Benchmark Return": 0.2292798913043479,
     "Expected Return Per Trade": 0.00801096336870449,
-    "Expected PnL Per Trade": 272.2724390000007,
+    "Expected PnL Per Trade": 309.4548659636371,
     "Average Trade Lifetime": 5.636363636363637,
     "Win Rate": 0.8181818181818182,
-    "Profit Factor": 5.58817771407097,
-    "Max Drawdown": -0.009034460498999142,
+    "Profit Factor": 5.961668751716895,
+    "Max Drawdown": -0.009362602070859039,
     "Trade Count": 11
   }
 }

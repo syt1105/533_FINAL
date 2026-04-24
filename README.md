@@ -1,24 +1,30 @@
 # Volatility Breakout Strategy Lab
 
-This project builds, backtests, and documents a volatility and channel breakout trading strategy in Quarto, using `shinybroker` as the intended bridge to Interactive Brokers historical data.
+This project builds, backtests, and documents a volatility and channel breakout trading strategy in Quarto, using `shinybroker` as the bridge to Interactive Brokers historical data and options-derived implied-volatility series.
 
-The workflow is being organized to do four things:
+The workflow does four things:
 
 1. Screen a compact universe of liquid ETFs.
-2. Select a candidate asset or ranked basket for the breakout strategy.
+2. Select a showcase asset based on strategy-level performance.
 3. Run the breakout backtest to create the trade blotter, ledger, and performance metrics.
-4. Publish the results as a Quarto website through the `docs/` folder.
+4. Add a supervised-learning overlay that uses breakout and implied-volatility features to adjust position sizing.
 
 ## Project Structure
 
 - `analysis/`: Python modules for configuration, asset screening, breakout analysis, and pipeline execution
-- `data/`: selected asset metadata and placeholder research inputs
+- `data/`: market-history files, options-volatility files, and selected-asset metadata
 - `docs/`: rendered website output for GitHub Pages plus downloadable artifacts
 - `*.qmd`: Quarto pages for the website
 
 ## Current Status
 
-This repository is currently a scaffold aligned to the example project structure you shared. The Quarto pages, analysis package, and placeholder data files are in place, but the full volatility-breakout backtest and ML filter are still to be implemented.
+The repository now contains a working end-to-end research pipeline:
+
+- separate market-history CSVs in `data/market_history/`
+- separate IBKR implied-volatility and historical-volatility CSVs in `data/options_history/`
+- a tuned baseline `QQQ` breakout strategy
+- an ML overlay based on compact `core_iv` features
+- downloadable blotter, ledger, model, and overlay comparison files in `docs/downloads/`
 
 ## Planned Workflow
 
@@ -29,16 +35,18 @@ python3 -m analysis.run_pipeline
 quarto render
 ```
 
-The pipeline will eventually:
+The pipeline currently:
 
 - fetch or load market history,
-- generate breakout and volatility features,
+- fetch or load options-derived volatility history,
+- generate breakout, volatility, and implied-volatility features,
 - create a selected asset file,
-- run the backtest and trade logging,
+- run the baseline and ML-augmented backtests,
 - and export the artifacts used by the Quarto site.
 
 ## Data Layout
 
 - `data/market_history/`: one CSV per symbol fetched through `shinybroker`
+- `data/options_history/`: one CSV per symbol and volatility series fetched through `shinybroker`
 - `data/asset_screening.csv`: cross-asset screening summary
 - `data/selected_asset.json`: the currently chosen symbol and selection metadata

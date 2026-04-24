@@ -5,9 +5,11 @@ jupyter: python3
 
 ```{python}
 from analysis.breakout_strategy import run_analysis
+from analysis.filtered_backtest import run_filtered_backtest
 from IPython.display import HTML, display
 
 analysis = run_analysis()
+ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
 display(analysis["blotter_display"])
 ```
 
@@ -18,8 +20,10 @@ export_paths = analysis["export_paths"]
 
 HTML(
     f'''
-    <p><a href="{export_paths["blotter_csv_href"]}" download>Download trade blotter CSV</a></p>
-    <p><a href="{export_paths["ledger_csv_href"]}" download>Download trade ledger CSV</a></p>
+    <p><a href="{export_paths["blotter_csv_href"]}" download>Download baseline trade blotter CSV</a></p>
+    <p><a href="{export_paths["ledger_csv_href"]}" download>Download baseline trade ledger CSV</a></p>
+    <p><a href="downloads/scaled_selected_asset_backtest_comparison.csv" download>Download ML overlay comparison CSV</a></p>
+    <p><a href="downloads/scaled_selected_asset_backtest_summary.json" download>Download ML overlay summary JSON</a></p>
     '''
 )
 ```
@@ -64,12 +68,20 @@ display(worst_trade)
 display(analysis["ledger_display"])
 ```
 
+## ML Overlay Comparison
+
+```{python}
+display(ml_overlay["comparison"])
+```
+
+The final ML overlay keeps the same trade timestamps as the baseline and changes capital allocation rather than deleting all low-score trades. That is why the overlay comparison is best read as a portfolio-allocation enhancement, not as a second independent blotter.
+
 ## Why The Trade Log Matters
 
-The trade log is where the backtest becomes auditable. In this project it shows:
+The trade log makes the backtest auditable. It shows:
 
 - when entries and exits occurred
 - how long trades stayed open
 - whether exits came from success, stop-loss, timeout, or breakout failure
 - how profits and losses were distributed across trades
-- whether the tuned breakout-failure delay helped the strategy hold winners longer instead of exiting on day one
+- how the final ML overlay changes position sizing on top of those same breakout opportunities

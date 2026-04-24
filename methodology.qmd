@@ -1,0 +1,127 @@
+---
+title: "Methodology"
+jupyter: python3
+---
+
+```{python}
+from analysis.breakout_strategy import run_analysis
+from analysis.filtered_backtest import run_filtered_backtest
+from IPython.display import display
+
+analysis = run_analysis()
+ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
+display(analysis["parameter_table"])
+```
+
+## Strategy Idea
+
+This project studies a volatility and channel breakout strategy on liquid ETFs. The market phenomenon we are trying to capture is short- to medium-horizon trend continuation after price escapes a recent trading range. The baseline idea is simple: when price breaks out of a channel, volatility is often expanding and some of those breakouts continue far enough to compensate for the many small failures.
+
+The project then adds a supervised-learning extension. Instead of replacing the breakout rule, the model acts as a position-scaling overlay that uses only information available at the time of entry to decide whether a breakout deserves full size or a smaller size.
+
+## Data Pipeline
+
+- Historical daily OHLCV data is pulled from Interactive Brokers through `shinybroker`.
+- Each symbol is stored separately in `data/market_history/`.
+- Macro and regime context is added with `VIX` and `SHY`.
+- Options-derived volatility series from IBKR are stored separately in `data/options_history/`.
+- The baseline strategy is evaluated across the ETF universe, and the best risk-adjusted baseline asset is selected as the showcase symbol.
+
+The current showcase asset is `{python} analysis["overview"].loc[analysis["overview"]["Field"] == "Selected symbol", "Value"].iloc[0]`.
+
+## Entry Orders
+
+The final baseline entry rule is:
+
+1. Compute a `20-day` Donchian-style channel using the prior rolling high and low.
+2. Enter `long` when the close breaks above the prior `20-day` channel high.
+3. Require two confirmation filters:
+   - the close must be above the `20-day` moving average trend filter
+   - the breakout must exceed `0.20 ATR`
+4. Execute the trade at the next trading day's open.
+5. Size the trade with a `1%` equity risk budget, capped at `95%` notional deployment.
+6. Apply `10 bps` total transaction costs across entry and exit.
+
+This is still a channel breakout strategy. The trend and strength filters do not replace the channel rule; they are there to reduce false breakouts.
+
+## Why These Parameters
+
+- `20-day` channel:
+  this produced more usable trade count than a very long channel while still keeping the breakout logic interpretable.
+- `20-day` trend filter:
+  a shorter trend filter matched the faster breakout horizon better than the earlier `50-day` version.
+- `0.20 ATR` breakout threshold:
+  this was large enough to avoid tiny channel pokes but not so strict that the strategy stopped trading.
+- `2.0 ATR` initial stop:
+  this gave the breakout room to move while still defining risk tightly enough for position sizing.
+- `3.0 ATR` trailing stop:
+  this lets winners run while protecting profits once the move extends.
+- `15-day` timeout:
+  if the breakout has not worked within roughly three trading weeks, the signal has likely decayed.
+- `4-day` breakout-failure delay:
+  immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.
+
+## Exit Orders
+
+Each trade has four explicit fates:
+
+1. `Successful`
+   - the trailing stop locks in a profitable move after the breakout extends
+2. `Stop-loss triggered`
+   - price hits the initial stop at `2.0 ATR` below entry
+3. `Timed out`
+   - the trade reaches the maximum holding window of `15` trading days
+4. `Breakout failure`
+   - after the `4-day` grace period, price closes back inside the breakout channel
+
+These fates are coded directly in the backtest and also appear in the trade blotter.
+
+## Baseline Selection Logic
+
+The project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why `QQQ` is the current showcase asset.
+
+```{python}
+display(analysis["asset_screen_display"])
+```
+
+## Supervised Learning Extension
+
+The ML layer follows Jake's `label then predict` framework.
+
+### Label Construction
+
+For each breakout event:
+
+- look ahead `15` trading days
+- mark the trade as `1` if price reaches `+1.5 ATR` before `-1.0 ATR`
+- mark it as `0` otherwise
+
+This uses future data only to create the label. The model never sees future information as input features.
+
+### Model Inputs
+
+The final selected-asset ML overlay uses a compact `core_iv` feature set:
+
+- `breakout_strength`
+- `distance_from_trend`
+- `distance_from_upper_channel`
+- `channel_width_pct`
+- `atr_pct`
+- `iv_hv_spread`
+- `iv_hv_ratio`
+- `iv_zscore_60d`
+- `iv_trend_20d`
+
+These were chosen because they balance:
+
+- breakout quality
+- local volatility expansion
+- options-implied volatility confirmation
+
+### Model Usage
+
+The final ML overlay does not delete trades outright. Instead, it scales position size up or down on `QQQ` based on the model's estimated breakout quality. This kept the strategy interpretable while producing an out-of-sample improvement in both Sharpe ratio and total return, at the cost of a slightly worse max drawdown.
+
+```{python}
+display(ml_overlay["comparison"])
+```
