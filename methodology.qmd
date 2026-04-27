@@ -121,6 +121,14 @@ These were chosen because they balance:
 - local volatility expansion
 - options-implied volatility confirmation
 
+## Role Of Options Implied Volatility
+
+The baseline strategy enters trades using only price-based breakout rules, but the machine-learning overlay uses options-derived implied volatility to judge breakout quality. For each breakout event, the model includes `iv_hv_spread`, `iv_hv_ratio`, `iv_zscore_60d`, and `iv_trend_20d`, all measured using information available at the signal date.
+
+The intuition is that a price breakout confirmed by rising or unusually rich implied volatility is more likely to reflect a real regime shift, because options traders are pricing a larger future move. A price breakout without IV confirmation may be a weaker signal or a temporary channel poke.
+
+In the final strategy, implied volatility does not independently trigger trades. It helps the model scale position size up or down after the baseline breakout rule has already identified a trade candidate.
+
 ### Model Usage
 
 Train the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on `QQQ` based on the model's estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.

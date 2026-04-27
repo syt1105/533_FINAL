@@ -119,9 +119,9 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./monitoring.html"> 
 <span class="menu-text">Monitoring</span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="./about.qmd"> 
-<span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -149,6 +149,9 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#label-construction" id="toc-label-construction" class="nav-link" data-scroll-target="#label-construction">Label Construction</a></li>
   <li><a href="#model-inputs" id="toc-model-inputs" class="nav-link" data-scroll-target="#model-inputs">Model Inputs</a></li>
+  </ul></li>
+  <li><a href="#role-of-options-implied-volatility" id="toc-role-of-options-implied-volatility" class="nav-link" data-scroll-target="#role-of-options-implied-volatility">Role Of Options Implied Volatility</a>
+  <ul class="collapse">
   <li><a href="#model-usage" id="toc-model-usage" class="nav-link" data-scroll-target="#model-usage">Model Usage</a></li>
   </ul></li>
   </ul>
@@ -176,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="a13e5c04" class="cell" data-execution_count="1">
+<div id="b5701d2e" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <h4 class="anchored">Final Strategy Parameters</h4>
 <div class="interactive-table-wrap" id="methodology_parameters_wrap">
@@ -332,7 +335,7 @@ ul.task-list li input[type="checkbox"] {
 <li><code>4-day</code> breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.</li>
 </ul>
 <p>The file <code>parameter_sweep_top100.csv</code> records the broader universe sweep. Its highest-ranked row favored a <code>30-day</code> channel with a wider <code>3.0 ATR</code> stop and <code>2.5 ATR</code> trail on an average cross-asset score. The final code keeps the <code>20-day</code>, <code>2.0 ATR</code>, <code>3.0 ATR</code> setup because the final project is a showcase <code>QQQ</code> strategy and that configuration produced the better selected-asset backtest on the current saved sample.</p>
-<div id="ca1f721f" class="cell" data-execution_count="2">
+<div id="6addf12a" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <h4 class="anchored">Final Params vs Top Sweep Row</h4>
 <div class="interactive-table-wrap" id="methodology_parameter_comparison_wrap">
@@ -447,7 +450,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="baseline-selection-logic" class="level2">
 <h2 class="anchored" data-anchor-id="baseline-selection-logic">Baseline Selection Logic</h2>
 <p>The project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why <code>QQQ</code> is the current showcase asset.</p>
-<div id="3dcc5bc2" class="cell" data-execution_count="3">
+<div id="f8fb43a6" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <h4 class="anchored">ETF Universe Screen</h4>
 <div class="interactive-table-wrap" id="methodology_asset_screen_wrap">
@@ -599,10 +602,16 @@ ul.task-list li input[type="checkbox"] {
 <li>options-implied volatility confirmation</li>
 </ul>
 </section>
+</section>
+<section id="role-of-options-implied-volatility" class="level2">
+<h2 class="anchored" data-anchor-id="role-of-options-implied-volatility">Role Of Options Implied Volatility</h2>
+<p>The baseline strategy enters trades using only price-based breakout rules, but the machine-learning overlay uses options-derived implied volatility to judge breakout quality. For each breakout event, the model includes <code>iv_hv_spread</code>, <code>iv_hv_ratio</code>, <code>iv_zscore_60d</code>, and <code>iv_trend_20d</code>, all measured using information available at the signal date.</p>
+<p>The intuition is that a price breakout confirmed by rising or unusually rich implied volatility is more likely to reflect a real regime shift, because options traders are pricing a larger future move. A price breakout without IV confirmation may be a weaker signal or a temporary channel poke.</p>
+<p>In the final strategy, implied volatility does not independently trigger trades. It helps the model scale position size up or down after the baseline breakout rule has already identified a trade candidate.</p>
 <section id="model-usage" class="level3">
 <h3 class="anchored" data-anchor-id="model-usage">Model Usage</h3>
 <p>Train the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on <code>QQQ</code> based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.</p>
-<div id="659f371e" class="cell" data-execution_count="4">
+<div id="f9293ff2" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display" data-execution_count="4">
 <h4 class="anchored">Hard Filter vs Position Scaling</h4>
 <div class="interactive-table-wrap" id="methodology_overlay_comparison_wrap">
