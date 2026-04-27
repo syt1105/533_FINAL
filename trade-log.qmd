@@ -6,11 +6,12 @@ jupyter: python3
 ```{python}
 from analysis.breakout_strategy import run_analysis
 from analysis.filtered_backtest import run_filtered_backtest
+from analysis.reporting import interactive_table
 from IPython.display import HTML, display
 
 analysis = run_analysis()
 ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
-display(analysis["blotter_display"])
+interactive_table(analysis["blotter_display"], "trade_log_blotter", "Baseline Trade Blotter")
 ```
 
 ## Downloads
@@ -55,23 +56,30 @@ fig.show()
 best_trade = blotter.loc[:, ["entry_timestamp", "exit_timestamp", "entry_price", "exit_price", "trade_return", "pnl", "exit_reason"]].sort_values("trade_return", ascending=False).head(3)
 worst_trade = blotter.loc[:, ["entry_timestamp", "exit_timestamp", "entry_price", "exit_price", "trade_return", "pnl", "exit_reason"]].sort_values("trade_return", ascending=True).head(3)
 
-print("Best trades")
-display(best_trade)
+display(interactive_table(best_trade, "best_trades", "Best Trades"))
 
-print("Worst trades")
-display(worst_trade)
+display(interactive_table(worst_trade, "worst_trades", "Worst Trades"))
 ```
 
 ## Ledger Preview
 
 ```{python}
-display(analysis["ledger_display"])
+interactive_table(analysis["ledger_display"], "ledger_preview", "Ledger Preview")
+```
+
+## Outcome Rates And Payoff Shape
+
+```{python}
+interactive_table(analysis["outcome_rate_summary"], "trade_log_outcome_rates", "Outcome Rates")
+interactive_table(analysis["trade_quality_summary"], "trade_log_payoff_shape", "Payoff Shape")
 ```
 
 ## ML Overlay Comparison
 
 ```{python}
-display(ml_overlay["comparison"])
+from analysis.filtered_backtest import compare_selected_asset_ml_overlays
+
+interactive_table(compare_selected_asset_ml_overlays(), "trade_log_overlay_comparison", "Baseline vs ML Overlays")
 ```
 
 The final ML overlay keeps the same trade timestamps as the baseline and changes capital allocation rather than deleting all low-score trades. That is why the overlay comparison is best read as a portfolio-allocation enhancement, not as a second independent blotter.

@@ -37,6 +37,14 @@ class BaselineParams:
 
 
 BASELINE_PARAMS = BaselineParams()
+SWEEP_BEST_UNIVERSE_PARAMS = BaselineParams(
+    channel_lookback=30,
+    stop_atr=3.0,
+    trailing_stop_atr=2.5,
+    max_hold_days=15,
+    min_breakout_strength=0.20,
+    breakout_failure_wait_days=4,
+)
 
 
 def _load_selected_asset() -> dict:
@@ -504,6 +512,80 @@ def _outcome_summary(trades: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def _trade_quality_summary(trades: pd.DataFrame) -> pd.DataFrame:
+    if trades.empty:
+        rows = [
+            ("Average winner", 0.0, "return"),
+            ("Average loser", 0.0, "return"),
+            ("Payoff ratio", 0.0, "number"),
+            ("Largest winner", 0.0, "return"),
+            ("Largest loser", 0.0, "return"),
+            ("Top 3 trade PnL share", 0.0, "percent"),
+        ]
+    else:
+        winners = trades.loc[trades["trade_return"] > 0, "trade_return"]
+        losers = trades.loc[trades["trade_return"] < 0, "trade_return"]
+        avg_winner = float(winners.mean()) if not winners.empty else 0.0
+        avg_loser = float(losers.mean()) if not losers.empty else 0.0
+        payoff_ratio = avg_winner / abs(avg_loser) if avg_loser < 0 else 0.0
+        total_pnl = float(trades["pnl"].sum())
+        top3_pnl = float(trades.sort_values("pnl", ascending=False).head(3)["pnl"].sum())
+        top3_share = top3_pnl / total_pnl if total_pnl > 0 else 0.0
+        rows = [
+            ("Average winner", avg_winner, "return"),
+            ("Average loser", avg_loser, "return"),
+            ("Payoff ratio", payoff_ratio, "number"),
+            ("Largest winner", float(trades["trade_return"].max()), "return"),
+            ("Largest loser", float(trades["trade_return"].min()), "return"),
+            ("Top 3 trade PnL share", top3_share, "percent"),
+        ]
+
+    formatted = []
+    for metric, value, value_type in rows:
+        if value_type in {"return", "percent"}:
+            display_value = f"{value:.2%}"
+        else:
+            display_value = f"{value:.2f}"
+        formatted.append({"Metric": metric, "Value": display_value})
+    return pd.DataFrame(formatted)
+
+
+def _outcome_rate_summary(trades: pd.DataFrame) -> pd.DataFrame:
+    summary = _outcome_summary(trades)
+    total = int(summary["Trades"].sum()) if not summary.empty else 0
+    summary["Rate"] = summary["Trades"].apply(lambda value: f"{value / total:.2%}" if total else "0.00%")
+    return summary
+
+
+def _parameter_comparison_table(params: BaselineParams = BASELINE_PARAMS) -> pd.DataFrame:
+    current_selection = _select_symbol_for_baseline(params)
+    sweep_selection = _select_symbol_for_baseline(SWEEP_BEST_UNIVERSE_PARAMS)
+    rows = []
+    for name, selected_symbol, config in [
+        ("final_current_params", current_selection["selected_symbol"], params),
+        ("sweep_top_universe_params", sweep_selection["selected_symbol"], SWEEP_BEST_UNIVERSE_PARAMS),
+    ]:
+        history = _load_history(str(selected_symbol))
+        featured = _build_features(history, config)
+        trades = _simulate_trades(featured, str(selected_symbol), config)
+        ledger = _build_ledger(history, trades, config)
+        _, metrics = _compute_metrics(trades, ledger)
+        rows.append(
+            {
+                "parameter_set": name,
+                "selected_symbol": selected_symbol,
+                "channel_lookback": config.channel_lookback,
+                "stop_atr": config.stop_atr,
+                "trailing_stop_atr": config.trailing_stop_atr,
+                "trade_count": int(metrics["Trade Count"]),
+                "sharpe_ratio": float(metrics["Sharpe Ratio"]),
+                "total_return": float(metrics["Total Return"]),
+                "max_drawdown": float(metrics["Max Drawdown"]),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def _save_outputs(trades: pd.DataFrame, ledger: pd.DataFrame) -> None:
     DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -579,6 +661,9 @@ def run_analysis(save_outputs: bool = True, params: BaselineParams = BASELINE_PA
         "parameter_table": _parameter_table(selected_symbol, params),
         "asset_screen_display": asset_screen_display,
         "outcome_summary": _outcome_summary(trades),
+        "outcome_rate_summary": _outcome_rate_summary(trades),
+        "trade_quality_summary": _trade_quality_summary(trades),
+        "parameter_comparison": _parameter_comparison_table(params),
         "blotter": trades,
         "blotter_display": trades.loc[
             :,

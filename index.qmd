@@ -1,5 +1,5 @@
 ---
-title: "Volatility Breakout Final Project"
+title: "Volatility Breakout Strategy"
 jupyter: python3
 ---
 
@@ -13,7 +13,7 @@ This project studies a volatility and channel breakout strategy for liquid ETFs.
 from analysis.breakout_strategy import run_analysis
 
 analysis = run_analysis()
-overview = analysis["overview"]
+overview = analysis["overview"].loc[analysis["overview"]["Field"] != "Project"].reset_index(drop=True)
 metrics = analysis["metrics_display"]
 overview
 ```
@@ -23,11 +23,11 @@ overview
 - Build a transparent breakout strategy with explicit entry and exit rules.
 - Backtest the strategy on historical price data using a repeatable Python workflow.
 - Log every trade so entries, exits, and holding periods are auditable.
-- Extend the baseline strategy with a supervised learning position-scaling overlay for breakout quality.
+- Extend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay.
 
 ## Strategy Snapshot
 
-The final baseline is a tuned `QQQ` channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact `QQQ`-only logistic model that uses breakout quality plus options-implied-volatility features to scale position size up or down. In the current out-of-sample comparison, the ML overlay improves both total return and Sharpe ratio, with a slightly worse max drawdown.
+The final baseline is a tuned `QQQ` channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact `QQQ`-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation.
 
 ## What To Review
 
@@ -36,3 +36,4 @@ The final baseline is a tuned `QQQ` channel-breakout strategy with explicit stop
 - [Results](results.qmd) summarizes the tuned baseline and the final `aggr4` ML overlay.
 - [Trade Log](trade-log.qmd) contains the blotter, ledger preview, and downloadable output files.
 - [Monitoring](monitoring.qmd) defines how to judge whether the strategy is still behaving as expected after deployment.
+- [About](about.qmd) introduces the project team.

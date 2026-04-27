@@ -1,4 +1,8 @@
 pandas
 plotly
+matplotlib
 shinybroker
 scikit-learn
+jupyter
+ipykernel
+PyYAML

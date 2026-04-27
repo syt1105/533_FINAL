@@ -1,9 +1,11 @@
 project:
   type: website
   output-dir: docs
+  post-render:
+    - python3 -m analysis.run_saved_data_pipeline
 
 website:
-  title: "Volatility Breakout Final Project"
+  title: "Volatility Breakout Strategy"
   navbar:
     left:
       - href: index.qmd
@@ -13,8 +15,9 @@ website:
       - results.qmd
       - trade-log.qmd
       - monitoring.qmd
+      - about.qmd
   page-footer:
-    left: "FINTECH 533 • Volatility Breakout Final Project"
+    left: "FINTECH 533 • Volatility Breakout Strategy"
 
 format:
   html:

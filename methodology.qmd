@@ -6,11 +6,11 @@ jupyter: python3
 ```{python}
 from analysis.breakout_strategy import run_analysis
 from analysis.filtered_backtest import run_filtered_backtest
-from IPython.display import display
+from analysis.reporting import interactive_table
 
 analysis = run_analysis()
 ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
-display(analysis["parameter_table"])
+interactive_table(analysis["parameter_table"], "methodology_parameters", "Final Strategy Parameters")
 ```
 
 ## Strategy Idea
@@ -47,7 +47,7 @@ This is still a channel breakout strategy. The trend and strength filters do not
 ## Why These Parameters
 
 - `20-day` channel:
-  this produced more usable trade count than a very long channel while still keeping the breakout logic interpretable.
+  this produced a stronger final `QQQ` showcase backtest than the highest-ranked universe sweep row, while still keeping the breakout logic interpretable and trade frequency usable.
 - `20-day` trend filter:
   a shorter trend filter matched the faster breakout horizon better than the earlier `50-day` version.
 - `0.20 ATR` breakout threshold:
@@ -60,6 +60,12 @@ This is still a channel breakout strategy. The trend and strength filters do not
   if the breakout has not worked within roughly three trading weeks, the signal has likely decayed.
 - `4-day` breakout-failure delay:
   immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.
+
+The file `parameter_sweep_top100.csv` records the broader universe sweep. Its highest-ranked row favored a `30-day` channel with a wider `3.0 ATR` stop and `2.5 ATR` trail on an average cross-asset score. The final code keeps the `20-day`, `2.0 ATR`, `3.0 ATR` setup because the final project is a showcase `QQQ` strategy and that configuration produced the better selected-asset backtest on the current saved sample.
+
+```{python}
+interactive_table(analysis["parameter_comparison"], "methodology_parameter_comparison", "Final Params vs Top Sweep Row")
+```
 
 ## Exit Orders
 
@@ -81,13 +87,10 @@ These fates are coded directly in the backtest and also appear in the trade blot
 The project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why `QQQ` is the current showcase asset.
 
 ```{python}
-display(analysis["asset_screen_display"])
+interactive_table(analysis["asset_screen_display"], "methodology_asset_screen", "ETF Universe Screen")
 ```
 
 ## Supervised Learning Extension
-
-The ML layer follows Jake's `label then predict` framework.
-
 ### Label Construction
 
 For each breakout event:
@@ -120,8 +123,12 @@ These were chosen because they balance:
 
 ### Model Usage
 
-The final ML overlay does not delete trades outright. Instead, it scales position size up or down on `QQQ` based on the model's estimated breakout quality. This kept the strategy interpretable while producing an out-of-sample improvement in both Sharpe ratio and total return, at the cost of a slightly worse max drawdown.
+Train the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on `QQQ` based on the model's estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.
 
 ```{python}
-display(ml_overlay["comparison"])
+from analysis.filtered_backtest import compare_selected_asset_ml_overlays
+
+interactive_table(compare_selected_asset_ml_overlays(), "methodology_overlay_comparison", "Hard Filter vs Position Scaling")
 ```
+
+This strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains.

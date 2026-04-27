@@ -5,21 +5,22 @@ jupyter: python3
 
 ```{python}
 from analysis.breakout_strategy import run_analysis
-from analysis.filtered_backtest import run_filtered_backtest
-from IPython.display import display
+from analysis.filtered_backtest import compare_selected_asset_ml_overlays, run_filtered_backtest
+from analysis.reporting import interactive_table
 
 analysis = run_analysis()
 ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
+overlay_comparison = compare_selected_asset_ml_overlays()
 
-display(analysis["metrics_display"])
-display(ml_overlay["comparison"])
+interactive_table(analysis["metrics_display"], "results_metrics", "Baseline Metrics")
+interactive_table(overlay_comparison, "results_overlay_comparison", "Baseline vs ML Overlays")
 ```
 
 ## Executive Summary
 
 This project produced a two-layer final result. The core strategy is a tuned `QQQ` channel breakout system with explicit volatility and risk-control rules: a `20-day` breakout entry, a `20-day` trend filter, a `0.20 ATR` breakout-strength filter, a `2.0 ATR` stop-loss, a `3.0 ATR` trailing stop, a `15-day` time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of `1.34`, a total return of `2.91%`, a win rate of `81.8%`, and a max drawdown of `-0.81%`.
 
-On top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a `QQQ`-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including `IV/HV spread`, `IV/HV ratio`, and `IV trend`, to scale position size up or down. Under the final `aggr4` scaling rule, the overlay improved the out-of-sample Sharpe ratio to `1.38` and total return to `3.40%`, while slightly increasing max drawdown to `-0.94%`. Overall, the evidence suggests that the ML overlay is a small but real enhancement to an already viable breakout baseline, rather than a wholesale replacement for the strategy.
+On top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a `QQQ`-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including `IV/HV spread`, `IV/HV ratio`, and `IV trend`. The report compares the professor's hard-filter idea against the final position-scaling overlay, so the ML contribution is evaluated relative to a clear baseline rather than asserted in isolation.
 
 ## Baseline Summary
 
@@ -52,79 +53,125 @@ The final ML extension is not a fully separate strategy. It is a position-scalin
 
 The resulting out-of-sample comparison shows a clear but still incremental improvement in both total return and Sharpe ratio relative to the baseline. The improvement comes from mild position scaling rather than a wholesale replacement of the breakout rule.
 
+```{python}
+interactive_table(overlay_comparison, "results_overlay_comparison_detail", "Out-of-Sample Overlay Comparison")
+```
+
 ## Price Chart With Trade Markers
 
 ```{python}
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 blotter = analysis["blotter"]
 equity = analysis["equity_curve"]
 
-fig, ax = plt.subplots(figsize=(11, 5))
-ax.plot(equity["date"], equity["close"], color="#173f5f", linewidth=1.8, label="Close")
+fig = go.Figure()
+fig.add_trace(
+    go.Scatter(
+        x=equity["date"],
+        y=equity["close"],
+        mode="lines",
+        name="QQQ close",
+        line=dict(color="#173f5f", width=2),
+        hovertemplate="%{x|%Y-%m-%d}<br>Close: $%{y:.2f}<extra></extra>",
+    )
+)
 
 if not blotter.empty:
-    ax.scatter(
-        blotter["entry_timestamp"],
-        blotter["entry_price"],
-        marker="^",
-        color="#1b9e77",
-        s=80,
-        label="Entry",
-        zorder=3,
+    fig.add_trace(
+        go.Scatter(
+            x=blotter["entry_timestamp"],
+            y=blotter["entry_price"],
+            mode="markers",
+            name="Entry",
+            marker=dict(symbol="triangle-up", color="#1b9e77", size=11),
+            customdata=blotter[["qty", "breakout_strength", "holding_periods"]],
+            hovertemplate=(
+                "%{x|%Y-%m-%d}<br>Entry: $%{y:.2f}"
+                "<br>Qty: %{customdata[0]:.1f}"
+                "<br>Breakout strength: %{customdata[1]:.2f}"
+                "<br>Holding days: %{customdata[2]}<extra></extra>"
+            ),
+        )
     )
-    ax.scatter(
-        blotter["exit_timestamp"],
-        blotter["exit_price"],
-        marker="v",
-        color="#d95f02",
-        s=80,
-        label="Exit",
-        zorder=3,
+    fig.add_trace(
+        go.Scatter(
+            x=blotter["exit_timestamp"],
+            y=blotter["exit_price"],
+            mode="markers",
+            name="Exit",
+            marker=dict(symbol="triangle-down", color="#d95f02", size=11),
+            customdata=blotter[["exit_reason", "trade_return", "pnl"]],
+            hovertemplate=(
+                "%{x|%Y-%m-%d}<br>Exit: $%{y:.2f}"
+                "<br>Reason: %{customdata[0]}"
+                "<br>Trade return: %{customdata[1]:.2%}"
+                "<br>PnL: $%{customdata[2]:,.0f}<extra></extra>"
+            ),
+        )
     )
 
-ax.set_title("QQQ Price With Baseline Breakout Entries And Exits")
-ax.set_ylabel("Price")
-ax.legend(frameon=False)
-ax.grid(alpha=0.2)
-plt.tight_layout()
-plt.show()
+fig.update_layout(
+    title="QQQ Price With Baseline Breakout Entries And Exits",
+    height=520,
+    hovermode="x unified",
+    yaxis_title="Price",
+    legend_title_text="",
+)
+fig.show()
 ```
 
 ## Equity Curve
 
 ```{python}
-fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(equity["date"], equity["equity"], linewidth=2.2, color="#0f4c5c")
-ax.set_title("Baseline Strategy Equity Curve")
-ax.set_ylabel("Portfolio Value ($)")
-ax.grid(alpha=0.25)
-plt.tight_layout()
-plt.show()
+fig = go.Figure()
+fig.add_trace(
+    go.Scatter(
+        x=equity["date"],
+        y=equity["equity"],
+        mode="lines",
+        name="Strategy equity",
+        line=dict(color="#0f4c5c", width=2.4),
+        hovertemplate="%{x|%Y-%m-%d}<br>Equity: $%{y:,.0f}<extra></extra>",
+    )
+)
+fig.update_layout(
+    title="Baseline Strategy Equity Curve",
+    height=460,
+    yaxis_title="Portfolio Value ($)",
+)
+fig.show()
 ```
 
 ## Drawdown
 
 ```{python}
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.fill_between(
-    equity["date"],
-    equity["drawdown"],
-    0,
-    color="#9a031e",
-    alpha=0.28,
+fig = go.Figure()
+fig.add_trace(
+    go.Scatter(
+        x=equity["date"],
+        y=equity["drawdown"],
+        mode="lines",
+        name="Drawdown",
+        fill="tozeroy",
+        line=dict(color="#9a031e", width=1.8),
+        hovertemplate="%{x|%Y-%m-%d}<br>Drawdown: %{y:.2%}<extra></extra>",
+    )
 )
-ax.set_title("Baseline Strategy Drawdown")
-ax.set_ylabel("Drawdown")
-ax.grid(alpha=0.2)
-plt.tight_layout()
-plt.show()
+fig.update_layout(
+    title="Baseline Strategy Drawdown",
+    height=400,
+    yaxis_title="Drawdown",
+    yaxis_tickformat=".0%",
+)
+fig.show()
 ```
 
 ## Trade Outcome Analysis
 
 ```{python}
-display(analysis["outcome_summary"])
+interactive_table(analysis["outcome_rate_summary"], "results_outcome_rates", "Outcome Rates")
+interactive_table(analysis["trade_quality_summary"], "results_payoff_shape", "Payoff Shape")
 ```
 
 ## What The Final Result Means
@@ -135,3 +182,5 @@ The project now has two meaningful layers:
 2. A compact implied-volatility-aware ML overlay that improves out-of-sample Sharpe and total return on the showcase asset, while accepting a slightly deeper drawdown.
 
 The improvement is not huge, and that is important to state honestly. This is not a magical black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline.
+
+The strategy should also be read as whale hunting. It is not trying to win every breakout. It is trying to keep failed breakouts small, exit stale trades, and preserve enough exposure for the subset of breakouts that turn into real volatility expansions.

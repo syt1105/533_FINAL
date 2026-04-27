@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Trade Log – Volatility Breakout Final Project</title>
+<title>Trade Log – Volatility Breakout Strategy</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -77,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
 window.PlotlyConfig = {MathJaxConfig: 'local'};
 if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
 </script>
-<script type="module">import "https://cdn.plot.ly/plotly-3.1.0.min"</script>
+<script type="module">import "https://cdn.plot.ly/plotly-3.3.1.min"</script>
 
 
 
@@ -92,7 +92,7 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Volatility Breakout Final Project</span>
+    <span class="navbar-title">Volatility Breakout Strategy</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -125,6 +125,10 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
     <a class="nav-link" href="./monitoring.html"> 
 <span class="menu-text">Monitoring</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -145,6 +149,7 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
   <li><a href="#interactive-trade-return-view" id="toc-interactive-trade-return-view" class="nav-link" data-scroll-target="#interactive-trade-return-view">Interactive Trade Return View</a></li>
   <li><a href="#best-and-worst-trades" id="toc-best-and-worst-trades" class="nav-link" data-scroll-target="#best-and-worst-trades">Best And Worst Trades</a></li>
   <li><a href="#ledger-preview" id="toc-ledger-preview" class="nav-link" data-scroll-target="#ledger-preview">Ledger Preview</a></li>
+  <li><a href="#outcome-rates-and-payoff-shape" id="toc-outcome-rates-and-payoff-shape" class="nav-link" data-scroll-target="#outcome-rates-and-payoff-shape">Outcome Rates And Payoff Shape</a></li>
   <li><a href="#ml-overlay-comparison" id="toc-ml-overlay-comparison" class="nav-link" data-scroll-target="#ml-overlay-comparison">ML Overlay Comparison</a></li>
   <li><a href="#why-the-trade-log-matters" id="toc-why-the-trade-log-matters" class="nav-link" data-scroll-target="#why-the-trade-log-matters">Why The Trade Log Matters</a></li>
   </ul>
@@ -172,15 +177,16 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </header>
 
 
-<div id="9913d0db" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<div id="bdbf6c93" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="1">
+<h4 class="anchored">Baseline Trade Blotter</h4>
+<div class="interactive-table-wrap" id="trade_log_blotter_wrap">
+  <input class="interactive-table-search" id="trade_log_blotter_search" type="search" placeholder="Search table" aria-label="Search table">
+  <div class="interactive-table-scroll">
+    
+<table id="trade_log_blotter" class="interactive-table caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">entry_timestamp</th>
 <th data-quarto-table-cell-role="th">exit_timestamp</th>
 <th data-quarto-table-cell-role="th">direction</th>
@@ -194,590 +200,580 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>2021-06-11</td>
-<td>2021-06-16</td>
+<td>2021-06-11 00:00:00</td>
+<td>2021-06-16 00:00:00</td>
 <td>LONG</td>
-<td>137.0</td>
-<td>340.36</td>
-<td>341.010000</td>
+<td>137.0000</td>
+<td>340.3600</td>
+<td>341.0100</td>
 <td>breakout_failure</td>
-<td>-0.000092</td>
-<td>-4.297690</td>
+<td>-0.0001</td>
+<td>-4.2977</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>2021-06-18</td>
-<td>2021-06-23</td>
+<td>2021-06-18 00:00:00</td>
+<td>2021-06-23 00:00:00</td>
 <td>LONG</td>
-<td>127.0</td>
-<td>343.63</td>
-<td>347.740000</td>
+<td>127.0000</td>
+<td>343.6300</td>
+<td>347.7400</td>
 <td>breakout_failure</td>
-<td>0.009949</td>
-<td>434.166010</td>
+<td>0.0099</td>
+<td>434.1660</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>2021-06-25</td>
-<td>2021-06-30</td>
+<td>2021-06-25 00:00:00</td>
+<td>2021-06-30 00:00:00</td>
 <td>LONG</td>
-<td>135.0</td>
-<td>350.47</td>
-<td>354.430000</td>
+<td>135.0000</td>
+<td>350.4700</td>
+<td>354.4300</td>
 <td>breakout_failure</td>
-<td>0.009288</td>
-<td>439.438500</td>
+<td>0.0093</td>
+<td>439.4385</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>2021-07-06</td>
-<td>2021-07-09</td>
+<td>2021-07-06 00:00:00</td>
+<td>2021-07-09 00:00:00</td>
 <td>LONG</td>
-<td>139.0</td>
-<td>359.27</td>
-<td>361.010000</td>
+<td>139.0000</td>
+<td>359.2700</td>
+<td>361.0100</td>
 <td>breakout_failure</td>
-<td>0.002838</td>
-<td>141.741080</td>
+<td>0.0028</td>
+<td>141.7411</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>2021-07-26</td>
-<td>2021-07-29</td>
+<td>2021-07-26 00:00:00</td>
+<td>2021-07-29 00:00:00</td>
 <td>LONG</td>
-<td>118.0</td>
-<td>367.49</td>
-<td>366.480000</td>
+<td>118.0000</td>
+<td>367.4900</td>
+<td>366.4800</td>
 <td>breakout_failure</td>
-<td>-0.004746</td>
-<td>-205.788460</td>
+<td>-0.0047</td>
+<td>-205.7885</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">5</th>
-<td>2021-08-24</td>
-<td>2021-08-31</td>
+<td>2021-08-24 00:00:00</td>
+<td>2021-08-31 00:00:00</td>
 <td>LONG</td>
-<td>128.0</td>
-<td>373.83</td>
-<td>379.950000</td>
+<td>128.0000</td>
+<td>373.8300</td>
+<td>379.9500</td>
 <td>breakout_failure</td>
-<td>0.014355</td>
-<td>686.876160</td>
+<td>0.0144</td>
+<td>686.8762</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">6</th>
-<td>2021-10-20</td>
-<td>2021-10-27</td>
+<td>2021-10-20 00:00:00</td>
+<td>2021-10-27 00:00:00</td>
 <td>LONG</td>
-<td>93.0</td>
-<td>375.94</td>
-<td>380.000000</td>
+<td>93.0000</td>
+<td>375.9400</td>
+<td>380.0000</td>
 <td>breakout_failure</td>
-<td>0.008789</td>
-<td>307.277580</td>
+<td>0.0088</td>
+<td>307.2776</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">7</th>
-<td>2021-10-29</td>
-<td>2021-11-05</td>
+<td>2021-10-29 00:00:00</td>
+<td>2021-11-05 00:00:00</td>
 <td>LONG</td>
-<td>117.0</td>
-<td>381.06</td>
-<td>398.600000</td>
+<td>117.0000</td>
+<td>381.0600</td>
+<td>398.6000</td>
 <td>breakout_failure</td>
-<td>0.043983</td>
-<td>1960.959780</td>
+<td>0.0440</td>
+<td>1960.9598</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">8</th>
-<td>2021-11-22</td>
-<td>2021-11-23</td>
+<td>2021-11-22 00:00:00</td>
+<td>2021-11-23 00:00:00</td>
 <td>LONG</td>
-<td>117.0</td>
-<td>405.57</td>
-<td>396.755714</td>
+<td>117.0000</td>
+<td>405.5700</td>
+<td>396.7557</td>
 <td>stop_loss</td>
-<td>-0.023711</td>
-<td>-1125.143537</td>
+<td>-0.0237</td>
+<td>-1125.1435</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">9</th>
-<td>2021-12-28</td>
-<td>2021-12-31</td>
+<td>2021-12-28 00:00:00</td>
+<td>2021-12-31 00:00:00</td>
 <td>LONG</td>
-<td>65.0</td>
-<td>404.36</td>
-<td>397.850000</td>
+<td>65.0000</td>
+<td>404.3600</td>
+<td>397.8500</td>
 <td>breakout_failure</td>
-<td>-0.018083</td>
-<td>-475.293650</td>
+<td>-0.0181</td>
+<td>-475.2936</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">10</th>
-<td>2022-03-23</td>
-<td>2022-03-30</td>
+<td>2022-03-23 00:00:00</td>
+<td>2022-03-30 00:00:00</td>
 <td>LONG</td>
-<td>50.0</td>
-<td>353.99</td>
-<td>367.090000</td>
+<td>50.0000</td>
+<td>353.9900</td>
+<td>367.0900</td>
 <td>breakout_failure</td>
-<td>0.034970</td>
-<td>618.946000</td>
+<td>0.0350</td>
+<td>618.9460</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">11</th>
-<td>2022-07-20</td>
-<td>2022-07-25</td>
+<td>2022-07-20 00:00:00</td>
+<td>2022-07-25 00:00:00</td>
 <td>LONG</td>
-<td>72.0</td>
-<td>298.73</td>
-<td>300.270000</td>
+<td>72.0000</td>
+<td>298.7300</td>
+<td>300.2700</td>
 <td>breakout_failure</td>
-<td>0.003150</td>
-<td>67.752000</td>
+<td>0.0032</td>
+<td>67.7520</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">12</th>
-<td>2022-08-01</td>
-<td>2022-08-05</td>
+<td>2022-08-01 00:00:00</td>
+<td>2022-08-05 00:00:00</td>
 <td>LONG</td>
-<td>67.0</td>
-<td>313.66</td>
-<td>321.750000</td>
+<td>67.0000</td>
+<td>313.6600</td>
+<td>321.7500</td>
 <td>breakout_failure</td>
-<td>0.023766</td>
-<td>499.457530</td>
+<td>0.0238</td>
+<td>499.4575</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">13</th>
-<td>2022-08-16</td>
-<td>2022-08-19</td>
+<td>2022-08-16 00:00:00</td>
+<td>2022-08-19 00:00:00</td>
 <td>LONG</td>
-<td>72.0</td>
-<td>332.06</td>
-<td>322.860000</td>
+<td>72.0000</td>
+<td>332.0600</td>
+<td>322.8600</td>
 <td>breakout_failure</td>
-<td>-0.029678</td>
-<td>-709.554240</td>
+<td>-0.0297</td>
+<td>-709.5542</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">14</th>
-<td>2022-11-14</td>
-<td>2022-11-17</td>
+<td>2022-11-14 00:00:00</td>
+<td>2022-11-17 00:00:00</td>
 <td>LONG</td>
-<td>63.0</td>
-<td>285.86</td>
-<td>284.810000</td>
+<td>63.0000</td>
+<td>285.8600</td>
+<td>284.8100</td>
 <td>breakout_failure</td>
-<td>-0.005669</td>
-<td>-102.102210</td>
+<td>-0.0057</td>
+<td>-102.1022</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">15</th>
-<td>2023-01-24</td>
-<td>2023-01-30</td>
+<td>2023-01-24 00:00:00</td>
+<td>2023-01-30 00:00:00</td>
 <td>LONG</td>
-<td>86.0</td>
-<td>287.31</td>
-<td>290.270000</td>
+<td>86.0000</td>
+<td>287.3100</td>
+<td>290.2700</td>
 <td>breakout_failure</td>
-<td>0.008292</td>
-<td>204.888120</td>
+<td>0.0083</td>
+<td>204.8881</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">16</th>
-<td>2023-02-02</td>
-<td>2023-02-07</td>
+<td>2023-02-02 00:00:00</td>
+<td>2023-02-07 00:00:00</td>
 <td>LONG</td>
-<td>84.0</td>
-<td>307.54</td>
-<td>309.880000</td>
+<td>84.0000</td>
+<td>307.5400</td>
+<td>309.8800</td>
 <td>breakout_failure</td>
-<td>0.005601</td>
-<td>144.696720</td>
+<td>0.0056</td>
+<td>144.6967</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">17</th>
-<td>2023-04-03</td>
-<td>2023-04-06</td>
+<td>2023-04-03 00:00:00</td>
+<td>2023-04-06 00:00:00</td>
 <td>LONG</td>
-<td>86.0</td>
-<td>318.77</td>
-<td>318.050000</td>
+<td>86.0000</td>
+<td>318.7700</td>
+<td>318.0500</td>
 <td>breakout_failure</td>
-<td>-0.004256</td>
-<td>-116.686520</td>
+<td>-0.0043</td>
+<td>-116.6865</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">18</th>
-<td>2023-05-11</td>
-<td>2023-05-16</td>
+<td>2023-05-11 00:00:00</td>
+<td>2023-05-16 00:00:00</td>
 <td>LONG</td>
-<td>112.0</td>
-<td>325.70</td>
-<td>327.160000</td>
+<td>112.0000</td>
+<td>325.7000</td>
+<td>327.1600</td>
 <td>breakout_failure</td>
-<td>0.002478</td>
-<td>90.399680</td>
+<td>0.0025</td>
+<td>90.3997</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">19</th>
-<td>2023-05-18</td>
-<td>2023-05-23</td>
+<td>2023-05-18 00:00:00</td>
+<td>2023-05-23 00:00:00</td>
 <td>LONG</td>
-<td>133.0</td>
-<td>331.52</td>
-<td>333.360000</td>
+<td>133.0000</td>
+<td>331.5200</td>
+<td>333.3600</td>
 <td>breakout_failure</td>
-<td>0.003545</td>
-<td>156.290960</td>
+<td>0.0035</td>
+<td>156.2910</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">20</th>
-<td>2023-05-26</td>
-<td>2023-06-01</td>
+<td>2023-05-26 00:00:00</td>
+<td>2023-06-01 00:00:00</td>
 <td>LONG</td>
-<td>127.0</td>
-<td>340.76</td>
-<td>352.010000</td>
+<td>127.0000</td>
+<td>340.7600</td>
+<td>352.0100</td>
 <td>breakout_failure</td>
-<td>0.030981</td>
-<td>1340.768210</td>
+<td>0.0310</td>
+<td>1340.7682</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">21</th>
-<td>2023-06-13</td>
-<td>2023-06-16</td>
+<td>2023-06-13 00:00:00</td>
+<td>2023-06-16 00:00:00</td>
 <td>LONG</td>
-<td>93.0</td>
-<td>363.31</td>
-<td>367.930000</td>
+<td>93.0000</td>
+<td>363.3100</td>
+<td>367.9300</td>
 <td>breakout_failure</td>
-<td>0.010704</td>
-<td>361.654680</td>
+<td>0.0107</td>
+<td>361.6547</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">22</th>
-<td>2023-07-14</td>
-<td>2023-07-19</td>
+<td>2023-07-14 00:00:00</td>
+<td>2023-07-19 00:00:00</td>
 <td>LONG</td>
-<td>104.0</td>
-<td>379.59</td>
-<td>385.650000</td>
+<td>104.0000</td>
+<td>379.5900</td>
+<td>385.6500</td>
 <td>breakout_failure</td>
-<td>0.013949</td>
-<td>550.655040</td>
+<td>0.0139</td>
+<td>550.6550</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">23</th>
-<td>2023-11-13</td>
-<td>2023-11-16</td>
+<td>2023-11-13 00:00:00</td>
+<td>2023-11-16 00:00:00</td>
 <td>LONG</td>
-<td>92.0</td>
-<td>376.79</td>
-<td>385.950000</td>
+<td>92.0000</td>
+<td>376.7900</td>
+<td>385.9500</td>
 <td>breakout_failure</td>
-<td>0.022286</td>
-<td>772.547920</td>
+<td>0.0223</td>
+<td>772.5479</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">24</th>
-<td>2023-11-21</td>
-<td>2023-11-27</td>
+<td>2023-11-21 00:00:00</td>
+<td>2023-11-27 00:00:00</td>
 <td>LONG</td>
-<td>106.0</td>
-<td>389.01</td>
-<td>389.170000</td>
+<td>106.0000</td>
+<td>389.0100</td>
+<td>389.1700</td>
 <td>breakout_failure</td>
-<td>-0.001589</td>
-<td>-65.527080</td>
+<td>-0.0016</td>
+<td>-65.5271</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">25</th>
-<td>2023-12-12</td>
-<td>2023-12-15</td>
+<td>2023-12-12 00:00:00</td>
+<td>2023-12-15 00:00:00</td>
 <td>LONG</td>
-<td>120.0</td>
-<td>395.56</td>
-<td>405.340000</td>
+<td>120.0000</td>
+<td>395.5600</td>
+<td>405.3400</td>
 <td>breakout_failure</td>
-<td>0.022700</td>
-<td>1077.492000</td>
+<td>0.0227</td>
+<td>1077.4920</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">26</th>
-<td>2023-12-20</td>
-<td>2023-12-27</td>
+<td>2023-12-20 00:00:00</td>
+<td>2023-12-27 00:00:00</td>
 <td>LONG</td>
-<td>113.0</td>
-<td>408.35</td>
-<td>411.500000</td>
+<td>113.0000</td>
+<td>408.3500</td>
+<td>411.5000</td>
 <td>breakout_failure</td>
-<td>0.005706</td>
-<td>263.306950</td>
+<td>0.0057</td>
+<td>263.3069</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">27</th>
-<td>2024-01-22</td>
-<td>2024-01-25</td>
+<td>2024-01-22 00:00:00</td>
+<td>2024-01-25 00:00:00</td>
 <td>LONG</td>
-<td>94.0</td>
-<td>423.41</td>
-<td>426.350000</td>
+<td>94.0000</td>
+<td>423.4100</td>
+<td>426.3500</td>
 <td>breakout_failure</td>
-<td>0.004937</td>
-<td>196.482560</td>
+<td>0.0049</td>
+<td>196.4826</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">28</th>
-<td>2024-02-08</td>
-<td>2024-02-13</td>
+<td>2024-02-08 00:00:00</td>
+<td>2024-02-13 00:00:00</td>
 <td>LONG</td>
-<td>99.0</td>
-<td>432.11</td>
-<td>428.550000</td>
+<td>99.0000</td>
+<td>432.1100</td>
+<td>428.5500</td>
 <td>breakout_failure</td>
-<td>-0.010230</td>
-<td>-437.645340</td>
+<td>-0.0102</td>
+<td>-437.6453</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">29</th>
-<td>2024-03-04</td>
-<td>2024-03-05</td>
+<td>2024-03-04 00:00:00</td>
+<td>2024-03-05 00:00:00</td>
 <td>LONG</td>
-<td>92.0</td>
-<td>445.61</td>
-<td>434.091429</td>
+<td>92.0000</td>
+<td>445.6100</td>
+<td>434.0914</td>
 <td>stop_loss</td>
-<td>-0.027823</td>
-<td>-1140.641103</td>
+<td>-0.0278</td>
+<td>-1140.6411</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">30</th>
-<td>2024-05-15</td>
-<td>2024-05-22</td>
+<td>2024-05-15 00:00:00</td>
+<td>2024-05-22 00:00:00</td>
 <td>LONG</td>
-<td>93.0</td>
-<td>448.43</td>
-<td>455.710000</td>
+<td>93.0000</td>
+<td>448.4300</td>
+<td>455.7100</td>
 <td>breakout_failure</td>
-<td>0.014218</td>
-<td>592.954980</td>
+<td>0.0142</td>
+<td>592.9550</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">31</th>
-<td>2024-06-06</td>
-<td>2024-06-18</td>
+<td>2024-06-06 00:00:00</td>
+<td>2024-06-18 00:00:00</td>
 <td>LONG</td>
-<td>98.0</td>
-<td>464.22</td>
-<td>485.210000</td>
+<td>98.0000</td>
+<td>464.2200</td>
+<td>485.2100</td>
 <td>breakout_failure</td>
-<td>0.043170</td>
-<td>1963.975860</td>
+<td>0.0432</td>
+<td>1963.9759</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">32</th>
-<td>2024-07-05</td>
-<td>2024-07-11</td>
+<td>2024-07-05 00:00:00</td>
+<td>2024-07-11 00:00:00</td>
 <td>LONG</td>
-<td>101.0</td>
-<td>491.90</td>
-<td>491.930000</td>
+<td>101.0000</td>
+<td>491.9000</td>
+<td>491.9300</td>
 <td>breakout_failure</td>
-<td>-0.001939</td>
-<td>-96.336830</td>
+<td>-0.0019</td>
+<td>-96.3368</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">33</th>
-<td>2024-09-27</td>
-<td>2024-10-02</td>
+<td>2024-09-27 00:00:00</td>
+<td>2024-10-02 00:00:00</td>
 <td>LONG</td>
-<td>73.0</td>
-<td>490.50</td>
-<td>481.950000</td>
+<td>73.0000</td>
+<td>490.5000</td>
+<td>481.9500</td>
 <td>breakout_failure</td>
-<td>-0.019414</td>
-<td>-695.138850</td>
+<td>-0.0194</td>
+<td>-695.1389</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">34</th>
-<td>2024-10-15</td>
-<td>2024-10-18</td>
+<td>2024-10-15 00:00:00</td>
+<td>2024-10-18 00:00:00</td>
 <td>LONG</td>
-<td>88.0</td>
-<td>497.83</td>
-<td>494.470000</td>
+<td>88.0000</td>
+<td>497.8300</td>
+<td>494.4700</td>
 <td>breakout_failure</td>
-<td>-0.008743</td>
-<td>-383.002400</td>
+<td>-0.0087</td>
+<td>-383.0024</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">35</th>
-<td>2024-11-07</td>
-<td>2024-11-12</td>
+<td>2024-11-07 00:00:00</td>
+<td>2024-11-12 00:00:00</td>
 <td>LONG</td>
-<td>75.0</td>
-<td>508.40</td>
-<td>512.910000</td>
+<td>75.0000</td>
+<td>508.4000</td>
+<td>512.9100</td>
 <td>breakout_failure</td>
-<td>0.006862</td>
-<td>261.651750</td>
+<td>0.0069</td>
+<td>261.6517</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">36</th>
-<td>2024-12-05</td>
-<td>2024-12-10</td>
+<td>2024-12-05 00:00:00</td>
+<td>2024-12-10 00:00:00</td>
 <td>LONG</td>
-<td>81.0</td>
-<td>523.31</td>
-<td>520.600000</td>
+<td>81.0000</td>
+<td>523.3100</td>
+<td>520.6000</td>
 <td>breakout_failure</td>
-<td>-0.007173</td>
-<td>-304.066710</td>
+<td>-0.0072</td>
+<td>-304.0667</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">37</th>
-<td>2024-12-12</td>
-<td>2024-12-17</td>
+<td>2024-12-12 00:00:00</td>
+<td>2024-12-17 00:00:00</td>
 <td>LONG</td>
-<td>91.0</td>
-<td>527.68</td>
-<td>535.800000</td>
+<td>91.0000</td>
+<td>527.6800</td>
+<td>535.8000</td>
 <td>breakout_failure</td>
-<td>0.013373</td>
-<td>642.143320</td>
+<td>0.0134</td>
+<td>642.1433</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">38</th>
-<td>2025-02-14</td>
-<td>2025-02-20</td>
+<td>2025-02-14 00:00:00</td>
+<td>2025-02-20 00:00:00</td>
 <td>LONG</td>
-<td>62.0</td>
-<td>536.08</td>
-<td>537.230000</td>
+<td>62.0000</td>
+<td>536.0800</td>
+<td>537.2300</td>
 <td>breakout_failure</td>
-<td>0.000143</td>
-<td>4.754780</td>
+<td>0.0001</td>
+<td>4.7548</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">39</th>
-<td>2025-05-13</td>
-<td>2025-05-16</td>
+<td>2025-05-13 00:00:00</td>
+<td>2025-05-16 00:00:00</td>
 <td>LONG</td>
-<td>51.0</td>
-<td>509.19</td>
-<td>521.510000</td>
+<td>51.0000</td>
+<td>509.1900</td>
+<td>521.5100</td>
 <td>breakout_failure</td>
-<td>0.022171</td>
-<td>575.754300</td>
+<td>0.0222</td>
+<td>575.7543</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">40</th>
-<td>2025-06-25</td>
-<td>2025-07-01</td>
+<td>2025-06-25 00:00:00</td>
+<td>2025-07-01 00:00:00</td>
 <td>LONG</td>
-<td>79.0</td>
-<td>542.06</td>
-<td>546.990000</td>
+<td>79.0000</td>
+<td>542.0600</td>
+<td>546.9900</td>
 <td>breakout_failure</td>
-<td>0.007086</td>
-<td>303.435050</td>
+<td>0.0071</td>
+<td>303.4351</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">41</th>
-<td>2025-07-07</td>
-<td>2025-07-10</td>
+<td>2025-07-07 00:00:00</td>
+<td>2025-07-10 00:00:00</td>
 <td>LONG</td>
-<td>82.0</td>
-<td>553.52</td>
-<td>555.450000</td>
+<td>82.0000</td>
+<td>553.5200</td>
+<td>555.4500</td>
 <td>breakout_failure</td>
-<td>0.001483</td>
-<td>67.324460</td>
+<td>0.0015</td>
+<td>67.3245</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">42</th>
-<td>2025-08-13</td>
-<td>2025-08-18</td>
+<td>2025-08-13 00:00:00</td>
+<td>2025-08-18 00:00:00</td>
 <td>LONG</td>
-<td>79.0</td>
-<td>582.76</td>
-<td>577.110000</td>
+<td>79.0000</td>
+<td>582.7600</td>
+<td>577.1100</td>
 <td>breakout_failure</td>
-<td>-0.011686</td>
-<td>-537.979730</td>
+<td>-0.0117</td>
+<td>-537.9797</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">43</th>
-<td>2025-09-15</td>
-<td>2025-09-23</td>
+<td>2025-09-15 00:00:00</td>
+<td>2025-09-23 00:00:00</td>
 <td>LONG</td>
-<td>93.0</td>
-<td>588.44</td>
-<td>598.200000</td>
+<td>93.0000</td>
+<td>588.4400</td>
+<td>598.2000</td>
 <td>breakout_failure</td>
-<td>0.014570</td>
-<td>797.322480</td>
+<td>0.0146</td>
+<td>797.3225</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">44</th>
-<td>2025-10-03</td>
-<td>2025-10-09</td>
+<td>2025-10-03 00:00:00</td>
+<td>2025-10-09 00:00:00</td>
 <td>LONG</td>
-<td>95.0</td>
-<td>606.51</td>
-<td>610.700000</td>
+<td>95.0000</td>
+<td>606.5100</td>
+<td>610.7000</td>
 <td>breakout_failure</td>
-<td>0.004901</td>
-<td>282.415050</td>
+<td>0.0049</td>
+<td>282.4151</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">45</th>
-<td>2025-10-27</td>
-<td>2025-10-30</td>
+<td>2025-10-27 00:00:00</td>
+<td>2025-10-30 00:00:00</td>
 <td>LONG</td>
-<td>54.0</td>
-<td>624.51</td>
-<td>626.050000</td>
+<td>54.0000</td>
+<td>624.5100</td>
+<td>626.0500</td>
 <td>breakout_failure</td>
-<td>0.000463</td>
-<td>15.629760</td>
+<td>0.0005</td>
+<td>15.6298</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">46</th>
-<td>2026-04-14</td>
-<td>2026-04-20</td>
+<td>2026-04-14 00:00:00</td>
+<td>2026-04-20 00:00:00</td>
 <td>LONG</td>
-<td>46.0</td>
-<td>620.23</td>
-<td>646.790000</td>
+<td>46.0000</td>
+<td>620.2300</td>
+<td>646.7900</td>
 <td>breakout_failure</td>
-<td>0.040780</td>
-<td>1163.477080</td>
+<td>0.0408</td>
+<td>1163.4771</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">47</th>
-<td>2026-04-23</td>
-<td>2026-04-23</td>
+<td>2026-04-23 00:00:00</td>
+<td>2026-04-24 00:00:00</td>
 <td>LONG</td>
-<td>53.0</td>
-<td>653.49</td>
-<td>651.420000</td>
+<td>53.0000</td>
+<td>653.4900</td>
+<td>663.8800</td>
 <td>timeout</td>
-<td>-0.005164</td>
-<td>-178.870230</td>
+<td>0.0139</td>
+<td>480.8494</td>
 </tr>
 </tbody>
 </table>
 
+  </div>
 </div>
+<script>
+(function() {
+  const table = document.getElementById("trade_log_blotter");
+  const search = document.getElementById("trade_log_blotter_search");
+  if (!table || !search) return;
+
+  search.addEventListener("input", function() {
+    const query = search.value.toLowerCase();
+    Array.from(table.tBodies[0].rows).forEach(function(row) {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
+    header.style.cursor = "pointer";
+    header.title = "Click to sort";
+    header.addEventListener("click", function() {
+      const tbody = table.tBodies[0];
+      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
+      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
+      header.setAttribute("data-sort", currentDirection);
+      const rows = Array.from(tbody.rows);
+      rows.sort(function(a, b) {
+        const av = a.cells[index].innerText.trim();
+        const bv = b.cells[index].innerText.trim();
+        const an = Number(av.replace(/[%,$]/g, ""));
+        const bn = Number(bv.replace(/[%,$]/g, ""));
+        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
+          ? an - bn
+          : av.localeCompare(bv);
+        return currentDirection === "asc" ? result : -result;
+      });
+      rows.forEach(function(row) { tbody.appendChild(row); });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 <section id="downloads" class="level2">
 <h2 class="anchored" data-anchor-id="downloads">Downloads</h2>
-<div id="eb81618a" class="cell" data-execution_count="2">
+<div id="cde77d97" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 
     <p><a href="downloads/trade_blotter.csv" download="">Download baseline trade blotter CSV</a></p>
@@ -790,12 +786,12 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </section>
 <section id="interactive-trade-return-view" class="level2">
 <h2 class="anchored" data-anchor-id="interactive-trade-return-view">Interactive Trade Return View</h2>
-<div id="ba05b08d" class="cell" data-execution_count="3">
+<div id="8d413fc2" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="727c0bc1-2717-4718-bef9-4bde15f4d039" class="plotly-graph-div" style="height:460px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("727c0bc1-2717-4718-bef9-4bde15f4d039")) {                    Plotly.newPlot(                        "727c0bc1-2717-4718-bef9-4bde15f4d039",                        [{"customdata":[["2021-06-16T00:00:00",340.36,341.01,-4.297690000003115,6,"breakout_failure"],["2021-07-29T00:00:00",367.49,366.48,-205.78845999999893,4,"breakout_failure"],["2021-12-31T00:00:00",404.36,397.85,-475.2936499999994,4,"breakout_failure"],["2022-08-19T00:00:00",332.06,322.86,-709.5542399999991,4,"breakout_failure"],["2022-11-17T00:00:00",285.86,284.81,-102.10221000000071,4,"breakout_failure"],["2023-04-06T00:00:00",318.77,318.05,-116.68651999999746,4,"breakout_failure"],["2023-11-27T00:00:00",389.01,389.17,-65.52707999999735,7,"breakout_failure"],["2024-02-13T00:00:00",432.11,428.55,-437.64534000000026,6,"breakout_failure"],["2024-07-11T00:00:00",491.9,491.93,-96.33682999999701,7,"breakout_failure"],["2024-10-02T00:00:00",490.5,481.95,-695.1388500000007,6,"breakout_failure"],["2024-10-18T00:00:00",497.83,494.47,-383.0023999999962,4,"breakout_failure"],["2024-12-10T00:00:00",523.31,520.6,-304.0667099999937,6,"breakout_failure"],["2025-08-18T00:00:00",582.76,577.11,-537.9797299999982,6,"breakout_failure"]],"hovertemplate":"trade_outcome=Breakout failure\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Breakout failure","marker":{"color":"#636efa","size":{"dtype":"f8","bdata":"AAAAAAAgYUAAAAAAAIBdQAAAAAAAQFBAAAAAAAAAUkAAAAAAAIBPQAAAAAAAgFVAAAAAAACAWkAAAAAAAMBYQAAAAAAAQFlAAAAAAABAUkAAAAAAAABWQAAAAAAAQFRAAAAAAADAU0A="},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Breakout failure","orientation":"v","showlegend":true,"x":["2021-06-11T00:00:00.000000000","2021-07-26T00:00:00.000000000","2021-12-28T00:00:00.000000000","2022-08-16T00:00:00.000000000","2022-11-14T00:00:00.000000000","2023-04-03T00:00:00.000000000","2023-11-21T00:00:00.000000000","2024-02-08T00:00:00.000000000","2024-07-05T00:00:00.000000000","2024-09-27T00:00:00.000000000","2024-10-15T00:00:00.000000000","2024-12-05T00:00:00.000000000","2025-08-13T00:00:00.000000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"KssbBDspGL9Uago1JnBzvxDbS311hJK\u002fe3DmnvFjnr+sOk5b2jh3vxI+A+Iub3G\u002fJZQKwDYJWr8DZvuerfOEv6E7ysIPxV+\u002fMkJjejPhk79WZZw1nOeBvx8e0+XZYX2\u002fc7zEtpfuh78="},"yaxis":"y","type":"scatter"},{"customdata":[["2021-06-23T00:00:00",343.63,347.74,434.16601000000173,6,"breakout_failure"],["2021-06-30T00:00:00",350.47,354.43,439.4384999999972,6,"breakout_failure"],["2021-07-09T00:00:00",359.27,361.01,141.74108000000126,4,"breakout_failure"],["2021-08-31T00:00:00",373.83,379.95,686.8761600000006,8,"breakout_failure"],["2021-10-27T00:00:00",375.94,380.0,307.2775800000002,8,"breakout_failure"],["2021-11-05T00:00:00",381.06,398.6,1960.9597800000026,8,"breakout_failure"],["2022-03-30T00:00:00",353.99,367.09,618.9459999999983,8,"breakout_failure"],["2022-07-25T00:00:00",298.73,300.27,67.75199999999738,6,"breakout_failure"],["2022-08-05T00:00:00",313.66,321.75,499.45752999999837,5,"breakout_failure"],["2023-01-30T00:00:00",287.31,290.27,204.88811999999825,7,"breakout_failure"],["2023-02-07T00:00:00",307.54,309.88,144.6967199999979,6,"breakout_failure"],["2023-05-16T00:00:00",325.7,327.16,90.39968000000407,6,"breakout_failure"],["2023-05-23T00:00:00",331.52,333.36,156.29096000000422,6,"breakout_failure"],["2023-06-01T00:00:00",340.76,352.01,1340.76821,7,"breakout_failure"],["2023-06-16T00:00:00",363.31,367.93,361.65468000000044,4,"breakout_failure"],["2023-07-19T00:00:00",379.59,385.65,550.6550400000002,6,"breakout_failure"],["2023-11-16T00:00:00",376.79,385.95,772.547919999997,4,"breakout_failure"],["2023-12-15T00:00:00",395.56,405.34,1077.4919999999968,4,"breakout_failure"],["2023-12-27T00:00:00",408.35,411.5,263.3069499999974,8,"breakout_failure"],["2024-01-25T00:00:00",423.41,426.35,196.48255999999978,4,"breakout_failure"],["2024-05-22T00:00:00",448.43,455.71,592.9549799999975,8,"breakout_failure"],["2024-06-18T00:00:00",464.22,485.21,1963.9758599999955,13,"breakout_failure"],["2024-11-12T00:00:00",508.4,512.91,261.6517499999993,6,"breakout_failure"],["2024-12-17T00:00:00",527.68,535.8,642.1433200000004,6,"breakout_failure"],["2025-02-20T00:00:00",536.08,537.23,4.75477999999859,7,"breakout_failure"],["2025-05-16T00:00:00",509.19,521.51,575.7542999999997,4,"breakout_failure"],["2025-07-01T00:00:00",542.06,546.99,303.43505000000505,7,"breakout_failure"],["2025-07-10T00:00:00",553.52,555.45,67.32446000000522,4,"breakout_failure"],["2025-09-23T00:00:00",588.44,598.2,797.3224799999991,9,"breakout_failure"],["2025-10-09T00:00:00",606.51,610.7,282.4150500000052,7,"breakout_failure"],["2025-10-30T00:00:00",624.51,626.05,15.629759999998043,4,"breakout_failure"],["2026-04-20T00:00:00",620.23,646.79,1163.4770799999974,7,"breakout_failure"]],"hovertemplate":"trade_outcome=Successful\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Successful","marker":{"color":"#EF553B","size":{"dtype":"f8","bdata":"AAAAAADAX0AAAAAAAOBgQAAAAAAAYGFAAAAAAAAAYEAAAAAAAEBXQAAAAAAAQF1AAAAAAAAASUAAAAAAAABSQAAAAAAAwFBAAAAAAACAVUAAAAAAAABVQAAAAAAAAFxAAAAAAACgYEAAAAAAAMBfQAAAAAAAQFdAAAAAAAAAWkAAAAAAAABXQAAAAAAAAF5AAAAAAABAXEAAAAAAAIBXQAAAAAAAQFdAAAAAAACAWEAAAAAAAMBSQAAAAAAAwFZAAAAAAAAAT0AAAAAAAIBJQAAAAAAAwFNAAAAAAACAVEAAAAAAAEBXQAAAAAAAwFdAAAAAAAAAS0AAAAAAAABHQA=="},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Successful","orientation":"v","showlegend":true,"x":["2021-06-18T00:00:00.000000000","2021-06-25T00:00:00.000000000","2021-07-06T00:00:00.000000000","2021-08-24T00:00:00.000000000","2021-10-20T00:00:00.000000000","2021-10-29T00:00:00.000000000","2022-03-23T00:00:00.000000000","2022-07-20T00:00:00.000000000","2022-08-01T00:00:00.000000000","2023-01-24T00:00:00.000000000","2023-02-02T00:00:00.000000000","2023-05-11T00:00:00.000000000","2023-05-18T00:00:00.000000000","2023-05-26T00:00:00.000000000","2023-06-13T00:00:00.000000000","2023-07-14T00:00:00.000000000","2023-11-13T00:00:00.000000000","2023-12-12T00:00:00.000000000","2023-12-20T00:00:00.000000000","2024-01-22T00:00:00.000000000","2024-05-15T00:00:00.000000000","2024-06-06T00:00:00.000000000","2024-11-07T00:00:00.000000000","2024-12-12T00:00:00.000000000","2025-02-14T00:00:00.000000000","2025-05-13T00:00:00.000000000","2025-06-25T00:00:00.000000000","2025-07-07T00:00:00.000000000","2025-09-15T00:00:00.000000000","2025-10-03T00:00:00.000000000","2025-10-27T00:00:00.000000000","2026-04-14T00:00:00.000000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"s\u002fZll+tfhD\u002fMjSE6fQWDP11LKKBeQGc\u002f2oIKHgBmjT8+UQg+3P+BP4PKH0IAhaY\u002fSGgjCIznoT\u002fBvHlFCM5pP9qv4Jc8Vpg\u002fAcONpXr7gD+3R4hJPfF2Pzo4aHAZTWQ\u002f\u002fby3pKcJbT9MD1MpmLmfP5m1otXR64U\u002flJCZQxmRjD+3654rOdKWP3t6HjaYPpc\u002f5Kttq3Ffdz+FOosmfDh0P5ASEUdsHo0\u002fNdI1wG4apj9EZqITbht8P1xZAOMoY4s\u002f8v36UzLAIj8k\u002fWIEBbSWPymheHoKBn0\u002fxoCBMF1NWD9vPyY3sNaNP6aiFhWQE3Q\u002f202qJbFfPj9OtfjEHeGkPw=="},"yaxis":"y","type":"scatter"},{"customdata":[["2021-11-23T00:00:00",405.57,396.75571428571425,-1125.1435371428606,2,"stop_loss"],["2024-03-05T00:00:00",445.61,434.0914285714286,-1140.641102857142,2,"stop_loss"]],"hovertemplate":"trade_outcome=Stop-loss triggered\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Stop-loss triggered","marker":{"color":"#00cc96","size":{"dtype":"f8","bdata":"AAAAAABAXUAAAAAAAABXQA=="},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Stop-loss triggered","orientation":"v","showlegend":true,"x":["2021-11-22T00:00:00.000000000","2024-03-04T00:00:00.000000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"6yWsoclHmL84AC7Wq32cvw=="},"yaxis":"y","type":"scatter"},{"customdata":[["2026-04-23T00:00:00",653.49,651.42,-178.87023000000266,1,"timeout"]],"hovertemplate":"trade_outcome=Timed out\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Timed out","marker":{"color":"#ab63fa","size":{"dtype":"f8","bdata":"AAAAAACASkA="},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Timed out","orientation":"v","showlegend":true,"x":["2026-04-23T00:00:00.000000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"8LVp2U4ndb8="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Entry Date"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Trade Return"}},"legend":{"title":{"text":"trade_outcome"},"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"Baseline Breakout Trade Returns"},"height":460},                        {"responsive": true}                    ).then(function(){
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.1.min.js" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" crossorigin="anonymous"></script>                <div id="74147f42-ab36-465a-a070-a1af75f532b4" class="plotly-graph-div" style="height:460px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("74147f42-ab36-465a-a070-a1af75f532b4")) {                    Plotly.newPlot(                        "74147f42-ab36-465a-a070-a1af75f532b4",                        [{"customdata":[["2021-06-16T00:00:00",340.36,341.01,-4.297690000003115,6,"breakout_failure"],["2021-07-29T00:00:00",367.49,366.48,-205.78845999999893,4,"breakout_failure"],["2021-12-31T00:00:00",404.36,397.85,-475.2936499999994,4,"breakout_failure"],["2022-08-19T00:00:00",332.06,322.86,-709.5542399999991,4,"breakout_failure"],["2022-11-17T00:00:00",285.86,284.81,-102.10221000000071,4,"breakout_failure"],["2023-04-06T00:00:00",318.77,318.05,-116.68651999999746,4,"breakout_failure"],["2023-11-27T00:00:00",389.01,389.17,-65.52707999999735,7,"breakout_failure"],["2024-02-13T00:00:00",432.11,428.55,-437.64534000000026,6,"breakout_failure"],["2024-07-11T00:00:00",491.9,491.93,-96.33682999999701,7,"breakout_failure"],["2024-10-02T00:00:00",490.5,481.95,-695.1388500000007,6,"breakout_failure"],["2024-10-18T00:00:00",497.83,494.47,-383.0023999999962,4,"breakout_failure"],["2024-12-10T00:00:00",523.31,520.6,-304.0667099999937,6,"breakout_failure"],["2025-08-18T00:00:00",582.76,577.11,-537.9797299999982,6,"breakout_failure"]],"hovertemplate":"trade_outcome=Breakout failure\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Breakout failure","marker":{"color":"#636efa","size":{"dtype":"f8","bdata":"AAAAAAAgYUAAAAAAAIBdQAAAAAAAQFBAAAAAAAAAUkAAAAAAAIBPQAAAAAAAgFVAAAAAAACAWkAAAAAAAMBYQAAAAAAAQFlAAAAAAABAUkAAAAAAAABWQAAAAAAAQFRAAAAAAADAU0A="},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Breakout failure","orientation":"v","showlegend":true,"x":["2021-06-11T00:00:00.000000","2021-07-26T00:00:00.000000","2021-12-28T00:00:00.000000","2022-08-16T00:00:00.000000","2022-11-14T00:00:00.000000","2023-04-03T00:00:00.000000","2023-11-21T00:00:00.000000","2024-02-08T00:00:00.000000","2024-07-05T00:00:00.000000","2024-09-27T00:00:00.000000","2024-10-15T00:00:00.000000","2024-12-05T00:00:00.000000","2025-08-13T00:00:00.000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"KssbBDspGL9Uago1JnBzvxDbS311hJK\u002fe3DmnvFjnr+sOk5b2jh3vxI+A+Iub3G\u002fJZQKwDYJWr8DZvuerfOEv6E7ysIPxV+\u002fMkJjejPhk79WZZw1nOeBvx8e0+XZYX2\u002fc7zEtpfuh78="},"yaxis":"y","type":"scatter"},{"customdata":[["2021-06-23T00:00:00",343.63,347.74,434.16601000000173,6,"breakout_failure"],["2021-06-30T00:00:00",350.47,354.43,439.4384999999972,6,"breakout_failure"],["2021-07-09T00:00:00",359.27,361.01,141.74108000000126,4,"breakout_failure"],["2021-08-31T00:00:00",373.83,379.95,686.8761600000006,8,"breakout_failure"],["2021-10-27T00:00:00",375.94,380.0,307.2775800000002,8,"breakout_failure"],["2021-11-05T00:00:00",381.06,398.6,1960.9597800000026,8,"breakout_failure"],["2022-03-30T00:00:00",353.99,367.09,618.9459999999983,8,"breakout_failure"],["2022-07-25T00:00:00",298.73,300.27,67.75199999999738,6,"breakout_failure"],["2022-08-05T00:00:00",313.66,321.75,499.45752999999837,5,"breakout_failure"],["2023-01-30T00:00:00",287.31,290.27,204.88811999999825,7,"breakout_failure"],["2023-02-07T00:00:00",307.54,309.88,144.6967199999979,6,"breakout_failure"],["2023-05-16T00:00:00",325.7,327.16,90.39968000000407,6,"breakout_failure"],["2023-05-23T00:00:00",331.52,333.36,156.29096000000422,6,"breakout_failure"],["2023-06-01T00:00:00",340.76,352.01,1340.76821,7,"breakout_failure"],["2023-06-16T00:00:00",363.31,367.93,361.65468000000044,4,"breakout_failure"],["2023-07-19T00:00:00",379.59,385.65,550.6550400000002,6,"breakout_failure"],["2023-11-16T00:00:00",376.79,385.95,772.547919999997,4,"breakout_failure"],["2023-12-15T00:00:00",395.56,405.34,1077.4919999999968,4,"breakout_failure"],["2023-12-27T00:00:00",408.35,411.5,263.3069499999974,8,"breakout_failure"],["2024-01-25T00:00:00",423.41,426.35,196.48255999999978,4,"breakout_failure"],["2024-05-22T00:00:00",448.43,455.71,592.9549799999975,8,"breakout_failure"],["2024-06-18T00:00:00",464.22,485.21,1963.9758599999955,13,"breakout_failure"],["2024-11-12T00:00:00",508.4,512.91,261.6517499999993,6,"breakout_failure"],["2024-12-17T00:00:00",527.68,535.8,642.1433200000004,6,"breakout_failure"],["2025-02-20T00:00:00",536.08,537.23,4.75477999999859,7,"breakout_failure"],["2025-05-16T00:00:00",509.19,521.51,575.7542999999997,4,"breakout_failure"],["2025-07-01T00:00:00",542.06,546.99,303.43505000000505,7,"breakout_failure"],["2025-07-10T00:00:00",553.52,555.45,67.32446000000522,4,"breakout_failure"],["2025-09-23T00:00:00",588.44,598.2,797.3224799999991,9,"breakout_failure"],["2025-10-09T00:00:00",606.51,610.7,282.4150500000052,7,"breakout_failure"],["2025-10-30T00:00:00",624.51,626.05,15.629759999998043,4,"breakout_failure"],["2026-04-20T00:00:00",620.23,646.79,1163.4770799999974,7,"breakout_failure"],["2026-04-24T00:00:00",653.49,663.88,480.8493899999993,2,"timeout"]],"hovertemplate":"trade_outcome=Successful\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Successful","marker":{"color":"#EF553B","size":{"dtype":"f8","bdata":"AAAAAADAX0AAAAAAAOBgQAAAAAAAYGFAAAAAAAAAYEAAAAAAAEBXQAAAAAAAQF1AAAAAAAAASUAAAAAAAABSQAAAAAAAwFBAAAAAAACAVUAAAAAAAABVQAAAAAAAAFxAAAAAAACgYEAAAAAAAMBfQAAAAAAAQFdAAAAAAAAAWkAAAAAAAABXQAAAAAAAAF5AAAAAAABAXEAAAAAAAIBXQAAAAAAAQFdAAAAAAACAWEAAAAAAAMBSQAAAAAAAwFZAAAAAAAAAT0AAAAAAAIBJQAAAAAAAwFNAAAAAAACAVEAAAAAAAEBXQAAAAAAAwFdAAAAAAAAAS0AAAAAAAABHQAAAAAAAgEpA"},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Successful","orientation":"v","showlegend":true,"x":["2021-06-18T00:00:00.000000","2021-06-25T00:00:00.000000","2021-07-06T00:00:00.000000","2021-08-24T00:00:00.000000","2021-10-20T00:00:00.000000","2021-10-29T00:00:00.000000","2022-03-23T00:00:00.000000","2022-07-20T00:00:00.000000","2022-08-01T00:00:00.000000","2023-01-24T00:00:00.000000","2023-02-02T00:00:00.000000","2023-05-11T00:00:00.000000","2023-05-18T00:00:00.000000","2023-05-26T00:00:00.000000","2023-06-13T00:00:00.000000","2023-07-14T00:00:00.000000","2023-11-13T00:00:00.000000","2023-12-12T00:00:00.000000","2023-12-20T00:00:00.000000","2024-01-22T00:00:00.000000","2024-05-15T00:00:00.000000","2024-06-06T00:00:00.000000","2024-11-07T00:00:00.000000","2024-12-12T00:00:00.000000","2025-02-14T00:00:00.000000","2025-05-13T00:00:00.000000","2025-06-25T00:00:00.000000","2025-07-07T00:00:00.000000","2025-09-15T00:00:00.000000","2025-10-03T00:00:00.000000","2025-10-27T00:00:00.000000","2026-04-14T00:00:00.000000","2026-04-23T00:00:00.000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"s\u002fZll+tfhD\u002fMjSE6fQWDP11LKKBeQGc\u002f2oIKHgBmjT8+UQg+3P+BP4PKH0IAhaY\u002fSGgjCIznoT\u002fBvHlFCM5pP9qv4Jc8Vpg\u002fAcONpXr7gD+3R4hJPfF2Pzo4aHAZTWQ\u002f\u002fby3pKcJbT9MD1MpmLmfP5m1otXR64U\u002flJCZQxmRjD+3654rOdKWP3t6HjaYPpc\u002f5Kttq3Ffdz+FOosmfDh0P5ASEUdsHo0\u002fNdI1wG4apj9EZqITbht8P1xZAOMoY4s\u002f8v36UzLAIj8k\u002fWIEBbSWPymheHoKBn0\u002fxoCBMF1NWD9vPyY3sNaNP6aiFhWQE3Q\u002f202qJbFfPj9OtfjEHeGkP\u002fY1Fp3fbow\u002f"},"yaxis":"y","type":"scatter"},{"customdata":[["2021-11-23T00:00:00",405.57,396.75571428571425,-1125.1435371428606,2,"stop_loss"],["2024-03-05T00:00:00",445.61,434.0914285714286,-1140.641102857142,2,"stop_loss"]],"hovertemplate":"trade_outcome=Stop-loss triggered\u003cbr\u003eEntry Date=%{x}\u003cbr\u003eTrade Return=%{y}\u003cbr\u003eqty=%{marker.size}\u003cbr\u003eexit_timestamp=%{customdata[0]}\u003cbr\u003eentry_price=%{customdata[1]}\u003cbr\u003eexit_price=%{customdata[2]}\u003cbr\u003epnl=%{customdata[3]}\u003cbr\u003eholding_periods=%{customdata[4]}\u003cbr\u003eexit_reason=%{customdata[5]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Stop-loss triggered","marker":{"color":"#00cc96","size":{"dtype":"f8","bdata":"AAAAAABAXUAAAAAAAABXQA=="},"sizemode":"area","sizeref":0.3475,"symbol":"circle"},"mode":"markers","name":"Stop-loss triggered","orientation":"v","showlegend":true,"x":["2021-11-22T00:00:00.000000","2024-03-04T00:00:00.000000"],"xaxis":"x","y":{"dtype":"f8","bdata":"6yWsoclHmL84AC7Wq32cvw=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Entry Date"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Trade Return"}},"legend":{"title":{"text":"trade_outcome"},"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"Baseline Breakout Trade Returns"},"height":460},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('727c0bc1-2717-4718-bef9-4bde15f4d039');
+var gd = document.getElementById('74147f42-ab36-465a-a070-a1af75f532b4');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -823,18 +819,16 @@ if (outputEl) {{
 </section>
 <section id="best-and-worst-trades" class="level2">
 <h2 class="anchored" data-anchor-id="best-and-worst-trades">Best And Worst Trades</h2>
-<div id="fe783568" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-stdout">
-<pre><code>Best trades</code></pre>
-</div>
+<div id="8599456a" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<h4 class="anchored">Best Trades</h4>
+<div class="interactive-table-wrap" id="best_trades_wrap">
+  <input class="interactive-table-search" id="best_trades_search" type="search" placeholder="Search table" aria-label="Search table">
+  <div class="interactive-table-scroll">
+    
+<table id="best_trades" class="interactive-table caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">entry_timestamp</th>
 <th data-quarto-table-cell-role="th">exit_timestamp</th>
 <th data-quarto-table-cell-role="th">entry_price</th>
@@ -846,51 +840,84 @@ if (outputEl) {{
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">7</th>
-<td>2021-10-29</td>
-<td>2021-11-05</td>
-<td>381.06</td>
-<td>398.60</td>
-<td>0.043983</td>
-<td>1960.95978</td>
+<td>2021-10-29 00:00:00</td>
+<td>2021-11-05 00:00:00</td>
+<td>381.0600</td>
+<td>398.6000</td>
+<td>0.0440</td>
+<td>1960.9598</td>
 <td>breakout_failure</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">31</th>
-<td>2024-06-06</td>
-<td>2024-06-18</td>
-<td>464.22</td>
-<td>485.21</td>
-<td>0.043170</td>
-<td>1963.97586</td>
+<td>2024-06-06 00:00:00</td>
+<td>2024-06-18 00:00:00</td>
+<td>464.2200</td>
+<td>485.2100</td>
+<td>0.0432</td>
+<td>1963.9759</td>
 <td>breakout_failure</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">46</th>
-<td>2026-04-14</td>
-<td>2026-04-20</td>
-<td>620.23</td>
-<td>646.79</td>
-<td>0.040780</td>
-<td>1163.47708</td>
+<td>2026-04-14 00:00:00</td>
+<td>2026-04-20 00:00:00</td>
+<td>620.2300</td>
+<td>646.7900</td>
+<td>0.0408</td>
+<td>1163.4771</td>
 <td>breakout_failure</td>
 </tr>
 </tbody>
 </table>
 
+  </div>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Worst trades</code></pre>
+<script>
+(function() {
+  const table = document.getElementById("best_trades");
+  const search = document.getElementById("best_trades_search");
+  if (!table || !search) return;
+
+  search.addEventListener("input", function() {
+    const query = search.value.toLowerCase();
+    Array.from(table.tBodies[0].rows).forEach(function(row) {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
+    header.style.cursor = "pointer";
+    header.title = "Click to sort";
+    header.addEventListener("click", function() {
+      const tbody = table.tBodies[0];
+      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
+      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
+      header.setAttribute("data-sort", currentDirection);
+      const rows = Array.from(tbody.rows);
+      rows.sort(function(a, b) {
+        const av = a.cells[index].innerText.trim();
+        const bv = b.cells[index].innerText.trim();
+        const an = Number(av.replace(/[%,$]/g, ""));
+        const bn = Number(bv.replace(/[%,$]/g, ""));
+        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
+          ? an - bn
+          : av.localeCompare(bv);
+        return currentDirection === "asc" ? result : -result;
+      });
+      rows.forEach(function(row) { tbody.appendChild(row); });
+    });
+  });
+})();
+</script>
 </div>
 <div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<h4 class="anchored">Worst Trades</h4>
+<div class="interactive-table-wrap" id="worst_trades_wrap">
+  <input class="interactive-table-search" id="worst_trades_search" type="search" placeholder="Search table" aria-label="Search table">
+  <div class="interactive-table-scroll">
+    
+<table id="worst_trades" class="interactive-table caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">entry_timestamp</th>
 <th data-quarto-table-cell-role="th">exit_timestamp</th>
 <th data-quarto-table-cell-role="th">entry_price</th>
@@ -902,53 +929,89 @@ if (outputEl) {{
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">13</th>
-<td>2022-08-16</td>
-<td>2022-08-19</td>
-<td>332.06</td>
-<td>322.860000</td>
-<td>-0.029678</td>
-<td>-709.554240</td>
+<td>2022-08-16 00:00:00</td>
+<td>2022-08-19 00:00:00</td>
+<td>332.0600</td>
+<td>322.8600</td>
+<td>-0.0297</td>
+<td>-709.5542</td>
 <td>breakout_failure</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">29</th>
-<td>2024-03-04</td>
-<td>2024-03-05</td>
-<td>445.61</td>
-<td>434.091429</td>
-<td>-0.027823</td>
-<td>-1140.641103</td>
+<td>2024-03-04 00:00:00</td>
+<td>2024-03-05 00:00:00</td>
+<td>445.6100</td>
+<td>434.0914</td>
+<td>-0.0278</td>
+<td>-1140.6411</td>
 <td>stop_loss</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">8</th>
-<td>2021-11-22</td>
-<td>2021-11-23</td>
-<td>405.57</td>
-<td>396.755714</td>
-<td>-0.023711</td>
-<td>-1125.143537</td>
+<td>2021-11-22 00:00:00</td>
+<td>2021-11-23 00:00:00</td>
+<td>405.5700</td>
+<td>396.7557</td>
+<td>-0.0237</td>
+<td>-1125.1435</td>
 <td>stop_loss</td>
 </tr>
 </tbody>
 </table>
 
+  </div>
 </div>
+<script>
+(function() {
+  const table = document.getElementById("worst_trades");
+  const search = document.getElementById("worst_trades_search");
+  if (!table || !search) return;
+
+  search.addEventListener("input", function() {
+    const query = search.value.toLowerCase();
+    Array.from(table.tBodies[0].rows).forEach(function(row) {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
+    header.style.cursor = "pointer";
+    header.title = "Click to sort";
+    header.addEventListener("click", function() {
+      const tbody = table.tBodies[0];
+      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
+      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
+      header.setAttribute("data-sort", currentDirection);
+      const rows = Array.from(tbody.rows);
+      rows.sort(function(a, b) {
+        const av = a.cells[index].innerText.trim();
+        const bv = b.cells[index].innerText.trim();
+        const an = Number(av.replace(/[%,$]/g, ""));
+        const bn = Number(bv.replace(/[%,$]/g, ""));
+        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
+          ? an - bn
+          : av.localeCompare(bv);
+        return currentDirection === "asc" ? result : -result;
+      });
+      rows.forEach(function(row) { tbody.appendChild(row); });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </section>
 <section id="ledger-preview" class="level2">
 <h2 class="anchored" data-anchor-id="ledger-preview">Ledger Preview</h2>
-<div id="341e4735" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<div id="e8bb17be" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
+<h4 class="anchored">Ledger Preview</h4>
+<div class="interactive-table-wrap" id="ledger_preview_wrap">
+  <input class="interactive-table-search" id="ledger_preview_search" type="search" placeholder="Search table" aria-label="Search table">
+  <div class="interactive-table-scroll">
+    
+<table id="ledger_preview" class="interactive-table caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">date</th>
 <th data-quarto-table-cell-role="th">cash</th>
 <th data-quarto-table-cell-role="th">market_value</th>
@@ -958,185 +1021,291 @@ if (outputEl) {{
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1235</th>
-<td>2026-03-26</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-03-27 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1236</th>
-<td>2026-03-27</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-03-30 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1237</th>
-<td>2026-03-30</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-03-31 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1238</th>
-<td>2026-03-31</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-01 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1239</th>
-<td>2026-04-01</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-02 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1240</th>
-<td>2026-04-02</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-06 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1241</th>
-<td>2026-04-06</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-07 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1242</th>
-<td>2026-04-07</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-08 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1243</th>
-<td>2026-04-08</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-09 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1244</th>
-<td>2026-04-09</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-10 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1245</th>
-<td>2026-04-10</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-13 00:00:00</td>
+<td>109423.9549</td>
+<td>0.0000</td>
+<td>109423.9549</td>
+<td>-0.0051</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1246</th>
-<td>2026-04-13</td>
-<td>109423.95492</td>
-<td>0.00</td>
-<td>109423.95492</td>
-<td>-0.005080</td>
+<td>2026-04-14 00:00:00</td>
+<td>80864.8443</td>
+<td>28915.6000</td>
+<td>109780.4443</td>
+<td>-0.0018</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1247</th>
-<td>2026-04-14</td>
-<td>80864.84434</td>
-<td>28915.60</td>
-<td>109780.44434</td>
-<td>-0.001838</td>
+<td>2026-04-15 00:00:00</td>
+<td>80864.8443</td>
+<td>29320.4000</td>
+<td>110185.2443</td>
+<td>0.0000</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1248</th>
-<td>2026-04-15</td>
-<td>80864.84434</td>
-<td>29320.40</td>
-<td>110185.24434</td>
-<td>0.000000</td>
+<td>2026-04-16 00:00:00</td>
+<td>80864.8443</td>
+<td>29461.6200</td>
+<td>110326.4643</td>
+<td>0.0000</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1249</th>
-<td>2026-04-16</td>
-<td>80864.84434</td>
-<td>29461.62</td>
-<td>110326.46434</td>
-<td>0.000000</td>
+<td>2026-04-17 00:00:00</td>
+<td>80864.8443</td>
+<td>29847.1000</td>
+<td>110711.9443</td>
+<td>0.0000</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1250</th>
-<td>2026-04-17</td>
-<td>80864.84434</td>
-<td>29847.10</td>
-<td>110711.94434</td>
-<td>0.000000</td>
+<td>2026-04-20 00:00:00</td>
+<td>110587.4320</td>
+<td>0.0000</td>
+<td>110587.4320</td>
+<td>-0.0011</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1251</th>
-<td>2026-04-20</td>
-<td>110587.43200</td>
-<td>0.00</td>
-<td>110587.43200</td>
-<td>-0.001125</td>
+<td>2026-04-21 00:00:00</td>
+<td>110587.4320</td>
+<td>0.0000</td>
+<td>110587.4320</td>
+<td>-0.0011</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1252</th>
-<td>2026-04-21</td>
-<td>110587.43200</td>
-<td>0.00</td>
-<td>110587.43200</td>
-<td>-0.001125</td>
+<td>2026-04-22 00:00:00</td>
+<td>110587.4320</td>
+<td>0.0000</td>
+<td>110587.4320</td>
+<td>-0.0011</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1253</th>
-<td>2026-04-22</td>
-<td>110587.43200</td>
-<td>0.00</td>
-<td>110587.43200</td>
-<td>-0.001125</td>
+<td>2026-04-23 00:00:00</td>
+<td>75917.8270</td>
+<td>34525.2600</td>
+<td>110443.0870</td>
+<td>-0.0024</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1254</th>
-<td>2026-04-23</td>
-<td>110408.56177</td>
-<td>0.00</td>
-<td>110408.56177</td>
-<td>-0.002740</td>
+<td>2026-04-24 00:00:00</td>
+<td>111068.2814</td>
+<td>0.0000</td>
+<td>111068.2814</td>
+<td>0.0000</td>
 </tr>
 </tbody>
 </table>
 
+  </div>
 </div>
+<script>
+(function() {
+  const table = document.getElementById("ledger_preview");
+  const search = document.getElementById("ledger_preview_search");
+  if (!table || !search) return;
+
+  search.addEventListener("input", function() {
+    const query = search.value.toLowerCase();
+    Array.from(table.tBodies[0].rows).forEach(function(row) {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
+    header.style.cursor = "pointer";
+    header.title = "Click to sort";
+    header.addEventListener("click", function() {
+      const tbody = table.tBodies[0];
+      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
+      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
+      header.setAttribute("data-sort", currentDirection);
+      const rows = Array.from(tbody.rows);
+      rows.sort(function(a, b) {
+        const av = a.cells[index].innerText.trim();
+        const bv = b.cells[index].innerText.trim();
+        const an = Number(av.replace(/[%,$]/g, ""));
+        const bn = Number(bv.replace(/[%,$]/g, ""));
+        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
+          ? an - bn
+          : av.localeCompare(bv);
+        return currentDirection === "asc" ? result : -result;
+      });
+      rows.forEach(function(row) { tbody.appendChild(row); });
+    });
+  });
+})();
+</script>
+</div>
+</div>
+</section>
+<section id="outcome-rates-and-payoff-shape" class="level2">
+<h2 class="anchored" data-anchor-id="outcome-rates-and-payoff-shape">Outcome Rates And Payoff Shape</h2>
+<div id="e2fababf" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="6">
+<h4 class="anchored">Payoff Shape</h4>
+<div class="interactive-table-wrap" id="trade_log_payoff_shape_wrap">
+  <input class="interactive-table-search" id="trade_log_payoff_shape_search" type="search" placeholder="Search table" aria-label="Search table">
+  <div class="interactive-table-scroll">
+    
+<table id="trade_log_payoff_shape" class="interactive-table caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Metric</th>
+<th data-quarto-table-cell-role="th">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Average winner</td>
+<td>1.41%</td>
+</tr>
+<tr class="even">
+<td>Average loser</td>
+<td>-1.17%</td>
+</tr>
+<tr class="odd">
+<td>Payoff ratio</td>
+<td>1.21</td>
+</tr>
+<tr class="even">
+<td>Largest winner</td>
+<td>4.40%</td>
+</tr>
+<tr class="odd">
+<td>Largest loser</td>
+<td>-2.97%</td>
+</tr>
+<tr class="even">
+<td>Top 3 trade PnL share</td>
+<td>47.57%</td>
+</tr>
+</tbody>
+</table>
+
+  </div>
+</div>
+<script>
+(function() {
+  const table = document.getElementById("trade_log_payoff_shape");
+  const search = document.getElementById("trade_log_payoff_shape_search");
+  if (!table || !search) return;
+
+  search.addEventListener("input", function() {
+    const query = search.value.toLowerCase();
+    Array.from(table.tBodies[0].rows).forEach(function(row) {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
+    header.style.cursor = "pointer";
+    header.title = "Click to sort";
+    header.addEventListener("click", function() {
+      const tbody = table.tBodies[0];
+      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
+      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
+      header.setAttribute("data-sort", currentDirection);
+      const rows = Array.from(tbody.rows);
+      rows.sort(function(a, b) {
+        const av = a.cells[index].innerText.trim();
+        const bv = b.cells[index].innerText.trim();
+        const an = Number(av.replace(/[%,$]/g, ""));
+        const bn = Number(bv.replace(/[%,$]/g, ""));
+        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
+          ? an - bn
+          : av.localeCompare(bv);
+        return currentDirection === "asc" ? result : -result;
+      });
+      rows.forEach(function(row) { tbody.appendChild(row); });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 </section>
 <section id="ml-overlay-comparison" class="level2">
 <h2 class="anchored" data-anchor-id="ml-overlay-comparison">ML Overlay Comparison</h2>
-<div id="042164a9" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<div id="13126aa0" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
+<h4 class="anchored">Baseline vs ML Overlays</h4>
+<div class="interactive-table-wrap" id="trade_log_overlay_comparison_wrap">
+  <input class="interactive-table-search" id="trade_log_overlay_comparison_search" type="search" placeholder="Search table" aria-label="Search table">
+  <div class="interactive-table-scroll">
+    
+<table id="trade_log_overlay_comparison" class="interactive-table caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">strategy</th>
 <th data-quarto-table-cell-role="th">trade_count</th>
+<th data-quarto-table-cell-role="th">removed_signal_count</th>
 <th data-quarto-table-cell-role="th">sharpe_ratio</th>
 <th data-quarto-table-cell-role="th">total_return</th>
 <th data-quarto-table-cell-role="th">win_rate</th>
@@ -1146,29 +1315,77 @@ if (outputEl) {{
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>baseline_test_period</td>
+<td>baseline</td>
 <td>11</td>
-<td>1.342290</td>
-<td>0.029143</td>
-<td>0.818182</td>
-<td>-0.008107</td>
-<td>0.008011</td>
+<td>0</td>
+<td>1.5497</td>
+<td>0.0352</td>
+<td>0.9091</td>
+<td>-0.0081</td>
+<td>0.0097</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>filtered_test_period</td>
+<td>ml_hard_filter</td>
+<td>8</td>
+<td>7</td>
+<td>1.2081</td>
+<td>0.0226</td>
+<td>0.8750</td>
+<td>-0.0080</td>
+<td>0.0083</td>
+</tr>
+<tr class="odd">
+<td>ml_position_scaling</td>
 <td>11</td>
-<td>1.384956</td>
-<td>0.034040</td>
-<td>0.818182</td>
-<td>-0.009363</td>
-<td>0.008011</td>
+<td>0</td>
+<td>1.5665</td>
+<td>0.0398</td>
+<td>0.9091</td>
+<td>-0.0094</td>
+<td>0.0097</td>
 </tr>
 </tbody>
 </table>
 
+  </div>
 </div>
+<script>
+(function() {
+  const table = document.getElementById("trade_log_overlay_comparison");
+  const search = document.getElementById("trade_log_overlay_comparison_search");
+  if (!table || !search) return;
+
+  search.addEventListener("input", function() {
+    const query = search.value.toLowerCase();
+    Array.from(table.tBodies[0].rows).forEach(function(row) {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
+    header.style.cursor = "pointer";
+    header.title = "Click to sort";
+    header.addEventListener("click", function() {
+      const tbody = table.tBodies[0];
+      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
+      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
+      header.setAttribute("data-sort", currentDirection);
+      const rows = Array.from(tbody.rows);
+      rows.sort(function(a, b) {
+        const av = a.cells[index].innerText.trim();
+        const bv = b.cells[index].innerText.trim();
+        const an = Number(av.replace(/[%,$]/g, ""));
+        const bn = Number(bv.replace(/[%,$]/g, ""));
+        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
+          ? an - bn
+          : av.localeCompare(bv);
+        return currentDirection === "asc" ? result : -result;
+      });
+      rows.forEach(function(row) { tbody.appendChild(row); });
+    });
+  });
+})();
+</script>
 </div>
 </div>
 <p>The final ML overlay keeps the same trade timestamps as the baseline and changes capital allocation rather than deleting all low-score trades. That is why the overlay comparison is best read as a portfolio-allocation enhancement, not as a second independent blotter.</p>
@@ -1592,7 +1809,7 @@ if (outputEl) {{
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>FINTECH 533 • Volatility Breakout Final Project</p>
+<p>FINTECH 533 • Volatility Breakout Strategy</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -26,19 +26,33 @@ The repository now contains a working end-to-end research pipeline:
 - an ML overlay based on compact `core_iv` features
 - downloadable blotter, ledger, model, and overlay comparison files in `docs/downloads/`
 
-## Planned Workflow
+## Reproducible Saved-Data Workflow
+
+Use this workflow when grading or rendering the report from the checked-in CSV files. It does not call Interactive Brokers.
 
 From the project directory:
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 -m analysis.run_saved_data_pipeline
+quarto render
+```
+
+The saved-data pipeline regenerates the baseline blotter and ledger, labeled breakout datasets, ML feature files, model artifacts, the hard-filter overlay backtest, the position-scaling overlay backtest, and the final comparison tables in `docs/downloads/`.
+
+## Full IBKR Refresh Workflow
+
+Use this only when Interactive Brokers TWS or Gateway is running and API access is enabled:
 
 ```bash
 python3 -m analysis.run_pipeline
 quarto render
 ```
 
-The pipeline currently:
+The full pipeline currently:
 
-- fetch or load market history,
-- fetch or load options-derived volatility history,
+- fetches market history,
+- fetches options-derived volatility history,
 - generate breakout, volatility, and implied-volatility features,
 - create a selected asset file,
 - run the baseline and ML-augmented backtests,

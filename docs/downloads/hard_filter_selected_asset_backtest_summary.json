@@ -2,12 +2,12 @@
   "selected_symbol": "QQQ",
   "test_start": "2024-12-11",
   "test_end": "2026-04-22",
-  "filter_mode": "scaled_selected_asset",
+  "filter_mode": "hard_filter_selected_asset",
   "probability_threshold": 0.3,
-  "predicted_trade_dates": 20,
-  "removed_signal_count": 0,
+  "predicted_trade_dates": 13,
+  "removed_signal_count": 7,
   "baseline_trade_count": 11,
-  "filtered_trade_count": 11,
+  "filtered_trade_count": 8,
   "baseline_metrics": {
     "Sharpe Ratio": 1.5496812398335598,
     "Sortino Ratio": 1.2798044103700565,
@@ -22,16 +22,16 @@
     "Trade Count": 11
   },
   "filtered_metrics": {
-    "Sharpe Ratio": 1.5664717104735635,
-    "Sortino Ratio": 1.3380970414605966,
-    "Total Return": 0.03982814135600021,
+    "Sharpe Ratio": 1.2081047436495551,
+    "Sortino Ratio": 0.7966609919117937,
+    "Total Return": 0.02264005460000007,
     "Benchmark Return": 0.2527928743961354,
-    "Expected Return Per Trade": 0.009742580601492365,
-    "Expected PnL Per Trade": 362.0740123272736,
-    "Average Trade Lifetime": 5.7272727272727275,
-    "Win Rate": 0.9090909090909091,
-    "Profit Factor": 8.527143570147667,
-    "Max Drawdown": -0.009362602070859039,
-    "Trade Count": 11
+    "Expected Return Per Trade": 0.008276559110732365,
+    "Expected PnL Per Trade": 283.0006825000006,
+    "Average Trade Lifetime": 6.25,
+    "Win Rate": 0.875,
+    "Profit Factor": 5.554238689528246,
+    "Max Drawdown": -0.008039405162934221,
+    "Trade Count": 8
   }
 }

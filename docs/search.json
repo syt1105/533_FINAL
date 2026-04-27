@@ -4,7 +4,7 @@
     "href": "methodology.html",
     "title": "Methodology",
     "section": "",
-    "text": "Parameter\nValue\n\n\n\n\n0\nSelected Symbol\nQQQ\n\n\n1\nUniverse\nSPY, QQQ, IWM, XLE, GLD, TLT\n\n\n2\nEntry Rule\nClose breaks above prior 20-day channel\n\n\n3\nATR Window\n14\n\n\n4\nInitial Stop\n2.0 x ATR\n\n\n5\nTrailing Stop\n3.0 x ATR\n\n\n6\nTimeout\n15 trading days\n\n\n7\nDirection\nLong only\n\n\n8\nBreakout Strength Filter\nAt least 0.20 ATR past the channel\n\n\n9\nTrend Filter\nClose must be above the 20-day moving average\n\n\n10\nBreakout Failure Delay\nDo not classify breakout failure until day 4\n\n\n11\nTransaction Cost\n10 bps round-turn split across entry and exit\n\n\n12\nPosition Sizing\n1% equity risk budget, capped at 95% notional ..."
+    "text": "Parameter\nValue\n\n\n\n\nSelected Symbol\nQQQ\n\n\nUniverse\nSPY, QQQ, IWM, XLE, GLD, TLT\n\n\nEntry Rule\nClose breaks above prior 20-day channel\n\n\nATR Window\n14\n\n\nInitial Stop\n2.0 x ATR\n\n\nTrailing Stop\n3.0 x ATR\n\n\nTimeout\n15 trading days\n\n\nDirection\nLong only\n\n\nBreakout Strength Filter\nAt least 0.20 ATR past the channel\n\n\nTrend Filter\nClose must be above the 20-day moving average\n\n\nBreakout Failure Delay\nDo not classify breakout failure until day 4\n\n\nTransaction Cost\n10 bps round-turn split across entry and exit\n\n\nPosition Sizing\n1% equity risk budget, capped at 95% notional deployment"
   },
   {
     "objectID": "methodology.html#strategy-idea",
@@ -32,7 +32,7 @@
     "href": "methodology.html#why-these-parameters",
     "title": "Methodology",
     "section": "Why These Parameters",
-    "text": "Why These Parameters\n\n20-day channel: this produced more usable trade count than a very long channel while still keeping the breakout logic interpretable.\n20-day trend filter: a shorter trend filter matched the faster breakout horizon better than the earlier 50-day version.\n0.20 ATR breakout threshold: this was large enough to avoid tiny channel pokes but not so strict that the strategy stopped trading.\n2.0 ATR initial stop: this gave the breakout room to move while still defining risk tightly enough for position sizing.\n3.0 ATR trailing stop: this lets winners run while protecting profits once the move extends.\n15-day timeout: if the breakout has not worked within roughly three trading weeks, the signal has likely decayed.\n4-day breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added."
+    "text": "Why These Parameters\n\n20-day channel: this produced a stronger final QQQ showcase backtest than the highest-ranked universe sweep row, while still keeping the breakout logic interpretable and trade frequency usable.\n20-day trend filter: a shorter trend filter matched the faster breakout horizon better than the earlier 50-day version.\n0.20 ATR breakout threshold: this was large enough to avoid tiny channel pokes but not so strict that the strategy stopped trading.\n2.0 ATR initial stop: this gave the breakout room to move while still defining risk tightly enough for position sizing.\n3.0 ATR trailing stop: this lets winners run while protecting profits once the move extends.\n15-day timeout: if the breakout has not worked within roughly three trading weeks, the signal has likely decayed.\n4-day breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.\n\nThe file parameter_sweep_top100.csv records the broader universe sweep. Its highest-ranked row favored a 30-day channel with a wider 3.0 ATR stop and 2.5 ATR trail on an average cross-asset score. The final code keeps the 20-day, 2.0 ATR, 3.0 ATR setup because the final project is a showcase QQQ strategy and that configuration produced the better selected-asset backtest on the current saved sample.\n\n\nFinal Params vs Top Sweep Row\n\n  \n  \n    \n\n\n\nparameter_set\nselected_symbol\nchannel_lookback\nstop_atr\ntrailing_stop_atr\ntrade_count\nsharpe_ratio\ntotal_return\nmax_drawdown\n\n\n\n\nfinal_current_params\nQQQ\n20\n2.0000\n3.0000\n48\n1.0666\n0.1107\n-0.0230\n\n\nsweep_top_universe_params\nQQQ\n30\n3.0000\n2.5000\n43\n0.9296\n0.0615\n-0.0178"
   },
   {
     "objectID": "methodology.html#exit-orders",
@@ -46,21 +46,21 @@
     "href": "methodology.html#baseline-selection-logic",
     "title": "Methodology",
     "section": "Baseline Selection Logic",
-    "text": "Baseline Selection Logic\nThe project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why QQQ is the current showcase asset.\n\n\n\n\n\n\n\n\n\nsymbol\ntrades\nsharpe\ntotal_return\nwin_rate\nmax_drawdown\nselection_status\n\n\n\n\n0\nQQQ\n48\n1.014664\n0.104086\n0.666667\n-0.022973\neligible\n\n\n1\nIWM\n36\n0.271480\n0.024410\n0.500000\n-0.020857\neligible\n\n\n2\nGLD\n57\n0.029216\n0.001966\n0.438596\n-0.047257\neligible\n\n\n3\nXLE\n43\n0.021366\n0.001121\n0.558140\n-0.042494\neligible\n\n\n4\nSPY\n58\n0.002656\n-0.000865\n0.586207\n-0.037575\neligible\n\n\n5\nTLT\n34\n-0.697623\n-0.072056\n0.235294\n-0.074712\neligible"
+    "text": "Baseline Selection Logic\nThe project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why QQQ is the current showcase asset.\n\n\nETF Universe Screen\n\n  \n  \n    \n\n\n\nsymbol\ntrades\nsharpe\ntotal_return\nwin_rate\nmax_drawdown\nselection_status\n\n\n\n\nQQQ\n48\n1.0666\n0.1107\n0.6875\n-0.0230\neligible\n\n\nIWM\n36\n0.2714\n0.0244\n0.5000\n-0.0209\neligible\n\n\nGLD\n57\n0.0292\n0.0020\n0.4386\n-0.0473\neligible\n\n\nXLE\n43\n0.0214\n0.0011\n0.5581\n-0.0425\neligible\n\n\nSPY\n58\n0.0027\n-0.0009\n0.5862\n-0.0376\neligible\n\n\nTLT\n34\n-0.6973\n-0.0721\n0.2353\n-0.0747\neligible"
   },
   {
     "objectID": "methodology.html#supervised-learning-extension",
     "href": "methodology.html#supervised-learning-extension",
     "title": "Methodology",
     "section": "Supervised Learning Extension",
-    "text": "Supervised Learning Extension\nThe ML layer follows Jake’s label then predict framework.\n\nLabel Construction\nFor each breakout event:\n\nlook ahead 15 trading days\nmark the trade as 1 if price reaches +1.5 ATR before -1.0 ATR\nmark it as 0 otherwise\n\nThis uses future data only to create the label. The model never sees future information as input features.\n\n\nModel Inputs\nThe final selected-asset ML overlay uses a compact core_iv feature set:\n\nbreakout_strength\ndistance_from_trend\ndistance_from_upper_channel\nchannel_width_pct\natr_pct\niv_hv_spread\niv_hv_ratio\niv_zscore_60d\niv_trend_20d\n\nThese were chosen because they balance:\n\nbreakout quality\nlocal volatility expansion\noptions-implied volatility confirmation\n\n\n\nModel Usage\nThe final ML overlay does not delete trades outright. Instead, it scales position size up or down on QQQ based on the model’s estimated breakout quality. This kept the strategy interpretable while producing an out-of-sample improvement in both Sharpe ratio and total return, at the cost of a slightly worse max drawdown.\n\n\n\n\n\n\n\n\n\nstrategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\n0\nbaseline_test_period\n11\n1.342290\n0.029143\n0.818182\n-0.008107\n0.008011\n\n\n1\nfiltered_test_period\n11\n1.384956\n0.034040\n0.818182\n-0.009363\n0.008011"
+    "text": "Supervised Learning Extension\n\nLabel Construction\nFor each breakout event:\n\nlook ahead 15 trading days\nmark the trade as 1 if price reaches +1.5 ATR before -1.0 ATR\nmark it as 0 otherwise\n\nThis uses future data only to create the label. The model never sees future information as input features.\n\n\nModel Inputs\nThe final selected-asset ML overlay uses a compact core_iv feature set:\n\nbreakout_strength\ndistance_from_trend\ndistance_from_upper_channel\nchannel_width_pct\natr_pct\niv_hv_spread\niv_hv_ratio\niv_zscore_60d\niv_trend_20d\n\nThese were chosen because they balance:\n\nbreakout quality\nlocal volatility expansion\noptions-implied volatility confirmation\n\n\n\nModel Usage\nTrain the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on QQQ based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.\n\n\nHard Filter vs Position Scaling\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097\n\n\n\n\n  \n\n\n\n\nThis strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains."
   },
   {
     "objectID": "asset-selection.html",
     "href": "asset-selection.html",
     "title": "Asset Selection",
     "section": "",
-    "text": "symbol\ntrades\nsharpe\ntotal_return\nwin_rate\nmax_drawdown\nselection_status\n\n\n\n\n0\nQQQ\n48\n1.014664\n0.104086\n0.666667\n-0.022973\neligible\n\n\n1\nIWM\n36\n0.271480\n0.024410\n0.500000\n-0.020857\neligible\n\n\n2\nGLD\n57\n0.029216\n0.001966\n0.438596\n-0.047257\neligible\n\n\n3\nXLE\n43\n0.021366\n0.001121\n0.558140\n-0.042494\neligible\n\n\n4\nSPY\n58\n0.002656\n-0.000865\n0.586207\n-0.037575\neligible\n\n\n5\nTLT\n34\n-0.697623\n-0.072056\n0.235294\n-0.074712\neligible"
+    "text": "symbol\ntrades\nsharpe\ntotal_return\nwin_rate\nmax_drawdown\nselection_status\n\n\n\n\nQQQ\n48\n1.0666\n0.1107\n0.6875\n-0.0230\neligible\n\n\nIWM\n36\n0.2714\n0.0244\n0.5000\n-0.0209\neligible\n\n\nGLD\n57\n0.0292\n0.0020\n0.4386\n-0.0473\neligible\n\n\nXLE\n43\n0.0214\n0.0011\n0.5581\n-0.0425\neligible\n\n\nSPY\n58\n0.0027\n-0.0009\n0.5862\n-0.0376\neligible\n\n\nTLT\n34\n-0.6973\n-0.0721\n0.2353\n-0.0747\neligible"
   },
   {
     "objectID": "asset-selection.html#planned-universe",
@@ -84,18 +84,88 @@
     "text": "Current Status\nThe screening table above is the live universe-level breakout screen. The project evaluates the same baseline rules across the ETF universe, then chooses the symbol with the strongest strategy-level risk-adjusted profile. That is why QQQ is the current showcase asset rather than simply the ETF with the highest raw momentum.\nThe screening exports are saved in:\n\ndata/asset_screening.csv\ndata/selected_asset.json"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Volatility Breakout Strategy",
+    "section": "",
+    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers.\nField\nValue\n\n\n\n\n0\nStrategy\nTuned baseline volatility and channel breakout\n\n\n1\nData source\nshinybroker / Interactive Brokers historical d...\n\n\n2\nSelected symbol\nQQQ\n\n\n3\nSample window\n2021-04-26 to 2026-04-24\n\n\n4\nStatus\nBaseline strategy tuned and implemented"
+  },
+  {
+    "objectID": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
+    "href": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
+    "title": "Volatility Breakout Strategy",
+    "section": "",
+    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
+  },
+  {
+    "objectID": "index.html#project-scope",
+    "href": "index.html#project-scope",
+    "title": "Volatility Breakout Strategy",
+    "section": "Project Scope",
+    "text": "Project Scope\n\nBuild a transparent breakout strategy with explicit entry and exit rules.\nBacktest the strategy on historical price data using a repeatable Python workflow.\nLog every trade so entries, exits, and holding periods are auditable.\nExtend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay."
+  },
+  {
+    "objectID": "index.html#strategy-snapshot",
+    "href": "index.html#strategy-snapshot",
+    "title": "Volatility Breakout Strategy",
+    "section": "Strategy Snapshot",
+    "text": "Strategy Snapshot\nThe final baseline is a tuned QQQ channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact QQQ-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation."
+  },
+  {
+    "objectID": "index.html#what-to-review",
+    "href": "index.html#what-to-review",
+    "title": "Volatility Breakout Strategy",
+    "section": "What To Review",
+    "text": "What To Review\n\nAsset Selection explains the ETF universe and why QQQ became the showcase asset.\nMethodology documents the final trading rules, labels, feature set, and parameter choices.\nResults summarizes the tuned baseline and the final aggr4 ML overlay.\nTrade Log contains the blotter, ledger preview, and downloadable output files.\nMonitoring defines how to judge whether the strategy is still behaving as expected after deployment.\nAbout introduces the project team."
+  },
+  {
+    "objectID": "monitoring.html",
+    "href": "monitoring.html",
+    "title": "Monitoring",
+    "section": "",
+    "text": "strategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline_test_period\n11\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nfiltered_test_period\n11\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
+  },
+  {
+    "objectID": "monitoring.html#how-we-will-know-performance-is-still-in-line",
+    "href": "monitoring.html#how-we-will-know-performance-is-still-in-line",
+    "title": "Monitoring",
+    "section": "How We Will Know Performance Is Still In Line",
+    "text": "How We Will Know Performance Is Still In Line\nGoing forward, the strategy should be monitored through rolling behavior rather than single wins and losses. We would compare live or forward results against the out-of-sample backtest using:\n\nrolling expectancy\nrolling hit rate\nrolling Sharpe ratio\ndrawdown depth\naverage holding period\noutcome mix across Successful, Stop-loss triggered, Timed out, and Breakout failure\n\nThe key idea is that we do not expect each month to match the backtest exactly. We expect live behavior to stay inside a reasonable range around the validated backtest distribution."
+  },
+  {
+    "objectID": "monitoring.html#how-we-will-quantify-when-the-strategy-stops-working",
+    "href": "monitoring.html#how-we-will-quantify-when-the-strategy-stops-working",
+    "title": "Monitoring",
+    "section": "How We Will Quantify When The Strategy Stops Working",
+    "text": "How We Will Quantify When The Strategy Stops Working\nThe strategy will be treated as impaired when one or more of the following conditions persist long enough to suggest regime failure rather than normal noise:\n\nRolling expectancy &lt; 0\n\nusing the latest 50 trades\n\nRolling hit rate falls materially below the backtest range\n\nfor several consecutive months\n\nDrawdown exceeds a historical stress threshold\n\nfor example worse than 1.5x the historical max drawdown\n\nML overlay no longer improves the baseline\n\nthe scaling extension should continue to add value relative to the control strategy\n\nPayoff shape breaks\n\nthe average winner should remain large enough relative to the average loser to justify a whale-hunting breakout approach"
+  },
+  {
+    "objectID": "monitoring.html#baseline-versus-overlay-monitoring",
+    "href": "monitoring.html#baseline-versus-overlay-monitoring",
+    "title": "Monitoring",
+    "section": "Baseline Versus Overlay Monitoring",
+    "text": "Baseline Versus Overlay Monitoring\nThe project should monitor both layers separately:\n\nBaseline breakout strategy: is the raw breakout rule still behaving like the original backtest?\nML overlay: is the model-based position scaling still adding value relative to the tuned baseline?\n\nThis matters because the ML extension is intentionally small. If the overlay stops helping, the baseline may still remain tradable.\n\n\nPayoff Shape To Monitor\n\n  \n  \n    \n\n\n\nMetric\nValue\n\n\n\n\nAverage winner\n1.41%\n\n\nAverage loser\n-1.17%\n\n\nPayoff ratio\n1.21\n\n\nLargest winner\n4.40%\n\n\nLargest loser\n-2.97%\n\n\nTop 3 trade PnL share\n47.57%"
+  },
+  {
+    "objectID": "monitoring.html#final-monitoring-interpretation",
+    "href": "monitoring.html#final-monitoring-interpretation",
+    "title": "Monitoring",
+    "section": "Final Monitoring Interpretation",
+    "text": "Final Monitoring Interpretation\nThe practical decision rule is:\n\nkeep trading if behavior remains inside expected ranges\nreduce confidence if expectancy and hit rate weaken together\npause or re-estimate the strategy if drawdown and trade-quality diagnostics both break\n\nThat gives the project a concrete answer to the two most important forward-looking questions:\n\nhow do we know performance is still consistent with the backtest?\nhow do we know when the strategy has stopped working?"
+  },
+  {
     "objectID": "results.html",
     "href": "results.html",
     "title": "Backtest Results",
     "section": "",
-    "text": "Metric\nValue\n\n\n\n\n0\nSharpe Ratio\n1.01\n\n\n1\nExpected Return Per Trade\n0.57%\n\n\n2\nAverage Trade Lifetime\n5.8 days\n\n\n3\nMax Drawdown\n-2.30%\n\n\n4\nWin Rate\n66.67%\n\n\n5\nTrade Count\n48\n\n\n6\nTotal Return\n10.41%\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nstrategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\n0\nbaseline_test_period\n11\n1.342290\n0.029143\n0.818182\n-0.008107\n0.008011\n\n\n1\nfiltered_test_period\n11\n1.384956\n0.034040\n0.818182\n-0.009363\n0.008011"
+    "text": "strategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
   },
   {
     "objectID": "results.html#executive-summary",
     "href": "results.html#executive-summary",
     "title": "Backtest Results",
     "section": "Executive Summary",
-    "text": "Executive Summary\nThis project produced a two-layer final result. The core strategy is a tuned QQQ channel breakout system with explicit volatility and risk-control rules: a 20-day breakout entry, a 20-day trend filter, a 0.20 ATR breakout-strength filter, a 2.0 ATR stop-loss, a 3.0 ATR trailing stop, a 15-day time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of 1.34, a total return of 2.91%, a win rate of 81.8%, and a max drawdown of -0.81%.\nOn top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a QQQ-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including IV/HV spread, IV/HV ratio, and IV trend, to scale position size up or down. Under the final aggr4 scaling rule, the overlay improved the out-of-sample Sharpe ratio to 1.38 and total return to 3.40%, while slightly increasing max drawdown to -0.94%. Overall, the evidence suggests that the ML overlay is a small but real enhancement to an already viable breakout baseline, rather than a wholesale replacement for the strategy."
+    "text": "Executive Summary\nThis project produced a two-layer final result. The core strategy is a tuned QQQ channel breakout system with explicit volatility and risk-control rules: a 20-day breakout entry, a 20-day trend filter, a 0.20 ATR breakout-strength filter, a 2.0 ATR stop-loss, a 3.0 ATR trailing stop, a 15-day time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of 1.34, a total return of 2.91%, a win rate of 81.8%, and a max drawdown of -0.81%.\nOn top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a QQQ-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including IV/HV spread, IV/HV ratio, and IV trend. The report compares the professor’s hard-filter idea against the final position-scaling overlay, so the ML contribution is evaluated relative to a clear baseline rather than asserted in isolation."
   },
   {
     "objectID": "results.html#baseline-summary",
@@ -109,7 +179,7 @@
     "href": "results.html#ml-overlay-summary",
     "title": "Backtest Results",
     "section": "ML Overlay Summary",
-    "text": "ML Overlay Summary\nThe final ML extension is not a fully separate strategy. It is a position-scaling overlay on top of the baseline breakout rule.\n\nAsset scope: QQQ only\nModel type: logistic classifier\nLabel framework: label then predict\nFeature set: compact core_iv breakout and implied-volatility features\nUse in backtest: scale position size mildly up or down rather than deleting all low-score trades\n\nThe resulting out-of-sample comparison shows a clear but still incremental improvement in both total return and Sharpe ratio relative to the baseline. The improvement comes from mild position scaling rather than a wholesale replacement of the breakout rule."
+    "text": "ML Overlay Summary\nThe final ML extension is not a fully separate strategy. It is a position-scaling overlay on top of the baseline breakout rule.\n\nAsset scope: QQQ only\nModel type: logistic classifier\nLabel framework: label then predict\nFeature set: compact core_iv breakout and implied-volatility features\nUse in backtest: scale position size mildly up or down rather than deleting all low-score trades\n\nThe resulting out-of-sample comparison shows a clear but still incremental improvement in both total return and Sharpe ratio relative to the baseline. The improvement comes from mild position scaling rather than a wholesale replacement of the breakout rule.\n\n\nOut-of-Sample Overlay Comparison\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
   },
   {
     "objectID": "results.html#price-chart-with-trade-markers",
@@ -137,91 +207,56 @@
     "href": "results.html#trade-outcome-analysis",
     "title": "Backtest Results",
     "section": "Trade Outcome Analysis",
-    "text": "Trade Outcome Analysis\n\n\n\n\n\n\n\n\n\nOutcome\nTrades\n\n\n\n\n0\nSuccessful\n32\n\n\n1\nBreakout failure\n13\n\n\n2\nStop-loss triggered\n2\n\n\n3\nTimed out\n1"
+    "text": "Trade Outcome Analysis\n\n\nPayoff Shape\n\n  \n  \n    \n\n\n\nMetric\nValue\n\n\n\n\nAverage winner\n1.41%\n\n\nAverage loser\n-1.17%\n\n\nPayoff ratio\n1.21\n\n\nLargest winner\n4.40%\n\n\nLargest loser\n-2.97%\n\n\nTop 3 trade PnL share\n47.57%"
   },
   {
     "objectID": "results.html#what-the-final-result-means",
     "href": "results.html#what-the-final-result-means",
     "title": "Backtest Results",
     "section": "What The Final Result Means",
-    "text": "What The Final Result Means\nThe project now has two meaningful layers:\n\nA tuned baseline breakout strategy that is already tradable and positive after costs.\nA compact implied-volatility-aware ML overlay that improves out-of-sample Sharpe and total return on the showcase asset, while accepting a slightly deeper drawdown.\n\nThe improvement is not huge, and that is important to state honestly. This is not a magical black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline."
+    "text": "What The Final Result Means\nThe project now has two meaningful layers:\n\nA tuned baseline breakout strategy that is already tradable and positive after costs.\nA compact implied-volatility-aware ML overlay that improves out-of-sample Sharpe and total return on the showcase asset, while accepting a slightly deeper drawdown.\n\nThe improvement is not huge, and that is important to state honestly. This is not a magical black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline.\nThe strategy should also be read as whale hunting. It is not trying to win every breakout. It is trying to keep failed breakouts small, exit stale trades, and preserve enough exposure for the subset of breakouts that turn into real volatility expansions."
   },
   {
-    "objectID": "monitoring.html",
-    "href": "monitoring.html",
-    "title": "Monitoring",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Metric\nThreshold\n\n\n\n\n0\nRolling expectancy\n&lt; 0 over the latest 50 trades\n\n\n1\nRolling hit rate\nBelow the backtest range for 3 consecutive months\n\n\n2\nDrawdown\nWorse than 1.5x historical max drawdown\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nstrategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\n0\nbaseline_test_period\n11\n1.342290\n0.029143\n0.818182\n-0.008107\n0.008011\n\n\n1\nfiltered_test_period\n11\n1.384956\n0.034040\n0.818182\n-0.009363\n0.008011"
+    "text": "This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
   },
   {
-    "objectID": "monitoring.html#how-we-will-know-performance-is-still-in-line",
-    "href": "monitoring.html#how-we-will-know-performance-is-still-in-line",
-    "title": "Monitoring",
-    "section": "How We Will Know Performance Is Still In Line",
-    "text": "How We Will Know Performance Is Still In Line\nGoing forward, the strategy should be monitored through rolling behavior rather than single wins and losses. We would compare live or forward results against the out-of-sample backtest using:\n\nrolling expectancy\nrolling hit rate\nrolling Sharpe ratio\ndrawdown depth\naverage holding period\noutcome mix across Successful, Stop-loss triggered, Timed out, and Breakout failure\n\nThe key idea is that we do not expect each month to match the backtest exactly. We expect live behavior to stay inside a reasonable range around the validated backtest distribution."
-  },
-  {
-    "objectID": "monitoring.html#how-we-will-quantify-when-the-strategy-stops-working",
-    "href": "monitoring.html#how-we-will-quantify-when-the-strategy-stops-working",
-    "title": "Monitoring",
-    "section": "How We Will Quantify When The Strategy Stops Working",
-    "text": "How We Will Quantify When The Strategy Stops Working\nThe strategy will be treated as impaired when one or more of the following conditions persist long enough to suggest regime failure rather than normal noise:\n\nRolling expectancy &lt; 0\n\nusing the latest 50 trades\n\nRolling hit rate falls materially below the backtest range\n\nfor several consecutive months\n\nDrawdown exceeds a historical stress threshold\n\nfor example worse than 1.5x the historical max drawdown\n\nML overlay no longer improves the baseline\n\nthe scaling extension should continue to add value relative to the control strategy"
-  },
-  {
-    "objectID": "monitoring.html#baseline-versus-overlay-monitoring",
-    "href": "monitoring.html#baseline-versus-overlay-monitoring",
-    "title": "Monitoring",
-    "section": "Baseline Versus Overlay Monitoring",
-    "text": "Baseline Versus Overlay Monitoring\nThe project should monitor both layers separately:\n\nBaseline breakout strategy: is the raw breakout rule still behaving like the original backtest?\nML overlay: is the model-based position scaling still adding value relative to the tuned baseline?\n\nThis matters because the ML extension is intentionally small. If the overlay stops helping, the baseline may still remain tradable."
-  },
-  {
-    "objectID": "monitoring.html#final-monitoring-interpretation",
-    "href": "monitoring.html#final-monitoring-interpretation",
-    "title": "Monitoring",
-    "section": "Final Monitoring Interpretation",
-    "text": "Final Monitoring Interpretation\nThe practical decision rule is:\n\nkeep trading if behavior remains inside expected ranges\nreduce confidence if expectancy and hit rate weaken together\npause or re-estimate the strategy if drawdown and trade-quality diagnostics both break\n\nThat gives the project a concrete answer to the two most important forward-looking questions:\n\nhow do we know performance is still consistent with the backtest?\nhow do we know when the strategy has stopped working?"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Volatility Breakout Final Project",
+    "objectID": "about.html#project-team",
+    "href": "about.html#project-team",
+    "title": "About",
     "section": "",
-    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers.\nField\nValue\n\n\n\n\n0\nProject\nFINTECH 533 Final Project\n\n\n1\nStrategy\nTuned baseline volatility and channel breakout\n\n\n2\nData source\nshinybroker / Interactive Brokers historical d...\n\n\n3\nSelected symbol\nQQQ\n\n\n4\nSample window\n2021-04-26 to 2026-04-23\n\n\n5\nStatus\nBaseline strategy tuned and implemented"
+    "text": "This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
   },
   {
-    "objectID": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
-    "href": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
-    "title": "Volatility Breakout Final Project",
-    "section": "",
-    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
+    "objectID": "about.html#abhinav-sharaff",
+    "href": "about.html#abhinav-sharaff",
+    "title": "About",
+    "section": "Abhinav Sharaff",
+    "text": "Abhinav Sharaff\nAbhinav worked on the strategy research workflow, including the baseline breakout rules, backtest interpretation, Quarto reporting structure, and final project presentation materials."
   },
   {
-    "objectID": "index.html#project-scope",
-    "href": "index.html#project-scope",
-    "title": "Volatility Breakout Final Project",
-    "section": "Project Scope",
-    "text": "Project Scope\n\nBuild a transparent breakout strategy with explicit entry and exit rules.\nBacktest the strategy on historical price data using a repeatable Python workflow.\nLog every trade so entries, exits, and holding periods are auditable.\nExtend the baseline strategy with a supervised learning position-scaling overlay for breakout quality."
+    "objectID": "about.html#yiting-sun",
+    "href": "about.html#yiting-sun",
+    "title": "About",
+    "section": "Yiting Sun",
+    "text": "Yiting Sun\nYiting worked on the data and modeling components, including the ETF universe analysis, feature engineering, supervised-learning framework, and evaluation of the implied-volatility overlay."
   },
   {
-    "objectID": "index.html#strategy-snapshot",
-    "href": "index.html#strategy-snapshot",
-    "title": "Volatility Breakout Final Project",
-    "section": "Strategy Snapshot",
-    "text": "Strategy Snapshot\nThe final baseline is a tuned QQQ channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact QQQ-only logistic model that uses breakout quality plus options-implied-volatility features to scale position size up or down. In the current out-of-sample comparison, the ML overlay improves both total return and Sharpe ratio, with a slightly worse max drawdown."
-  },
-  {
-    "objectID": "index.html#what-to-review",
-    "href": "index.html#what-to-review",
-    "title": "Volatility Breakout Final Project",
-    "section": "What To Review",
-    "text": "What To Review\n\nAsset Selection explains the ETF universe and why QQQ became the showcase asset.\nMethodology documents the final trading rules, labels, feature set, and parameter choices.\nResults summarizes the tuned baseline and the final aggr4 ML overlay.\nTrade Log contains the blotter, ledger preview, and downloadable output files.\nMonitoring defines how to judge whether the strategy is still behaving as expected after deployment."
+    "objectID": "about.html#project-focus",
+    "href": "about.html#project-focus",
+    "title": "About",
+    "section": "Project Focus",
+    "text": "Project Focus\nThe team focused on keeping the strategy explainable: clear entry and exit rules, auditable blotter and ledger outputs, and an ML extension that adjusts breakout exposure without replacing the core trading logic."
   },
   {
     "objectID": "trade-log.html",
     "href": "trade-log.html",
     "title": "Trade Log",
     "section": "",
-    "text": "entry_timestamp\nexit_timestamp\ndirection\nqty\nentry_price\nexit_price\nexit_reason\ntrade_return\npnl\n\n\n\n\n0\n2021-06-11\n2021-06-16\nLONG\n137.0\n340.36\n341.010000\nbreakout_failure\n-0.000092\n-4.297690\n\n\n1\n2021-06-18\n2021-06-23\nLONG\n127.0\n343.63\n347.740000\nbreakout_failure\n0.009949\n434.166010\n\n\n2\n2021-06-25\n2021-06-30\nLONG\n135.0\n350.47\n354.430000\nbreakout_failure\n0.009288\n439.438500\n\n\n3\n2021-07-06\n2021-07-09\nLONG\n139.0\n359.27\n361.010000\nbreakout_failure\n0.002838\n141.741080\n\n\n4\n2021-07-26\n2021-07-29\nLONG\n118.0\n367.49\n366.480000\nbreakout_failure\n-0.004746\n-205.788460\n\n\n5\n2021-08-24\n2021-08-31\nLONG\n128.0\n373.83\n379.950000\nbreakout_failure\n0.014355\n686.876160\n\n\n6\n2021-10-20\n2021-10-27\nLONG\n93.0\n375.94\n380.000000\nbreakout_failure\n0.008789\n307.277580\n\n\n7\n2021-10-29\n2021-11-05\nLONG\n117.0\n381.06\n398.600000\nbreakout_failure\n0.043983\n1960.959780\n\n\n8\n2021-11-22\n2021-11-23\nLONG\n117.0\n405.57\n396.755714\nstop_loss\n-0.023711\n-1125.143537\n\n\n9\n2021-12-28\n2021-12-31\nLONG\n65.0\n404.36\n397.850000\nbreakout_failure\n-0.018083\n-475.293650\n\n\n10\n2022-03-23\n2022-03-30\nLONG\n50.0\n353.99\n367.090000\nbreakout_failure\n0.034970\n618.946000\n\n\n11\n2022-07-20\n2022-07-25\nLONG\n72.0\n298.73\n300.270000\nbreakout_failure\n0.003150\n67.752000\n\n\n12\n2022-08-01\n2022-08-05\nLONG\n67.0\n313.66\n321.750000\nbreakout_failure\n0.023766\n499.457530\n\n\n13\n2022-08-16\n2022-08-19\nLONG\n72.0\n332.06\n322.860000\nbreakout_failure\n-0.029678\n-709.554240\n\n\n14\n2022-11-14\n2022-11-17\nLONG\n63.0\n285.86\n284.810000\nbreakout_failure\n-0.005669\n-102.102210\n\n\n15\n2023-01-24\n2023-01-30\nLONG\n86.0\n287.31\n290.270000\nbreakout_failure\n0.008292\n204.888120\n\n\n16\n2023-02-02\n2023-02-07\nLONG\n84.0\n307.54\n309.880000\nbreakout_failure\n0.005601\n144.696720\n\n\n17\n2023-04-03\n2023-04-06\nLONG\n86.0\n318.77\n318.050000\nbreakout_failure\n-0.004256\n-116.686520\n\n\n18\n2023-05-11\n2023-05-16\nLONG\n112.0\n325.70\n327.160000\nbreakout_failure\n0.002478\n90.399680\n\n\n19\n2023-05-18\n2023-05-23\nLONG\n133.0\n331.52\n333.360000\nbreakout_failure\n0.003545\n156.290960\n\n\n20\n2023-05-26\n2023-06-01\nLONG\n127.0\n340.76\n352.010000\nbreakout_failure\n0.030981\n1340.768210\n\n\n21\n2023-06-13\n2023-06-16\nLONG\n93.0\n363.31\n367.930000\nbreakout_failure\n0.010704\n361.654680\n\n\n22\n2023-07-14\n2023-07-19\nLONG\n104.0\n379.59\n385.650000\nbreakout_failure\n0.013949\n550.655040\n\n\n23\n2023-11-13\n2023-11-16\nLONG\n92.0\n376.79\n385.950000\nbreakout_failure\n0.022286\n772.547920\n\n\n24\n2023-11-21\n2023-11-27\nLONG\n106.0\n389.01\n389.170000\nbreakout_failure\n-0.001589\n-65.527080\n\n\n25\n2023-12-12\n2023-12-15\nLONG\n120.0\n395.56\n405.340000\nbreakout_failure\n0.022700\n1077.492000\n\n\n26\n2023-12-20\n2023-12-27\nLONG\n113.0\n408.35\n411.500000\nbreakout_failure\n0.005706\n263.306950\n\n\n27\n2024-01-22\n2024-01-25\nLONG\n94.0\n423.41\n426.350000\nbreakout_failure\n0.004937\n196.482560\n\n\n28\n2024-02-08\n2024-02-13\nLONG\n99.0\n432.11\n428.550000\nbreakout_failure\n-0.010230\n-437.645340\n\n\n29\n2024-03-04\n2024-03-05\nLONG\n92.0\n445.61\n434.091429\nstop_loss\n-0.027823\n-1140.641103\n\n\n30\n2024-05-15\n2024-05-22\nLONG\n93.0\n448.43\n455.710000\nbreakout_failure\n0.014218\n592.954980\n\n\n31\n2024-06-06\n2024-06-18\nLONG\n98.0\n464.22\n485.210000\nbreakout_failure\n0.043170\n1963.975860\n\n\n32\n2024-07-05\n2024-07-11\nLONG\n101.0\n491.90\n491.930000\nbreakout_failure\n-0.001939\n-96.336830\n\n\n33\n2024-09-27\n2024-10-02\nLONG\n73.0\n490.50\n481.950000\nbreakout_failure\n-0.019414\n-695.138850\n\n\n34\n2024-10-15\n2024-10-18\nLONG\n88.0\n497.83\n494.470000\nbreakout_failure\n-0.008743\n-383.002400\n\n\n35\n2024-11-07\n2024-11-12\nLONG\n75.0\n508.40\n512.910000\nbreakout_failure\n0.006862\n261.651750\n\n\n36\n2024-12-05\n2024-12-10\nLONG\n81.0\n523.31\n520.600000\nbreakout_failure\n-0.007173\n-304.066710\n\n\n37\n2024-12-12\n2024-12-17\nLONG\n91.0\n527.68\n535.800000\nbreakout_failure\n0.013373\n642.143320\n\n\n38\n2025-02-14\n2025-02-20\nLONG\n62.0\n536.08\n537.230000\nbreakout_failure\n0.000143\n4.754780\n\n\n39\n2025-05-13\n2025-05-16\nLONG\n51.0\n509.19\n521.510000\nbreakout_failure\n0.022171\n575.754300\n\n\n40\n2025-06-25\n2025-07-01\nLONG\n79.0\n542.06\n546.990000\nbreakout_failure\n0.007086\n303.435050\n\n\n41\n2025-07-07\n2025-07-10\nLONG\n82.0\n553.52\n555.450000\nbreakout_failure\n0.001483\n67.324460\n\n\n42\n2025-08-13\n2025-08-18\nLONG\n79.0\n582.76\n577.110000\nbreakout_failure\n-0.011686\n-537.979730\n\n\n43\n2025-09-15\n2025-09-23\nLONG\n93.0\n588.44\n598.200000\nbreakout_failure\n0.014570\n797.322480\n\n\n44\n2025-10-03\n2025-10-09\nLONG\n95.0\n606.51\n610.700000\nbreakout_failure\n0.004901\n282.415050\n\n\n45\n2025-10-27\n2025-10-30\nLONG\n54.0\n624.51\n626.050000\nbreakout_failure\n0.000463\n15.629760\n\n\n46\n2026-04-14\n2026-04-20\nLONG\n46.0\n620.23\n646.790000\nbreakout_failure\n0.040780\n1163.477080\n\n\n47\n2026-04-23\n2026-04-23\nLONG\n53.0\n653.49\n651.420000\ntimeout\n-0.005164\n-178.870230"
+    "text": "entry_timestamp\nexit_timestamp\ndirection\nqty\nentry_price\nexit_price\nexit_reason\ntrade_return\npnl\n\n\n\n\n2021-06-11 00:00:00\n2021-06-16 00:00:00\nLONG\n137.0000\n340.3600\n341.0100\nbreakout_failure\n-0.0001\n-4.2977\n\n\n2021-06-18 00:00:00\n2021-06-23 00:00:00\nLONG\n127.0000\n343.6300\n347.7400\nbreakout_failure\n0.0099\n434.1660\n\n\n2021-06-25 00:00:00\n2021-06-30 00:00:00\nLONG\n135.0000\n350.4700\n354.4300\nbreakout_failure\n0.0093\n439.4385\n\n\n2021-07-06 00:00:00\n2021-07-09 00:00:00\nLONG\n139.0000\n359.2700\n361.0100\nbreakout_failure\n0.0028\n141.7411\n\n\n2021-07-26 00:00:00\n2021-07-29 00:00:00\nLONG\n118.0000\n367.4900\n366.4800\nbreakout_failure\n-0.0047\n-205.7885\n\n\n2021-08-24 00:00:00\n2021-08-31 00:00:00\nLONG\n128.0000\n373.8300\n379.9500\nbreakout_failure\n0.0144\n686.8762\n\n\n2021-10-20 00:00:00\n2021-10-27 00:00:00\nLONG\n93.0000\n375.9400\n380.0000\nbreakout_failure\n0.0088\n307.2776\n\n\n2021-10-29 00:00:00\n2021-11-05 00:00:00\nLONG\n117.0000\n381.0600\n398.6000\nbreakout_failure\n0.0440\n1960.9598\n\n\n2021-11-22 00:00:00\n2021-11-23 00:00:00\nLONG\n117.0000\n405.5700\n396.7557\nstop_loss\n-0.0237\n-1125.1435\n\n\n2021-12-28 00:00:00\n2021-12-31 00:00:00\nLONG\n65.0000\n404.3600\n397.8500\nbreakout_failure\n-0.0181\n-475.2936\n\n\n2022-03-23 00:00:00\n2022-03-30 00:00:00\nLONG\n50.0000\n353.9900\n367.0900\nbreakout_failure\n0.0350\n618.9460\n\n\n2022-07-20 00:00:00\n2022-07-25 00:00:00\nLONG\n72.0000\n298.7300\n300.2700\nbreakout_failure\n0.0032\n67.7520\n\n\n2022-08-01 00:00:00\n2022-08-05 00:00:00\nLONG\n67.0000\n313.6600\n321.7500\nbreakout_failure\n0.0238\n499.4575\n\n\n2022-08-16 00:00:00\n2022-08-19 00:00:00\nLONG\n72.0000\n332.0600\n322.8600\nbreakout_failure\n-0.0297\n-709.5542\n\n\n2022-11-14 00:00:00\n2022-11-17 00:00:00\nLONG\n63.0000\n285.8600\n284.8100\nbreakout_failure\n-0.0057\n-102.1022\n\n\n2023-01-24 00:00:00\n2023-01-30 00:00:00\nLONG\n86.0000\n287.3100\n290.2700\nbreakout_failure\n0.0083\n204.8881\n\n\n2023-02-02 00:00:00\n2023-02-07 00:00:00\nLONG\n84.0000\n307.5400\n309.8800\nbreakout_failure\n0.0056\n144.6967\n\n\n2023-04-03 00:00:00\n2023-04-06 00:00:00\nLONG\n86.0000\n318.7700\n318.0500\nbreakout_failure\n-0.0043\n-116.6865\n\n\n2023-05-11 00:00:00\n2023-05-16 00:00:00\nLONG\n112.0000\n325.7000\n327.1600\nbreakout_failure\n0.0025\n90.3997\n\n\n2023-05-18 00:00:00\n2023-05-23 00:00:00\nLONG\n133.0000\n331.5200\n333.3600\nbreakout_failure\n0.0035\n156.2910\n\n\n2023-05-26 00:00:00\n2023-06-01 00:00:00\nLONG\n127.0000\n340.7600\n352.0100\nbreakout_failure\n0.0310\n1340.7682\n\n\n2023-06-13 00:00:00\n2023-06-16 00:00:00\nLONG\n93.0000\n363.3100\n367.9300\nbreakout_failure\n0.0107\n361.6547\n\n\n2023-07-14 00:00:00\n2023-07-19 00:00:00\nLONG\n104.0000\n379.5900\n385.6500\nbreakout_failure\n0.0139\n550.6550\n\n\n2023-11-13 00:00:00\n2023-11-16 00:00:00\nLONG\n92.0000\n376.7900\n385.9500\nbreakout_failure\n0.0223\n772.5479\n\n\n2023-11-21 00:00:00\n2023-11-27 00:00:00\nLONG\n106.0000\n389.0100\n389.1700\nbreakout_failure\n-0.0016\n-65.5271\n\n\n2023-12-12 00:00:00\n2023-12-15 00:00:00\nLONG\n120.0000\n395.5600\n405.3400\nbreakout_failure\n0.0227\n1077.4920\n\n\n2023-12-20 00:00:00\n2023-12-27 00:00:00\nLONG\n113.0000\n408.3500\n411.5000\nbreakout_failure\n0.0057\n263.3069\n\n\n2024-01-22 00:00:00\n2024-01-25 00:00:00\nLONG\n94.0000\n423.4100\n426.3500\nbreakout_failure\n0.0049\n196.4826\n\n\n2024-02-08 00:00:00\n2024-02-13 00:00:00\nLONG\n99.0000\n432.1100\n428.5500\nbreakout_failure\n-0.0102\n-437.6453\n\n\n2024-03-04 00:00:00\n2024-03-05 00:00:00\nLONG\n92.0000\n445.6100\n434.0914\nstop_loss\n-0.0278\n-1140.6411\n\n\n2024-05-15 00:00:00\n2024-05-22 00:00:00\nLONG\n93.0000\n448.4300\n455.7100\nbreakout_failure\n0.0142\n592.9550\n\n\n2024-06-06 00:00:00\n2024-06-18 00:00:00\nLONG\n98.0000\n464.2200\n485.2100\nbreakout_failure\n0.0432\n1963.9759\n\n\n2024-07-05 00:00:00\n2024-07-11 00:00:00\nLONG\n101.0000\n491.9000\n491.9300\nbreakout_failure\n-0.0019\n-96.3368\n\n\n2024-09-27 00:00:00\n2024-10-02 00:00:00\nLONG\n73.0000\n490.5000\n481.9500\nbreakout_failure\n-0.0194\n-695.1389\n\n\n2024-10-15 00:00:00\n2024-10-18 00:00:00\nLONG\n88.0000\n497.8300\n494.4700\nbreakout_failure\n-0.0087\n-383.0024\n\n\n2024-11-07 00:00:00\n2024-11-12 00:00:00\nLONG\n75.0000\n508.4000\n512.9100\nbreakout_failure\n0.0069\n261.6517\n\n\n2024-12-05 00:00:00\n2024-12-10 00:00:00\nLONG\n81.0000\n523.3100\n520.6000\nbreakout_failure\n-0.0072\n-304.0667\n\n\n2024-12-12 00:00:00\n2024-12-17 00:00:00\nLONG\n91.0000\n527.6800\n535.8000\nbreakout_failure\n0.0134\n642.1433\n\n\n2025-02-14 00:00:00\n2025-02-20 00:00:00\nLONG\n62.0000\n536.0800\n537.2300\nbreakout_failure\n0.0001\n4.7548\n\n\n2025-05-13 00:00:00\n2025-05-16 00:00:00\nLONG\n51.0000\n509.1900\n521.5100\nbreakout_failure\n0.0222\n575.7543\n\n\n2025-06-25 00:00:00\n2025-07-01 00:00:00\nLONG\n79.0000\n542.0600\n546.9900\nbreakout_failure\n0.0071\n303.4351\n\n\n2025-07-07 00:00:00\n2025-07-10 00:00:00\nLONG\n82.0000\n553.5200\n555.4500\nbreakout_failure\n0.0015\n67.3245\n\n\n2025-08-13 00:00:00\n2025-08-18 00:00:00\nLONG\n79.0000\n582.7600\n577.1100\nbreakout_failure\n-0.0117\n-537.9797\n\n\n2025-09-15 00:00:00\n2025-09-23 00:00:00\nLONG\n93.0000\n588.4400\n598.2000\nbreakout_failure\n0.0146\n797.3225\n\n\n2025-10-03 00:00:00\n2025-10-09 00:00:00\nLONG\n95.0000\n606.5100\n610.7000\nbreakout_failure\n0.0049\n282.4151\n\n\n2025-10-27 00:00:00\n2025-10-30 00:00:00\nLONG\n54.0000\n624.5100\n626.0500\nbreakout_failure\n0.0005\n15.6298\n\n\n2026-04-14 00:00:00\n2026-04-20 00:00:00\nLONG\n46.0000\n620.2300\n646.7900\nbreakout_failure\n0.0408\n1163.4771\n\n\n2026-04-23 00:00:00\n2026-04-24 00:00:00\nLONG\n53.0000\n653.4900\n663.8800\ntimeout\n0.0139\n480.8494"
   },
   {
     "objectID": "trade-log.html#downloads",
@@ -242,21 +277,28 @@
     "href": "trade-log.html#best-and-worst-trades",
     "title": "Trade Log",
     "section": "Best And Worst Trades",
-    "text": "Best And Worst Trades\n\n\nBest trades\n\n\n\n\n\n\n\n\n\nentry_timestamp\nexit_timestamp\nentry_price\nexit_price\ntrade_return\npnl\nexit_reason\n\n\n\n\n7\n2021-10-29\n2021-11-05\n381.06\n398.60\n0.043983\n1960.95978\nbreakout_failure\n\n\n31\n2024-06-06\n2024-06-18\n464.22\n485.21\n0.043170\n1963.97586\nbreakout_failure\n\n\n46\n2026-04-14\n2026-04-20\n620.23\n646.79\n0.040780\n1163.47708\nbreakout_failure\n\n\n\n\n\n\n\nWorst trades\n\n\n\n\n\n\n\n\n\nentry_timestamp\nexit_timestamp\nentry_price\nexit_price\ntrade_return\npnl\nexit_reason\n\n\n\n\n13\n2022-08-16\n2022-08-19\n332.06\n322.860000\n-0.029678\n-709.554240\nbreakout_failure\n\n\n29\n2024-03-04\n2024-03-05\n445.61\n434.091429\n-0.027823\n-1140.641103\nstop_loss\n\n\n8\n2021-11-22\n2021-11-23\n405.57\n396.755714\n-0.023711\n-1125.143537\nstop_loss"
+    "text": "Best And Worst Trades\n\n\nBest Trades\n\n  \n  \n    \n\n\n\nentry_timestamp\nexit_timestamp\nentry_price\nexit_price\ntrade_return\npnl\nexit_reason\n\n\n\n\n2021-10-29 00:00:00\n2021-11-05 00:00:00\n381.0600\n398.6000\n0.0440\n1960.9598\nbreakout_failure\n\n\n2024-06-06 00:00:00\n2024-06-18 00:00:00\n464.2200\n485.2100\n0.0432\n1963.9759\nbreakout_failure\n\n\n2026-04-14 00:00:00\n2026-04-20 00:00:00\n620.2300\n646.7900\n0.0408\n1163.4771\nbreakout_failure\n\n\n\n\n  \n\n\n\n\nWorst Trades\n\n  \n  \n    \n\n\n\nentry_timestamp\nexit_timestamp\nentry_price\nexit_price\ntrade_return\npnl\nexit_reason\n\n\n\n\n2022-08-16 00:00:00\n2022-08-19 00:00:00\n332.0600\n322.8600\n-0.0297\n-709.5542\nbreakout_failure\n\n\n2024-03-04 00:00:00\n2024-03-05 00:00:00\n445.6100\n434.0914\n-0.0278\n-1140.6411\nstop_loss\n\n\n2021-11-22 00:00:00\n2021-11-23 00:00:00\n405.5700\n396.7557\n-0.0237\n-1125.1435\nstop_loss"
   },
   {
     "objectID": "trade-log.html#ledger-preview",
     "href": "trade-log.html#ledger-preview",
     "title": "Trade Log",
     "section": "Ledger Preview",
-    "text": "Ledger Preview\n\n\n\n\n\n\n\n\n\ndate\ncash\nmarket_value\nequity\ndrawdown\n\n\n\n\n1235\n2026-03-26\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1236\n2026-03-27\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1237\n2026-03-30\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1238\n2026-03-31\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1239\n2026-04-01\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1240\n2026-04-02\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1241\n2026-04-06\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1242\n2026-04-07\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1243\n2026-04-08\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1244\n2026-04-09\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1245\n2026-04-10\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1246\n2026-04-13\n109423.95492\n0.00\n109423.95492\n-0.005080\n\n\n1247\n2026-04-14\n80864.84434\n28915.60\n109780.44434\n-0.001838\n\n\n1248\n2026-04-15\n80864.84434\n29320.40\n110185.24434\n0.000000\n\n\n1249\n2026-04-16\n80864.84434\n29461.62\n110326.46434\n0.000000\n\n\n1250\n2026-04-17\n80864.84434\n29847.10\n110711.94434\n0.000000\n\n\n1251\n2026-04-20\n110587.43200\n0.00\n110587.43200\n-0.001125\n\n\n1252\n2026-04-21\n110587.43200\n0.00\n110587.43200\n-0.001125\n\n\n1253\n2026-04-22\n110587.43200\n0.00\n110587.43200\n-0.001125\n\n\n1254\n2026-04-23\n110408.56177\n0.00\n110408.56177\n-0.002740"
+    "text": "Ledger Preview\n\n\nLedger Preview\n\n  \n  \n    \n\n\n\ndate\ncash\nmarket_value\nequity\ndrawdown\n\n\n\n\n2026-03-27 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-03-30 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-03-31 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-01 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-02 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-06 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-07 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-08 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-09 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-10 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-13 00:00:00\n109423.9549\n0.0000\n109423.9549\n-0.0051\n\n\n2026-04-14 00:00:00\n80864.8443\n28915.6000\n109780.4443\n-0.0018\n\n\n2026-04-15 00:00:00\n80864.8443\n29320.4000\n110185.2443\n0.0000\n\n\n2026-04-16 00:00:00\n80864.8443\n29461.6200\n110326.4643\n0.0000\n\n\n2026-04-17 00:00:00\n80864.8443\n29847.1000\n110711.9443\n0.0000\n\n\n2026-04-20 00:00:00\n110587.4320\n0.0000\n110587.4320\n-0.0011\n\n\n2026-04-21 00:00:00\n110587.4320\n0.0000\n110587.4320\n-0.0011\n\n\n2026-04-22 00:00:00\n110587.4320\n0.0000\n110587.4320\n-0.0011\n\n\n2026-04-23 00:00:00\n75917.8270\n34525.2600\n110443.0870\n-0.0024\n\n\n2026-04-24 00:00:00\n111068.2814\n0.0000\n111068.2814\n0.0000"
+  },
+  {
+    "objectID": "trade-log.html#outcome-rates-and-payoff-shape",
+    "href": "trade-log.html#outcome-rates-and-payoff-shape",
+    "title": "Trade Log",
+    "section": "Outcome Rates And Payoff Shape",
+    "text": "Outcome Rates And Payoff Shape\n\n\nPayoff Shape\n\n  \n  \n    \n\n\n\nMetric\nValue\n\n\n\n\nAverage winner\n1.41%\n\n\nAverage loser\n-1.17%\n\n\nPayoff ratio\n1.21\n\n\nLargest winner\n4.40%\n\n\nLargest loser\n-2.97%\n\n\nTop 3 trade PnL share\n47.57%"
   },
   {
     "objectID": "trade-log.html#ml-overlay-comparison",
     "href": "trade-log.html#ml-overlay-comparison",
     "title": "Trade Log",
     "section": "ML Overlay Comparison",
-    "text": "ML Overlay Comparison\n\n\n\n\n\n\n\n\n\nstrategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\n0\nbaseline_test_period\n11\n1.342290\n0.029143\n0.818182\n-0.008107\n0.008011\n\n\n1\nfiltered_test_period\n11\n1.384956\n0.034040\n0.818182\n-0.009363\n0.008011\n\n\n\n\n\n\n\nThe final ML overlay keeps the same trade timestamps as the baseline and changes capital allocation rather than deleting all low-score trades. That is why the overlay comparison is best read as a portfolio-allocation enhancement, not as a second independent blotter."
+    "text": "ML Overlay Comparison\n\n\nBaseline vs ML Overlays\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097\n\n\n\n\n  \n\n\n\n\nThe final ML overlay keeps the same trade timestamps as the baseline and changes capital allocation rather than deleting all low-score trades. That is why the overlay comparison is best read as a portfolio-allocation enhancement, not as a second independent blotter."
   },
   {
     "objectID": "trade-log.html#why-the-trade-log-matters",
@@ -264,5 +306,12 @@
     "title": "Trade Log",
     "section": "Why The Trade Log Matters",
     "text": "Why The Trade Log Matters\nThe trade log makes the backtest auditable. It shows:\n\nwhen entries and exits occurred\nhow long trades stayed open\nwhether exits came from success, stop-loss, timeout, or breakout failure\nhow profits and losses were distributed across trades\nhow the final ML overlay changes position sizing on top of those same breakout opportunities"
+  },
+  {
+    "objectID": "about.html#team",
+    "href": "about.html#team",
+    "title": "About",
+    "section": "Team",
+    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun"
   }
 ]

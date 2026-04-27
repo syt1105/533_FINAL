@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Asset Selection – Volatility Breakout Strategy</title>
+<title>About – Volatility Breakout Strategy</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,7 +26,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -70,9 +70,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -100,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./asset-selection.html" aria-current="page"> 
+    <a class="nav-link" href="./asset-selection.html"> 
 <span class="menu-text">Asset Selection</span></a>
   </li>  
   <li class="nav-item">
@@ -120,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Monitoring</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link active" href="./about.html" aria-current="page"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -139,9 +136,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#planned-universe" id="toc-planned-universe" class="nav-link active" data-scroll-target="#planned-universe">Planned Universe</a></li>
-  <li><a href="#why-asset-selection-matters" id="toc-why-asset-selection-matters" class="nav-link" data-scroll-target="#why-asset-selection-matters">Why Asset Selection Matters</a></li>
-  <li><a href="#current-status" id="toc-current-status" class="nav-link" data-scroll-target="#current-status">Current Status</a></li>
+  <li><a href="#project-team" id="toc-project-team" class="nav-link active" data-scroll-target="#project-team">Project Team</a></li>
+  <li><a href="#team" id="toc-team" class="nav-link" data-scroll-target="#team">Team</a>
+  <ul class="collapse">
+  <li><a href="#abhinav-sharaff" id="toc-abhinav-sharaff" class="nav-link" data-scroll-target="#abhinav-sharaff">Abhinav Sharaff</a></li>
+  <li><a href="#yiting-sun" id="toc-yiting-sun" class="nav-link" data-scroll-target="#yiting-sun">Yiting Sun</a></li>
+  </ul></li>
+  <li><a href="#project-focus" id="toc-project-focus" class="nav-link" data-scroll-target="#project-focus">Project Focus</a></li>
   </ul>
 </nav>
     </div>
@@ -150,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Asset Selection</h1>
+<h1 class="title">About</h1>
 </div>
 
 
@@ -167,149 +168,23 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="33d1821a" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="1">
-<h4 class="anchored">Baseline Universe Screen</h4>
-<div class="interactive-table-wrap" id="asset_selection_screen_wrap">
-  <input class="interactive-table-search" id="asset_selection_screen_search" type="search" placeholder="Search table" aria-label="Search table">
-  <div class="interactive-table-scroll">
-    
-<table id="asset_selection_screen" class="interactive-table caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th">symbol</th>
-<th data-quarto-table-cell-role="th">trades</th>
-<th data-quarto-table-cell-role="th">sharpe</th>
-<th data-quarto-table-cell-role="th">total_return</th>
-<th data-quarto-table-cell-role="th">win_rate</th>
-<th data-quarto-table-cell-role="th">max_drawdown</th>
-<th data-quarto-table-cell-role="th">selection_status</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>QQQ</td>
-<td>48</td>
-<td>1.0666</td>
-<td>0.1107</td>
-<td>0.6875</td>
-<td>-0.0230</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
-<td>IWM</td>
-<td>36</td>
-<td>0.2714</td>
-<td>0.0244</td>
-<td>0.5000</td>
-<td>-0.0209</td>
-<td>eligible</td>
-</tr>
-<tr class="odd">
-<td>GLD</td>
-<td>57</td>
-<td>0.0292</td>
-<td>0.0020</td>
-<td>0.4386</td>
-<td>-0.0473</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
-<td>XLE</td>
-<td>43</td>
-<td>0.0214</td>
-<td>0.0011</td>
-<td>0.5581</td>
-<td>-0.0425</td>
-<td>eligible</td>
-</tr>
-<tr class="odd">
-<td>SPY</td>
-<td>58</td>
-<td>0.0027</td>
-<td>-0.0009</td>
-<td>0.5862</td>
-<td>-0.0376</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
-<td>TLT</td>
-<td>34</td>
-<td>-0.6973</td>
-<td>-0.0721</td>
-<td>0.2353</td>
-<td>-0.0747</td>
-<td>eligible</td>
-</tr>
-</tbody>
-</table>
-
-  </div>
-</div>
-<script>
-(function() {
-  const table = document.getElementById("asset_selection_screen");
-  const search = document.getElementById("asset_selection_screen_search");
-  if (!table || !search) return;
-
-  search.addEventListener("input", function() {
-    const query = search.value.toLowerCase();
-    Array.from(table.tBodies[0].rows).forEach(function(row) {
-      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
-    });
-  });
-
-  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
-    header.style.cursor = "pointer";
-    header.title = "Click to sort";
-    header.addEventListener("click", function() {
-      const tbody = table.tBodies[0];
-      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
-      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
-      header.setAttribute("data-sort", currentDirection);
-      const rows = Array.from(tbody.rows);
-      rows.sort(function(a, b) {
-        const av = a.cells[index].innerText.trim();
-        const bv = b.cells[index].innerText.trim();
-        const an = Number(av.replace(/[%,$]/g, ""));
-        const bn = Number(bv.replace(/[%,$]/g, ""));
-        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
-          ? an - bn
-          : av.localeCompare(bv);
-        return currentDirection === "asc" ? result : -result;
-      });
-      rows.forEach(function(row) { tbody.appendChild(row); });
-    });
-  });
-})();
-</script>
-</div>
-</div>
-<section id="planned-universe" class="level2">
-<h2 class="anchored" data-anchor-id="planned-universe">Planned Universe</h2>
-<p>The initial research universe is:</p>
-<ul>
-<li><code>SPY</code></li>
-<li><code>QQQ</code></li>
-<li><code>IWM</code></li>
-<li><code>XLE</code></li>
-<li><code>GLD</code></li>
-<li><code>TLT</code></li>
-</ul>
-<p>These ETFs are liquid, broad enough to produce different regimes, and realistic to source through Interactive Brokers with <code>shinybroker</code>.</p>
+<section id="project-team" class="level2">
+<h2 class="anchored" data-anchor-id="project-team">Project Team</h2>
+<p>This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay.</p>
 </section>
-<section id="why-asset-selection-matters" class="level2">
-<h2 class="anchored" data-anchor-id="why-asset-selection-matters">Why Asset Selection Matters</h2>
-<p>Breakout behavior is not equally strong in every instrument. Some assets trend after volatility expansion, while others mean-revert quickly. This page is intended to show which assets have the most promising historical breakout profile before the final strategy is selected or ranked.</p>
+<section id="team" class="level2">
+<h2 class="anchored" data-anchor-id="team">Team</h2>
+<section id="abhinav-sharaff" class="level3">
+<h3 class="anchored" data-anchor-id="abhinav-sharaff">Abhinav Sharaff</h3>
+<p><a href="https://www.linkedin.com/in/abhinav-sharaff/">LinkedIn</a></p>
 </section>
-<section id="current-status" class="level2">
-<h2 class="anchored" data-anchor-id="current-status">Current Status</h2>
-<p>The screening table above is the live universe-level breakout screen. The project evaluates the same baseline rules across the ETF universe, then chooses the symbol with the strongest strategy-level risk-adjusted profile. That is why <code>QQQ</code> is the current showcase asset rather than simply the ETF with the highest raw momentum.</p>
-<p>The screening exports are saved in:</p>
-<ul>
-<li><code>data/asset_screening.csv</code></li>
-<li><code>data/selected_asset.json</code></li>
-</ul>
+<section id="yiting-sun" class="level3">
+<h3 class="anchored" data-anchor-id="yiting-sun">Yiting Sun</h3>
+</section>
+</section>
+<section id="project-focus" class="level2">
+<h2 class="anchored" data-anchor-id="project-focus">Project Focus</h2>
+<p>The team focused on keeping the strategy explainable: clear entry and exit rules, auditable blotter and ledger outputs, and an ML extension that adjusts breakout exposure without replacing the core trading logic.</p>
 
 
 </section>

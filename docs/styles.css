@@ -39,6 +39,48 @@ h1, h2, h3, h4, .navbar-title {
   background: rgba(255, 255, 255, 0.84);
 }
 
+.interactive-table-wrap {
+  margin: 1rem 0 1.5rem;
+}
+
+.interactive-table-search {
+  width: min(100%, 22rem);
+  margin-bottom: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #c8ced6;
+  border-radius: 6px;
+}
+
+.interactive-table-scroll {
+  overflow-x: auto;
+  border: 1px solid #d8dde5;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.interactive-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.interactive-table th,
+.interactive-table td {
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid #e8ebf0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.interactive-table th {
+  background: #f5f7fa;
+  font-weight: 650;
+}
+
+.interactive-table tr:hover td {
+  background: #fafcff;
+}
+
 .quarto-title-banner {
   background: transparent;
 }

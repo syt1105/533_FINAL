@@ -8,7 +8,7 @@ OPTIONS_HISTORY_DIR = DATA_DIR / "options_history"
 DOCS_DIR = ROOT / "docs"
 DOWNLOADS_DIR = DOCS_DIR / "downloads"
 
-PROJECT_TITLE = "Volatility Breakout Final Project"
+PROJECT_TITLE = "Volatility Breakout Strategy"
 ASSET_UNIVERSE = ["SPY", "QQQ", "IWM", "XLE", "GLD", "TLT"]
 CONTEXT_SYMBOLS = ["SHY", "VIX"]
 DEFAULT_SELECTED_SYMBOL = "XLE"

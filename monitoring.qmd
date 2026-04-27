@@ -6,12 +6,12 @@ jupyter: python3
 ```{python}
 from analysis.breakout_strategy import run_analysis
 from analysis.filtered_backtest import run_filtered_backtest
-from IPython.display import display
+from analysis.reporting import interactive_table
 
 analysis = run_analysis()
 ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
-display(analysis["monitoring_display"])
-display(ml_overlay["comparison"])
+interactive_table(analysis["monitoring_display"], "monitoring_rules", "Monitoring Rules")
+interactive_table(ml_overlay["comparison"], "monitoring_overlay_comparison", "Overlay Test Summary")
 ```
 
 ## How We Will Know Performance Is Still In Line
@@ -39,6 +39,8 @@ The strategy will be treated as impaired when one or more of the following condi
    - for example worse than `1.5x` the historical max drawdown
 4. `ML overlay no longer improves the baseline`
    - the scaling extension should continue to add value relative to the control strategy
+5. `Payoff shape breaks`
+   - the average winner should remain large enough relative to the average loser to justify a whale-hunting breakout approach
 
 ## Baseline Versus Overlay Monitoring
 
@@ -50,6 +52,10 @@ The project should monitor both layers separately:
   is the model-based position scaling still adding value relative to the tuned baseline?
 
 This matters because the ML extension is intentionally small. If the overlay stops helping, the baseline may still remain tradable.
+
+```{python}
+interactive_table(analysis["trade_quality_summary"], "monitoring_payoff_shape", "Payoff Shape To Monitor")
+```
 
 ## Final Monitoring Interpretation
 

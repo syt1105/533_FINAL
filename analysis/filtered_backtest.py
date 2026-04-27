@@ -164,7 +164,7 @@ def run_filtered_backtest(
     symbol = _selected_symbol()
     if filter_mode == "scaled":
         model_results = train_downside_universe_model()
-    elif filter_mode == "scaled_selected_asset":
+    elif filter_mode in {"scaled_selected_asset", "hard_filter_selected_asset"}:
         model_results = _train_selected_asset_core_iv_model()
     else:
         model_results = train_universe_model()
@@ -189,6 +189,8 @@ def run_filtered_backtest(
         signal_size_multipliers = _scaled_signal_size_multipliers(symbol_predictions)
     elif filter_mode == "scaled_selected_asset":
         signal_size_multipliers = _scaled_upside_signal_size_multipliers(symbol_predictions)
+    elif filter_mode == "hard_filter_selected_asset":
+        allowed_signal_dates, removed_signal_count = _allowed_signal_dates(symbol_predictions, threshold, "top_pick")
     else:
         allowed_signal_dates, removed_signal_count = _allowed_signal_dates(symbol_predictions, threshold, filter_mode)
 
@@ -269,6 +271,51 @@ def run_filtered_backtest(
         "filtered_ledger": filtered_ledger,
         "test_predictions": symbol_predictions,
     }
+
+
+def compare_selected_asset_ml_overlays(probability_threshold: float | None = None) -> pd.DataFrame:
+    """Compare the professor's hard-filter idea with the final sizing overlay."""
+    hard_filter = run_filtered_backtest(
+        probability_threshold=probability_threshold,
+        filter_mode="hard_filter_selected_asset",
+    )
+    scaled = run_filtered_backtest(filter_mode="scaled_selected_asset")
+
+    rows: list[dict[str, object]] = []
+    baseline_metrics = hard_filter["summary"]["baseline_metrics"]
+    rows.append(
+        {
+            "strategy": "baseline",
+            "trade_count": int(hard_filter["summary"]["baseline_trade_count"]),
+            "removed_signal_count": 0,
+            "sharpe_ratio": float(baseline_metrics["Sharpe Ratio"]),
+            "total_return": float(baseline_metrics["Total Return"]),
+            "win_rate": float(baseline_metrics["Win Rate"]),
+            "max_drawdown": float(baseline_metrics["Max Drawdown"]),
+            "expected_return_per_trade": float(baseline_metrics["Expected Return Per Trade"]),
+        }
+    )
+
+    for name, results in [
+        ("ml_hard_filter", hard_filter),
+        ("ml_position_scaling", scaled),
+    ]:
+        summary = results["summary"]
+        metrics = summary["filtered_metrics"]
+        rows.append(
+            {
+                "strategy": name,
+                "trade_count": int(summary["filtered_trade_count"]),
+                "removed_signal_count": int(summary["removed_signal_count"]),
+                "sharpe_ratio": float(metrics["Sharpe Ratio"]),
+                "total_return": float(metrics["Total Return"]),
+                "win_rate": float(metrics["Win Rate"]),
+                "max_drawdown": float(metrics["Max Drawdown"]),
+                "expected_return_per_trade": float(metrics["Expected Return Per Trade"]),
+            }
+        )
+
+    return pd.DataFrame(rows)
 
 
 def save_filtered_backtest_artifacts(results: dict[str, object], filename_prefix: str = "filtered_backtest") -> None:

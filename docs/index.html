@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Volatility Breakout Final Project</title>
+<title>Volatility Breakout Strategy</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Volatility Breakout Final Project</span>
+    <span class="navbar-title">Volatility Breakout Strategy</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -119,6 +119,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./monitoring.html"> 
 <span class="menu-text">Monitoring</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -147,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Volatility Breakout Final Project</h1>
+<h1 class="title">Volatility Breakout Strategy</h1>
 </div>
 
 
@@ -168,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="developing-and-backtesting-a-volatility-breakout-strategy">Developing and Backtesting a Volatility Breakout Strategy</h2>
 <p>This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an <code>analysis/</code> Python package, a <code>shinybroker</code> data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers.</p>
 </section>
-<div id="99683699" class="cell" data-execution_count="1">
+<div id="198c5462" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
@@ -184,31 +188,26 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
-<td>Project</td>
-<td>FINTECH 533 Final Project</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
 <td>Strategy</td>
 <td>Tuned baseline volatility and channel breakout</td>
 </tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
 <td>Data source</td>
 <td>shinybroker / Interactive Brokers historical d...</td>
 </tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
 <td>Selected symbol</td>
 <td>QQQ</td>
 </tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Sample window</td>
+<td>2021-04-26 to 2026-04-24</td>
+</tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
-<td>Sample window</td>
-<td>2021-04-26 to 2026-04-23</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">5</th>
 <td>Status</td>
 <td>Baseline strategy tuned and implemented</td>
 </tr>
@@ -224,12 +223,12 @@ ul.task-list li input[type="checkbox"] {
 <li>Build a transparent breakout strategy with explicit entry and exit rules.</li>
 <li>Backtest the strategy on historical price data using a repeatable Python workflow.</li>
 <li>Log every trade so entries, exits, and holding periods are auditable.</li>
-<li>Extend the baseline strategy with a supervised learning position-scaling overlay for breakout quality.</li>
+<li>Extend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay.</li>
 </ul>
 </section>
 <section id="strategy-snapshot" class="level2">
 <h2 class="anchored" data-anchor-id="strategy-snapshot">Strategy Snapshot</h2>
-<p>The final baseline is a tuned <code>QQQ</code> channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact <code>QQQ</code>-only logistic model that uses breakout quality plus options-implied-volatility features to scale position size up or down. In the current out-of-sample comparison, the ML overlay improves both total return and Sharpe ratio, with a slightly worse max drawdown.</p>
+<p>The final baseline is a tuned <code>QQQ</code> channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact <code>QQQ</code>-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation.</p>
 </section>
 <section id="what-to-review" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-review">What To Review</h2>
@@ -239,6 +238,7 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="./results.html">Results</a> summarizes the tuned baseline and the final <code>aggr4</code> ML overlay.</li>
 <li><a href="./trade-log.html">Trade Log</a> contains the blotter, ledger preview, and downloadable output files.</li>
 <li><a href="./monitoring.html">Monitoring</a> defines how to judge whether the strategy is still behaving as expected after deployment.</li>
+<li><a href="./about.html">About</a> introduces the project team.</li>
 </ul>
 
 
@@ -649,7 +649,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>FINTECH 533 • Volatility Breakout Final Project</p>
+<p>FINTECH 533 • Volatility Breakout Strategy</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
