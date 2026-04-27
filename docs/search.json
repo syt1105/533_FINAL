@@ -56,6 +56,13 @@
     "text": "Supervised Learning Extension\n\nLabel Construction\nFor each breakout event:\n\nlook ahead 15 trading days\nmark the trade as 1 if price reaches +1.5 ATR before -1.0 ATR\nmark it as 0 otherwise\n\nThis uses future data only to create the label. The model never sees future information as input features.\n\n\nModel Inputs\nThe final selected-asset ML overlay uses a compact core_iv feature set:\n\nbreakout_strength\ndistance_from_trend\ndistance_from_upper_channel\nchannel_width_pct\natr_pct\niv_hv_spread\niv_hv_ratio\niv_zscore_60d\niv_trend_20d\n\nThese were chosen because they balance:\n\nbreakout quality\nlocal volatility expansion\noptions-implied volatility confirmation"
   },
   {
+    "objectID": "methodology.html#role-of-options-implied-volatility",
+    "href": "methodology.html#role-of-options-implied-volatility",
+    "title": "Methodology",
+    "section": "Role Of Options Implied Volatility",
+    "text": "Role Of Options Implied Volatility\nThe baseline strategy enters trades using only price-based breakout rules, but the machine-learning overlay uses options-derived implied volatility to judge breakout quality. For each breakout event, the model includes iv_hv_spread, iv_hv_ratio, iv_zscore_60d, and iv_trend_20d, all measured using information available at the signal date.\nThe intuition is that a price breakout confirmed by rising or unusually rich implied volatility is more likely to reflect a real regime shift, because options traders are pricing a larger future move. A price breakout without IV confirmation may be a weaker signal or a temporary channel poke.\nIn the final strategy, implied volatility does not independently trigger trades. It helps the model scale position size up or down after the baseline breakout rule has already identified a trade candidate.\n\nModel Usage\nTrain the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on QQQ based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.\n\n\nHard Filter vs Position Scaling\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097\n\n\n\n\n  \n\n\n\n\nThis strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains."
+  },
+  {
     "objectID": "asset-selection.html",
     "href": "asset-selection.html",
     "title": "Asset Selection",
@@ -168,6 +175,13 @@
     "text": "Executive Summary\nThis project produced a two-layer final result. The core strategy is a tuned QQQ channel breakout system with explicit volatility and risk-control rules: a 20-day breakout entry, a 20-day trend filter, a 0.20 ATR breakout-strength filter, a 2.0 ATR stop-loss, a 3.0 ATR trailing stop, a 15-day time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of 1.34, a total return of 2.91%, a win rate of 81.8%, and a max drawdown of -0.81%.\nOn top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a QQQ-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including IV/HV spread, IV/HV ratio, and IV trend. The report compares the professor’s hard-filter idea against the final position-scaling overlay, so the ML contribution is evaluated relative to a clear baseline rather than asserted in isolation."
   },
   {
+    "objectID": "results.html#key-numbers",
+    "href": "results.html#key-numbers",
+    "title": "Backtest Results",
+    "section": "Key Numbers",
+    "text": "Key Numbers\n\n\n\n    \n      \n        Baseline Sharpe\n        1.55\n      \n      \n        ML Sharpe\n        1.57\n      \n      \n        Baseline Total Return\n        3.52%\n      \n      \n        ML Total Return\n        3.98%"
+  },
+  {
     "objectID": "results.html#baseline-summary",
     "href": "results.html#baseline-summary",
     "title": "Backtest Results",
@@ -231,18 +245,11 @@
     "text": "This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
   },
   {
-    "objectID": "about.html#abhinav-sharaff",
-    "href": "about.html#abhinav-sharaff",
+    "objectID": "about.html#team",
+    "href": "about.html#team",
     "title": "About",
-    "section": "Abhinav Sharaff",
-    "text": "Abhinav Sharaff\nAbhinav worked on the strategy research workflow, including the baseline breakout rules, backtest interpretation, Quarto reporting structure, and final project presentation materials."
-  },
-  {
-    "objectID": "about.html#yiting-sun",
-    "href": "about.html#yiting-sun",
-    "title": "About",
-    "section": "Yiting Sun",
-    "text": "Yiting Sun\nYiting worked on the data and modeling components, including the ETF universe analysis, feature engineering, supervised-learning framework, and evaluation of the implied-volatility overlay."
+    "section": "Team",
+    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun"
   },
   {
     "objectID": "about.html#project-focus",
@@ -306,19 +313,5 @@
     "title": "Trade Log",
     "section": "Why The Trade Log Matters",
     "text": "Why The Trade Log Matters\nThe trade log makes the backtest auditable. It shows:\n\nwhen entries and exits occurred\nhow long trades stayed open\nwhether exits came from success, stop-loss, timeout, or breakout failure\nhow profits and losses were distributed across trades\nhow the final ML overlay changes position sizing on top of those same breakout opportunities"
-  },
-  {
-    "objectID": "about.html#team",
-    "href": "about.html#team",
-    "title": "About",
-    "section": "Team",
-    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun"
-  },
-  {
-    "objectID": "methodology.html#role-of-options-implied-volatility",
-    "href": "methodology.html#role-of-options-implied-volatility",
-    "title": "Methodology",
-    "section": "Role Of Options Implied Volatility",
-    "text": "Role Of Options Implied Volatility\nThe baseline strategy enters trades using only price-based breakout rules, but the machine-learning overlay uses options-derived implied volatility to judge breakout quality. For each breakout event, the model includes iv_hv_spread, iv_hv_ratio, iv_zscore_60d, and iv_trend_20d, all measured using information available at the signal date.\nThe intuition is that a price breakout confirmed by rising or unusually rich implied volatility is more likely to reflect a real regime shift, because options traders are pricing a larger future move. A price breakout without IV confirmation may be a weaker signal or a temporary channel poke.\nIn the final strategy, implied volatility does not independently trigger trades. It helps the model scale position size up or down after the baseline breakout rule has already identified a trade candidate.\n\nModel Usage\nTrain the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on QQQ based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.\n\n\nHard Filter vs Position Scaling\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097\n\n\n\n\n  \n\n\n\n\nThis strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains."
   }
 ]

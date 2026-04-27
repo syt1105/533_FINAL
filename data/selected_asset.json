@@ -1,7 +1,7 @@
 {
   "selected_symbol": "QQQ",
   "selection_metric": "baseline breakout Sharpe ratio",
-  "selection_score": 1.0666284913544044,
+  "selection_score": 1.066628491354411,
   "selection_note": "QQQ is the current baseline showcase asset because it produced the best risk-adjusted result among the screened ETFs under the tuned breakout rules.",
   "strategy_params": {
     "channel_lookback": 20,

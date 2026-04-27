@@ -9,7 +9,7 @@
   "baseline_trade_count": 11,
   "filtered_trade_count": 11,
   "baseline_metrics": {
-    "Sharpe Ratio": 1.5496812398335598,
+    "Sharpe Ratio": 1.5496812398335553,
     "Sortino Ratio": 1.2798044103700565,
     "Total Return": 0.03524201480000011,
     "Benchmark Return": 0.2527928743961354,
@@ -22,7 +22,7 @@
     "Trade Count": 11
   },
   "filtered_metrics": {
-    "Sharpe Ratio": 1.5664717104735635,
+    "Sharpe Ratio": 1.5664717104735661,
     "Sortino Ratio": 1.3380970414605966,
     "Total Return": 0.03982814135600021,
     "Benchmark Return": 0.2527928743961354,
