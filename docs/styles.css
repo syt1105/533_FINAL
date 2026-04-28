@@ -167,6 +167,41 @@ a:hover {
   color: var(--brand-warm);
 }
 
+.result-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 2rem;
+}
+
+.result-metric-card {
+  padding: 1.1rem 1rem 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(20, 50, 74, 0.08);
+  box-shadow: 0 10px 24px rgba(20, 50, 74, 0.08);
+}
+
+.result-metric-card-accent {
+  background: linear-gradient(135deg, rgba(15, 76, 92, 0.96), rgba(20, 50, 74, 0.94));
+  color: #f8fbff;
+}
+
+.result-metric-label {
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 0.45rem;
+}
+
+.result-metric-value {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  font-weight: 700;
+}
+
 .page-footer {
   background: rgba(15, 32, 51, 0.92);
   color: #f8fafc;

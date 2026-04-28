@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 
 from analysis.report_data import compute_metrics, load_baseline_report, load_holdout_report, load_overlay_comparison
 from analysis.reporting import interactive_table
-from IPython.display import display
+from IPython.display import HTML, display
 
 analysis = load_baseline_report()
 overlay_comparison = load_overlay_comparison()
@@ -157,6 +157,33 @@ The most important test in this report is the fixed live holdout from `{python} 
 - The final ML position-scaling overlay improved holdout Sharpe from `{python} f'{baseline_holdout["sharpe_ratio"]:.2f}'` to `{python} f'{scaling_holdout["sharpe_ratio"]:.2f}'` and total return from `{python} f'{baseline_holdout["total_return"]:.2%}'` to `{python} f'{scaling_holdout["total_return"]:.2%}'`.
 - The hard filter produced a high Sharpe but only `{python} int(hard_filter_holdout["trade_count"])` trade, so it is less reliable as a final strategy choice.
 - The evidence still supports using the model conservatively as a position-sizing overlay rather than as a strict take-or-skip gate.
+
+## Key Numbers
+
+```{python}
+HTML(
+    f"""
+    <div class="result-metric-grid">
+      <div class="result-metric-card">
+        <div class="result-metric-label">Baseline Holdout Sharpe</div>
+        <div class="result-metric-value">{baseline_holdout['sharpe_ratio']:.2f}</div>
+      </div>
+      <div class="result-metric-card result-metric-card-accent">
+        <div class="result-metric-label">ML Scaling Sharpe</div>
+        <div class="result-metric-value">{scaling_holdout['sharpe_ratio']:.2f}</div>
+      </div>
+      <div class="result-metric-card">
+        <div class="result-metric-label">Baseline Holdout Return</div>
+        <div class="result-metric-value">{baseline_holdout['total_return']:.2%}</div>
+      </div>
+      <div class="result-metric-card result-metric-card-accent">
+        <div class="result-metric-label">ML Scaling Return</div>
+        <div class="result-metric-value">{scaling_holdout['total_return']:.2%}</div>
+      </div>
+    </div>
+    """
+)
+```
 
 ```{python}
 interactive_table(format_metric_table(results_metric_table), "results_metric_summary", "Training vs Out-of-Sample Metric Summary")
