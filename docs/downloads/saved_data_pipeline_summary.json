@@ -1,5 +1,7 @@
 {
   "selected_symbol": "QQQ",
   "baseline_trade_count": 48,
+  "live_holdout_start": "2025-10-01",
+  "live_holdout_end": "2026-04-24",
   "saved_data_pipeline": "completed"
 }

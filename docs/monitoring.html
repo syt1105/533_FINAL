@@ -100,16 +100,16 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./asset-selection.html"> 
-<span class="menu-text">Asset Selection</span></a>
+    <a class="nav-link" href="./results.html"> 
+<span class="menu-text">Backtest Results</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./methodology.html"> 
 <span class="menu-text">Methodology</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./results.html"> 
-<span class="menu-text">Backtest Results</span></a>
+    <a class="nav-link" href="./asset-selection.html"> 
+<span class="menu-text">Asset Selection</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./trade-log.html"> 
@@ -168,43 +168,32 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="2cbeb54c" class="cell" data-execution_count="1">
+<div id="cc50caeb" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
-<h4 class="anchored">Overlay Test Summary</h4>
-<div class="interactive-table-wrap" id="monitoring_overlay_comparison_wrap">
-  <input class="interactive-table-search" id="monitoring_overlay_comparison_search" type="search" placeholder="Search table" aria-label="Search table">
+<h4 class="anchored">Monitoring Rules</h4>
+<div class="interactive-table-wrap" id="monitoring_rules_wrap">
+  <input class="interactive-table-search" id="monitoring_rules_search" type="search" placeholder="Search table" aria-label="Search table">
   <div class="interactive-table-scroll">
     
-<table id="monitoring_overlay_comparison" class="interactive-table caption-top table table-sm table-striped small">
+<table id="monitoring_rules" class="interactive-table caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th">strategy</th>
-<th data-quarto-table-cell-role="th">trade_count</th>
-<th data-quarto-table-cell-role="th">sharpe_ratio</th>
-<th data-quarto-table-cell-role="th">total_return</th>
-<th data-quarto-table-cell-role="th">win_rate</th>
-<th data-quarto-table-cell-role="th">max_drawdown</th>
-<th data-quarto-table-cell-role="th">expected_return_per_trade</th>
+<th data-quarto-table-cell-role="th">Metric</th>
+<th data-quarto-table-cell-role="th">Threshold</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>baseline_test_period</td>
-<td>11</td>
-<td>1.5497</td>
-<td>0.0352</td>
-<td>0.9091</td>
-<td>-0.0081</td>
-<td>0.0097</td>
+<td>Rolling expectancy</td>
+<td>&lt; 0 over the latest 50 trades</td>
 </tr>
 <tr class="even">
-<td>filtered_test_period</td>
-<td>11</td>
-<td>1.5665</td>
-<td>0.0398</td>
-<td>0.9091</td>
-<td>-0.0094</td>
-<td>0.0097</td>
+<td>Rolling hit rate</td>
+<td>Below the backtest range for 3 consecutive months</td>
+</tr>
+<tr class="odd">
+<td>Drawdown</td>
+<td>Worse than 1.5x historical max drawdown</td>
 </tr>
 </tbody>
 </table>
@@ -213,8 +202,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <script>
 (function() {
-  const table = document.getElementById("monitoring_overlay_comparison");
-  const search = document.getElementById("monitoring_overlay_comparison_search");
+  const table = document.getElementById("monitoring_rules");
+  const search = document.getElementById("monitoring_rules_search");
   if (!table || !search) return;
 
   search.addEventListener("input", function() {
@@ -297,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
 <li>ML overlay: is the model-based position scaling still adding value relative to the tuned baseline?</li>
 </ul>
 <p>This matters because the ML extension is intentionally small. If the overlay stops helping, the baseline may still remain tradable.</p>
-<div id="8c05cf42" class="cell" data-execution_count="2">
+<div id="1b3acc2a" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <h4 class="anchored">Payoff Shape To Monitor</h4>
 <div class="interactive-table-wrap" id="monitoring_payoff_shape_wrap">

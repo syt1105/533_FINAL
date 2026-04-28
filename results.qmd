@@ -4,174 +4,269 @@ jupyter: python3
 ---
 
 ```{python}
-from analysis.breakout_strategy import run_analysis
-from analysis.filtered_backtest import compare_selected_asset_ml_overlays, run_filtered_backtest
-from analysis.reporting import interactive_table
-
-analysis = run_analysis()
-ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
-overlay_comparison = compare_selected_asset_ml_overlays()
-
-interactive_table(analysis["metrics_display"], "results_metrics", "Baseline Metrics")
-interactive_table(overlay_comparison, "results_overlay_comparison", "Baseline vs ML Overlays")
-```
-
-## Executive Summary
-
-This project produced a two-layer final result. The core strategy is a tuned `QQQ` channel breakout system with explicit volatility and risk-control rules: a `20-day` breakout entry, a `20-day` trend filter, a `0.20 ATR` breakout-strength filter, a `2.0 ATR` stop-loss, a `3.0 ATR` trailing stop, a `15-day` time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of `1.34`, a total return of `2.91%`, a win rate of `81.8%`, and a max drawdown of `-0.81%`.
-
-On top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a `QQQ`-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including `IV/HV spread`, `IV/HV ratio`, and `IV trend`. The report compares the professor's hard-filter idea against the final position-scaling overlay, so the ML contribution is evaluated relative to a clear baseline rather than asserted in isolation.
-
-## Baseline Summary
-
-The final baseline is a tuned channel breakout strategy on `QQQ` with:
-
-- `20-day` channel breakout entry
-- `20-day` trend filter
-- `0.20 ATR` breakout-strength filter
-- `2.0 ATR` initial stop
-- `3.0 ATR` trailing stop
-- `15-day` timeout
-- `4-day` breakout-failure delay
-
-This baseline is already positive after costs and serves as the control strategy for the ML extension.
-
-## ML Overlay Summary
-
-The final ML extension is not a fully separate strategy. It is a position-scaling overlay on top of the baseline breakout rule.
-
-- Asset scope:
-  `QQQ` only
-- Model type:
-  logistic classifier
-- Label framework:
-  `label then predict`
-- Feature set:
-  compact `core_iv` breakout and implied-volatility features
-- Use in backtest:
-  scale position size mildly up or down rather than deleting all low-score trades
-
-The resulting out-of-sample comparison shows a clear but still incremental improvement in both total return and Sharpe ratio relative to the baseline. The improvement comes from mild position scaling rather than a wholesale replacement of the breakout rule.
-
-```{python}
-interactive_table(overlay_comparison, "results_overlay_comparison_detail", "Out-of-Sample Overlay Comparison")
-```
-
-## Price Chart With Trade Markers
-
-```{python}
+import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 
-blotter = analysis["blotter"]
-equity = analysis["equity_curve"]
+from analysis.report_data import compute_metrics, load_baseline_report, load_holdout_report, load_overlay_comparison
+from analysis.reporting import interactive_table
+from IPython.display import display
 
-fig = go.Figure()
-fig.add_trace(
-    go.Scatter(
-        x=equity["date"],
-        y=equity["close"],
-        mode="lines",
-        name="QQQ close",
-        line=dict(color="#173f5f", width=2),
-        hovertemplate="%{x|%Y-%m-%d}<br>Close: $%{y:.2f}<extra></extra>",
-    )
+analysis = load_baseline_report()
+overlay_comparison = load_overlay_comparison()
+live_holdout = load_holdout_report()
+holdout_summary = live_holdout["summary"]
+holdout_start = pd.Timestamp(holdout_summary["holdout_start"])
+holdout_end = pd.Timestamp(holdout_summary["holdout_end"])
+holdout_comparison = live_holdout["comparison"].copy()
+holdout_comparison["strategy"] = holdout_comparison["strategy"].replace(
+    {
+        "baseline_live_holdout": "baseline",
+        "ml_hard_filter_live_holdout": "ml_hard_filter",
+        "ml_position_scaling_live_holdout": "ml_position_scaling",
+    }
+)
+holdout_equity = live_holdout["equity_curves"].copy()
+holdout_equity["strategy"] = holdout_equity["strategy"].replace(
+    {
+        "baseline_live_holdout": "Baseline",
+        "ml_hard_filter_live_holdout": "ML hard filter",
+        "ml_position_scaling_live_holdout": "ML position scaling",
+    }
+)
+baseline_holdout = holdout_comparison.loc[holdout_comparison["strategy"] == "baseline"].iloc[0]
+scaling_holdout = holdout_comparison.loc[holdout_comparison["strategy"] == "ml_position_scaling"].iloc[0]
+hard_filter_holdout = holdout_comparison.loc[holdout_comparison["strategy"] == "ml_hard_filter"].iloc[0]
+
+full_ledger = analysis["ledger"].copy()
+full_trades = analysis["blotter"].copy()
+training_ledger = full_ledger.loc[full_ledger["date"] < holdout_start].copy()
+training_trades = full_trades.loc[full_trades["exit_timestamp"] < holdout_start].copy()
+training_metrics_display, training_metrics_raw = compute_metrics(training_trades, training_ledger)
+holdout_scaled_trades = live_holdout["scaled_trades"].copy()
+
+def format_metric_table(df):
+    formatted = df.copy()
+    percent_cols = ["total_return", "win_rate", "max_drawdown", "expected_return_per_trade"]
+    for col in percent_cols:
+        if col in formatted.columns:
+            formatted[col] = formatted[col].map(lambda value: f"{value:.2%}")
+    if "sharpe_ratio" in formatted.columns:
+        formatted["sharpe_ratio"] = formatted["sharpe_ratio"].map(lambda value: f"{value:.2f}")
+    if "trade_count" in formatted.columns:
+        formatted["trade_count"] = formatted["trade_count"].map(lambda value: "" if pd.isna(value) else int(value))
+    if "removed_signal_count" in formatted.columns:
+        formatted["removed_signal_count"] = formatted["removed_signal_count"].map(lambda value: "" if pd.isna(value) else int(value))
+    return formatted
+
+training_metric_row = pd.DataFrame(
+    [
+        {
+            "period": "Training / in-sample backtest before Oct 2025",
+            "strategy": "baseline",
+            "trade_count": int(training_metrics_raw["Trade Count"]),
+            "sharpe_ratio": training_metrics_raw["Sharpe Ratio"],
+            "total_return": training_metrics_raw["Total Return"],
+            "win_rate": training_metrics_raw["Win Rate"],
+            "max_drawdown": training_metrics_raw["Max Drawdown"],
+            "expected_return_per_trade": training_metrics_raw["Expected Return Per Trade"],
+        }
+    ]
+)
+holdout_metric_table = holdout_comparison.assign(period="Fixed live holdout: Oct 2025-Apr 2026")[
+    [
+        "period",
+        "strategy",
+        "trade_count",
+        "removed_signal_count",
+        "sharpe_ratio",
+        "total_return",
+        "win_rate",
+        "max_drawdown",
+        "expected_return_per_trade",
+    ]
+]
+results_metric_table = pd.concat(
+    [
+        training_metric_row,
+        holdout_metric_table.assign(removed_signal_count=holdout_metric_table["removed_signal_count"]),
+    ],
+    ignore_index=True,
+    sort=False,
 )
 
-if not blotter.empty:
+def price_entry_exit_chart(price_df, trades_df, title, subtitle):
+    fig = go.Figure()
     fig.add_trace(
         go.Scatter(
-            x=blotter["entry_timestamp"],
-            y=blotter["entry_price"],
-            mode="markers",
-            name="Entry",
-            marker=dict(symbol="triangle-up", color="#1b9e77", size=11),
-            customdata=blotter[["qty", "breakout_strength", "holding_periods"]],
-            hovertemplate=(
-                "%{x|%Y-%m-%d}<br>Entry: $%{y:.2f}"
-                "<br>Qty: %{customdata[0]:.1f}"
-                "<br>Breakout strength: %{customdata[1]:.2f}"
-                "<br>Holding days: %{customdata[2]}<extra></extra>"
-            ),
+            x=price_df["date"],
+            y=price_df["close"],
+            mode="lines",
+            name="QQQ close",
+            line=dict(color="#2563eb", width=2.2),
+            hovertemplate="%{x|%Y-%m-%d}<br>Close: $%{y:.2f}<extra></extra>",
         )
     )
-    fig.add_trace(
-        go.Scatter(
-            x=blotter["exit_timestamp"],
-            y=blotter["exit_price"],
-            mode="markers",
-            name="Exit",
-            marker=dict(symbol="triangle-down", color="#d95f02", size=11),
-            customdata=blotter[["exit_reason", "trade_return", "pnl"]],
-            hovertemplate=(
-                "%{x|%Y-%m-%d}<br>Exit: $%{y:.2f}"
-                "<br>Reason: %{customdata[0]}"
-                "<br>Trade return: %{customdata[1]:.2%}"
-                "<br>PnL: $%{customdata[2]:,.0f}<extra></extra>"
-            ),
+    if not trades_df.empty:
+        fig.add_trace(
+            go.Scatter(
+                x=trades_df["entry_timestamp"],
+                y=trades_df["entry_price"],
+                mode="markers",
+                name="Entry",
+                marker=dict(symbol="triangle-up", color="#059669", size=11, line=dict(color="#ffffff", width=1)),
+                customdata=trades_df[["qty", "breakout_strength"]],
+                hovertemplate=(
+                    "%{x|%Y-%m-%d}<br>Entry: $%{y:.2f}"
+                    "<br>Qty: %{customdata[0]:.1f}"
+                    "<br>Breakout strength: %{customdata[1]:.2f}<extra></extra>"
+                ),
+            )
         )
+        fig.add_trace(
+            go.Scatter(
+                x=trades_df["exit_timestamp"],
+                y=trades_df["exit_price"],
+                mode="markers",
+                name="Exit",
+                marker=dict(symbol="triangle-down", color="#d97706", size=11, line=dict(color="#ffffff", width=1)),
+                customdata=trades_df[["exit_reason", "trade_return", "pnl"]],
+                hovertemplate=(
+                    "%{x|%Y-%m-%d}<br>Exit: $%{y:.2f}"
+                    "<br>Reason: %{customdata[0]}"
+                    "<br>Trade return: %{customdata[1]:.2%}"
+                    "<br>PnL: $%{customdata[2]:,.0f}<extra></extra>"
+                ),
+            )
+        )
+    fig.update_layout(
+        title={"text": f"{title}<br><sup>{subtitle}</sup>"},
+        height=470,
+        hovermode="x unified",
+        yaxis_title="QQQ Price",
+        legend_title_text="",
     )
+    return fig
+```
 
-fig.update_layout(
-    title="QQQ Price With Baseline Breakout Entries And Exits",
-    height=520,
-    hovermode="x unified",
-    yaxis_title="Price",
-    legend_title_text="",
+## Key Takeaways
+
+The most important test in this report is the fixed live holdout from `{python} holdout_summary["holdout_start"]` through `{python} holdout_summary["holdout_end"]`. The model was trained only on labeled breakouts before `{python} holdout_summary["holdout_start"]`, then applied to the later data as if it were brand new.
+
+- The baseline breakout strategy remained profitable in the live holdout, with `{python} int(baseline_holdout["trade_count"])` trades and a `{python} f'{baseline_holdout["total_return"]:.2%}'` total return.
+- The final ML position-scaling overlay improved holdout Sharpe from `{python} f'{baseline_holdout["sharpe_ratio"]:.2f}'` to `{python} f'{scaling_holdout["sharpe_ratio"]:.2f}'` and total return from `{python} f'{baseline_holdout["total_return"]:.2%}'` to `{python} f'{scaling_holdout["total_return"]:.2%}'`.
+- The hard filter produced a high Sharpe but only `{python} int(hard_filter_holdout["trade_count"])` trade, so it is less reliable as a final strategy choice.
+- The evidence still supports using the model conservatively as a position-sizing overlay rather than as a strict take-or-skip gate.
+
+```{python}
+interactive_table(format_metric_table(results_metric_table), "results_metric_summary", "Training vs Out-of-Sample Metric Summary")
+```
+
+## Fixed Live Holdout Setup
+
+This section is intentionally separated from the earlier backtest. The model is fit on historical labeled breakout events before October 2025. It then scores breakout candidates from October 2025 through April 2026 using only information available at each signal date. No labels or future outcomes from the holdout period are used to train the model.
+
+The holdout answers the practical question: if the model had been frozen before October 2025, would it still have helped the breakout strategy in the next several months?
+
+## Out-Of-Sample Performance
+
+```{python}
+fig = px.line(
+    holdout_equity,
+    x="date",
+    y="equity",
+    color="strategy",
+    title="Fixed Live Holdout Equity: October 2025-April 2026",
+    labels={"date": "Date", "equity": "Portfolio Value ($)", "strategy": "Strategy"},
 )
+fig.update_traces(hovertemplate="%{x|%Y-%m-%d}<br>Equity: $%{y:,.0f}<extra></extra>")
+fig.update_layout(height=500, hovermode="x unified", legend_title_text="")
 fig.show()
 ```
 
-## Equity Curve
+The holdout result is useful because it is not just another optimized backtest. The baseline still made money, and the ML position-scaling overlay improved the risk-adjusted profile without removing the full breakout opportunity set. The hard filter had the cleanest-looking Sharpe, but it only took one trade, which makes it too fragile as the final design.
+
+```{python}
+holdout_price = holdout_equity.loc[
+    holdout_equity["strategy"] == "Baseline", ["date", "close"]
+].drop_duplicates()
+price_entry_exit_chart(
+    holdout_price,
+    holdout_scaled_trades,
+    "Out-of-Sample Breakout Entries And Exits",
+    "October 2025-April 2026; model trained only on earlier breakouts",
+).show()
+```
+
+```{python}
+interactive_table(format_metric_table(holdout_comparison), "live_holdout_comparison", "Fixed Live Holdout Strategy Comparison")
+```
+
+## Holdout Prediction Quality
+
+```{python}
+holdout_predictions = live_holdout["test_predictions"].loc[
+    :,
+    ["signal_date", "predicted_probability", "predicted_label", "label", "label_event"],
+].copy()
+interactive_table(holdout_predictions, "live_holdout_predictions", "Holdout Breakout Predictions")
+```
+
+## Full Backtest Context
+
+The fixed holdout is the main forward-style test, but the full backtest is still useful context. Across the full saved sample, the baseline strategy remains a transparent long-only `QQQ` channel breakout system with explicit volatility and risk-control rules: a `20-day` breakout entry, a `20-day` trend filter, a `0.20 ATR` breakout-strength filter, a `2.0 ATR` stop-loss, a `3.0 ATR` trailing stop, a `15-day` time stop, and a delayed breakout-failure exit.
+
+The chart below shows the training and in-sample backtest regime before the fixed live holdout. This is where the breakout rules and ML labels were developed. The visual pattern is important: the strategy does not trade constantly. It waits for price to clear the channel, then exits through stop-loss, timeout, trailing-stop profit protection, or breakout-failure logic.
+
+```{python}
+price_entry_exit_chart(
+    training_ledger.loc[:, ["date", "close"]],
+    training_trades,
+    "Training Period Breakout Entries And Exits",
+    f"{training_ledger['date'].min():%Y-%m-%d} to {(holdout_start - pd.Timedelta(days=1)):%Y-%m-%d}",
+).show()
+```
 
 ```{python}
 fig = go.Figure()
 fig.add_trace(
     go.Scatter(
-        x=equity["date"],
-        y=equity["equity"],
+        x=full_ledger["date"],
+        y=full_ledger["equity"],
         mode="lines",
-        name="Strategy equity",
-        line=dict(color="#0f4c5c", width=2.4),
+        name="Baseline equity",
+        line=dict(color="#0f766e", width=2.2),
         hovertemplate="%{x|%Y-%m-%d}<br>Equity: $%{y:,.0f}<extra></extra>",
     )
 )
+fig.add_vline(x=holdout_start, line_dash="dash", line_color="#be123c")
+fig.add_annotation(
+    x=holdout_start,
+    y=full_ledger["equity"].max(),
+    text="Holdout begins",
+    showarrow=False,
+    yanchor="bottom",
+    font=dict(color="#be123c"),
+)
 fig.update_layout(
-    title="Baseline Strategy Equity Curve",
-    height=460,
+    title="Full Baseline Equity Curve With Holdout Boundary",
+    height=430,
+    hovermode="x unified",
     yaxis_title="Portfolio Value ($)",
 )
 fig.show()
 ```
 
-## Drawdown
-
 ```{python}
-fig = go.Figure()
-fig.add_trace(
-    go.Scatter(
-        x=equity["date"],
-        y=equity["drawdown"],
-        mode="lines",
-        name="Drawdown",
-        fill="tozeroy",
-        line=dict(color="#9a031e", width=1.8),
-        hovertemplate="%{x|%Y-%m-%d}<br>Drawdown: %{y:.2%}<extra></extra>",
-    )
-)
-fig.update_layout(
-    title="Baseline Strategy Drawdown",
-    height=400,
-    yaxis_title="Drawdown",
-    yaxis_tickformat=".0%",
-)
-fig.show()
+display(interactive_table(analysis["metrics_display"], "results_metrics", "Full-Sample Baseline Metrics"))
+display(interactive_table(overlay_comparison, "results_overlay_comparison", "Full-Sample Baseline vs ML Overlays"))
 ```
 
 ## Trade Outcome Analysis
 
 ```{python}
-interactive_table(analysis["outcome_rate_summary"], "results_outcome_rates", "Outcome Rates")
-interactive_table(analysis["trade_quality_summary"], "results_payoff_shape", "Payoff Shape")
+display(interactive_table(analysis["outcome_rate_summary"], "results_outcome_rates", "Outcome Rates"))
+display(interactive_table(analysis["trade_quality_summary"], "results_payoff_shape", "Payoff Shape"))
 ```
 
 ## What The Final Result Means
@@ -179,8 +274,8 @@ interactive_table(analysis["trade_quality_summary"], "results_payoff_shape", "Pa
 The project now has two meaningful layers:
 
 1. A tuned baseline breakout strategy that is already tradable and positive after costs.
-2. A compact implied-volatility-aware ML overlay that improves out-of-sample Sharpe and total return on the showcase asset, while accepting a slightly deeper drawdown.
+2. A compact implied-volatility-aware ML overlay that improves the fixed live holdout modestly by changing position size on breakout candidates.
 
-The improvement is not huge, and that is important to state honestly. This is not a magical black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline.
+The improvement is not huge, and that is important to state honestly. This is not a black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline. The important result is that the overlay still helped when it was frozen before October 2025 and then evaluated on later data.
 
 The strategy should also be read as whale hunting. It is not trying to win every breakout. It is trying to keep failed breakouts small, exit stale trades, and preserve enough exposure for the subset of breakouts that turn into real volatility expansions.

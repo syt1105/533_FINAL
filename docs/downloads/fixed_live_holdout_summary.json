@@ -1,0 +1,61 @@
+{
+  "selected_symbol": "QQQ",
+  "holdout_start": "2025-10-01",
+  "holdout_end": "2026-04-24",
+  "training_window": "all labeled breakouts before 2025-10-01",
+  "model_features": [
+    "breakout_strength",
+    "distance_from_trend",
+    "distance_from_upper_channel",
+    "channel_width_pct",
+    "atr_pct",
+    "iv_hv_spread",
+    "iv_hv_ratio",
+    "iv_zscore_60d",
+    "iv_trend_20d"
+  ],
+  "test_prediction_count": 7,
+  "baseline_trade_count": 4,
+  "scaled_trade_count": 4,
+  "hard_filter_trade_count": 1,
+  "hard_filter_removed_signal_count": 5,
+  "baseline_metrics": {
+    "Sharpe Ratio": 1.7585422726619424,
+    "Sortino Ratio": 1.3503279669276058,
+    "Total Return": 0.017799687599999947,
+    "Benchmark Return": 0.10050559469539988,
+    "Expected Return Per Trade": 0.01500707169684811,
+    "Expected PnL Per Trade": 444.99219,
+    "Average Trade Lifetime": 5.0,
+    "Win Rate": 1.0,
+    "Profit Factor": 0.0,
+    "Max Drawdown": -0.005132457683393987,
+    "Trade Count": 4
+  },
+  "scaled_metrics": {
+    "Sharpe Ratio": 1.9028452321830478,
+    "Sortino Ratio": 1.5792817045876157,
+    "Total Return": 0.01889078081999984,
+    "Benchmark Return": 0.10050559469539988,
+    "Expected Return Per Trade": 0.01500707169684811,
+    "Expected PnL Per Trade": 472.2695204999999,
+    "Average Trade Lifetime": 5.0,
+    "Win Rate": 1.0,
+    "Profit Factor": 0.0,
+    "Max Drawdown": -0.004775807306594659,
+    "Trade Count": 4
+  },
+  "hard_filter_metrics": {
+    "Sharpe Ratio": 2.2739392664254376,
+    "Sortino Ratio": 0.0,
+    "Total Return": 0.0106230516000001,
+    "Benchmark Return": 0.10050559469539988,
+    "Expected Return Per Trade": 0.040780000967382976,
+    "Expected PnL Per Trade": 1062.3051599999976,
+    "Average Trade Lifetime": 7.0,
+    "Win Rate": 1.0,
+    "Profit Factor": 0.0,
+    "Max Drawdown": -0.0011236379265274765,
+    "Trade Count": 1
+  }
+}

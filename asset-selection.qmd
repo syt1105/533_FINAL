@@ -4,10 +4,10 @@ jupyter: python3
 ---
 
 ```{python}
-from analysis.breakout_strategy import run_analysis
+from analysis.report_data import load_baseline_report
 from analysis.reporting import interactive_table
 
-analysis = run_analysis()
+analysis = load_baseline_report()
 interactive_table(analysis["asset_screen_display"], "asset_selection_screen", "Baseline Universe Screen")
 ```
 

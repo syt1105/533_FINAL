@@ -4,14 +4,11 @@ jupyter: python3
 ---
 
 ```{python}
-from analysis.breakout_strategy import run_analysis
-from analysis.filtered_backtest import run_filtered_backtest
+from analysis.report_data import load_baseline_report
 from analysis.reporting import interactive_table
 
-analysis = run_analysis()
-ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
+analysis = load_baseline_report()
 interactive_table(analysis["monitoring_display"], "monitoring_rules", "Monitoring Rules")
-interactive_table(ml_overlay["comparison"], "monitoring_overlay_comparison", "Overlay Test Summary")
 ```
 
 ## How We Will Know Performance Is Still In Line

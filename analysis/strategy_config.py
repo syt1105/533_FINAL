@@ -6,7 +6,7 @@ DATA_DIR = ROOT / "data"
 MARKET_HISTORY_DIR = DATA_DIR / "market_history"
 OPTIONS_HISTORY_DIR = DATA_DIR / "options_history"
 DOCS_DIR = ROOT / "docs"
-DOWNLOADS_DIR = DOCS_DIR / "downloads"
+DOWNLOADS_DIR = ROOT / "downloads"
 
 PROJECT_TITLE = "Volatility Breakout Strategy"
 ASSET_UNIVERSE = ["SPY", "QQQ", "IWM", "XLE", "GLD", "TLT"]

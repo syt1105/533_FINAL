@@ -1,16 +1,21 @@
 :root {
-  --brand-ink: #14324a;
-  --brand-accent: #0f4c5c;
-  --brand-warm: #c97a2b;
-  --brand-soft: #f6f1e7;
-  --brand-muted: #5f7282;
+  --brand-ink: #172033;
+  --brand-accent: #0f766e;
+  --brand-blue: #2563eb;
+  --brand-green: #059669;
+  --brand-warm: #d97706;
+  --brand-rose: #be123c;
+  --brand-soft: #f7f3ea;
+  --brand-muted: #64748b;
+  --surface: rgba(255, 255, 255, 0.9);
 }
 
 body {
   color: var(--brand-ink);
   background:
-    radial-gradient(circle at top right, rgba(201, 122, 43, 0.12), transparent 28%),
-    linear-gradient(180deg, #fffdf8 0%, #f6f1e7 100%);
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 24%),
+    radial-gradient(circle at top right, rgba(217, 119, 6, 0.14), transparent 28%),
+    linear-gradient(180deg, #fbfcff 0%, #f7f3ea 54%, #eef7f4 100%);
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
@@ -19,15 +24,31 @@ h1, h2, h3, h4, .navbar-title {
   letter-spacing: 0.01em;
 }
 
+.navbar {
+  background: linear-gradient(90deg, #102033, #0f766e) !important;
+  box-shadow: 0 8px 24px rgba(15, 32, 51, 0.14);
+}
+
+.navbar .navbar-title,
+.navbar .nav-link {
+  color: #ffffff !important;
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link:hover {
+  color: #fde68a !important;
+}
+
 .hero-banner {
-  padding: 2rem 2.2rem;
+  padding: 2.4rem 2.4rem;
   margin: 1.2rem 0 2rem;
-  border-radius: 18px;
+  border-radius: 16px;
   background:
-    linear-gradient(135deg, rgba(15, 76, 92, 0.95), rgba(20, 50, 74, 0.92)),
-    linear-gradient(135deg, rgba(201, 122, 43, 0.18), transparent 45%);
+    linear-gradient(135deg, rgba(15, 32, 51, 0.96), rgba(15, 118, 110, 0.9)),
+    linear-gradient(135deg, rgba(217, 119, 6, 0.24), transparent 42%);
   color: #f8fbff;
-  box-shadow: 0 18px 42px rgba(20, 50, 74, 0.16);
+  box-shadow: 0 18px 42px rgba(20, 50, 74, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .hero-banner h2 {
@@ -36,7 +57,59 @@ h1, h2, h3, h4, .navbar-title {
 }
 
 .table {
-  background: rgba(255, 255, 255, 0.84);
+  background: var(--surface);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 32, 51, 0.06);
+}
+
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.35rem;
+}
+
+.snapshot-card {
+  position: relative;
+  min-height: 130px;
+  padding: 1rem 1.05rem;
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(239, 247, 244, 0.88));
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  box-shadow: 0 12px 28px rgba(15, 32, 51, 0.09);
+  overflow: hidden;
+}
+
+.snapshot-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-accent), var(--brand-warm));
+}
+
+.snapshot-label {
+  color: var(--brand-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.snapshot-value {
+  margin-top: 0.45rem;
+  color: var(--brand-ink);
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.snapshot-note {
+  margin-top: 0.55rem;
+  color: #475569;
+  font-size: 0.92rem;
 }
 
 .interactive-table-wrap {
@@ -53,9 +126,10 @@ h1, h2, h3, h4, .navbar-title {
 
 .interactive-table-scroll {
   overflow-x: auto;
-  border: 1px solid #d8dde5;
+  border: 1px solid rgba(15, 118, 110, 0.18);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(15, 32, 51, 0.06);
 }
 
 .interactive-table {
@@ -73,12 +147,12 @@ h1, h2, h3, h4, .navbar-title {
 }
 
 .interactive-table th {
-  background: #f5f7fa;
+  background: #e8f3f1;
   font-weight: 650;
 }
 
 .interactive-table tr:hover td {
-  background: #fafcff;
+  background: #fff7ed;
 }
 
 .quarto-title-banner {
@@ -91,4 +165,9 @@ a {
 
 a:hover {
   color: var(--brand-warm);
+}
+
+.page-footer {
+  background: rgba(15, 32, 51, 0.92);
+  color: #f8fafc;
 }

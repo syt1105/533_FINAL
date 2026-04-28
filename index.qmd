@@ -10,11 +10,132 @@ This project studies a volatility and channel breakout strategy for liquid ETFs.
 :::
 
 ```{python}
-from analysis.breakout_strategy import run_analysis
+from analysis.report_data import load_baseline_report, load_holdout_report
+from IPython.display import HTML
 
-analysis = run_analysis()
+analysis = load_baseline_report()
+live_holdout = load_holdout_report()
 overview = analysis["overview"].loc[analysis["overview"]["Field"] != "Project"].reset_index(drop=True)
 metrics = analysis["metrics_display"]
+holdout_comparison = live_holdout["comparison"].copy()
+holdout_comparison["strategy"] = holdout_comparison["strategy"].replace(
+    {
+        "baseline_live_holdout": "Baseline",
+        "ml_hard_filter_live_holdout": "ML hard filter",
+        "ml_position_scaling_live_holdout": "ML position scaling",
+    }
+)
+holdout_equity = live_holdout["equity_curves"].copy()
+holdout_equity["strategy"] = holdout_equity["strategy"].replace(
+    {
+        "baseline_live_holdout": "Baseline",
+        "ml_hard_filter_live_holdout": "ML hard filter",
+        "ml_position_scaling_live_holdout": "ML position scaling",
+    }
+)
+baseline_holdout = holdout_comparison.loc[holdout_comparison["strategy"] == "Baseline"].iloc[0]
+scaling_holdout = holdout_comparison.loc[holdout_comparison["strategy"] == "ML position scaling"].iloc[0]
+hard_filter_holdout = holdout_comparison.loc[holdout_comparison["strategy"] == "ML hard filter"].iloc[0]
+holdout_trades = live_holdout["scaled_trades"].copy()
+holdout_prices = holdout_equity.loc[holdout_equity["strategy"] == "Baseline", ["date", "close"]].copy()
+```
+
+## Results Snapshot
+
+The main validation test is a fixed live holdout from `{python} live_holdout["summary"]["holdout_start"]` through `{python} live_holdout["summary"]["holdout_end"]`. The model is trained only on labeled breakout events before October 2025, then applied to the later period as unseen data.
+
+```{python}
+cards = [
+    ("Holdout Window", f'{live_holdout["summary"]["holdout_start"]} to {live_holdout["summary"]["holdout_end"]}', "Model frozen before October 2025"),
+    ("Baseline Return", f'{baseline_holdout["total_return"]:.2%}', f'{int(baseline_holdout["trade_count"])} trades'),
+    ("ML Scaling Return", f'{scaling_holdout["total_return"]:.2%}', f'Sharpe {scaling_holdout["sharpe_ratio"]:.2f}'),
+    ("Hard Filter", f'{int(hard_filter_holdout["trade_count"])} trade', "Too sparse for final use"),
+]
+
+HTML(
+    '<div class="snapshot-grid">'
+    + ''.join(
+        f'''
+        <div class="snapshot-card">
+          <div class="snapshot-label">{label}</div>
+          <div class="snapshot-value">{value}</div>
+          <div class="snapshot-note">{note}</div>
+        </div>
+        '''
+        for label, value, note in cards
+    )
+    + '</div>'
+)
+```
+
+The out-of-sample result supports the final design choice: the ML model adds value as a **position-sizing overlay**, while the hard filter is too aggressive because it leaves too few trades to rely on.
+
+```{python}
+import plotly.graph_objects as go
+
+fig = go.Figure()
+fig.add_trace(
+    go.Scatter(
+        x=holdout_prices["date"],
+        y=holdout_prices["close"],
+        mode="lines",
+        name="QQQ close",
+        line=dict(color="#2563eb", width=2.4),
+        hovertemplate="%{x|%Y-%m-%d}<br>Close: $%{y:.2f}<extra></extra>",
+    )
+)
+
+if not holdout_trades.empty:
+    fig.add_trace(
+        go.Scatter(
+            x=holdout_trades["entry_timestamp"],
+            y=holdout_trades["entry_price"],
+            mode="markers",
+            name="Entry",
+            marker=dict(symbol="triangle-up", color="#059669", size=13, line=dict(color="#ffffff", width=1)),
+            customdata=holdout_trades[["size_multiplier", "breakout_strength", "qty"]],
+            hovertemplate=(
+                "%{x|%Y-%m-%d}<br>Entry: $%{y:.2f}"
+                "<br>ML size multiplier: %{customdata[0]:.2f}"
+                "<br>Breakout strength: %{customdata[1]:.2f}"
+                "<br>Qty: %{customdata[2]:.1f}<extra></extra>"
+            ),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=holdout_trades["exit_timestamp"],
+            y=holdout_trades["exit_price"],
+            mode="markers",
+            name="Exit",
+            marker=dict(symbol="triangle-down", color="#d97706", size=13, line=dict(color="#ffffff", width=1)),
+            customdata=holdout_trades[["exit_reason", "trade_return", "pnl"]],
+            hovertemplate=(
+                "%{x|%Y-%m-%d}<br>Exit: $%{y:.2f}"
+                "<br>Reason: %{customdata[0]}"
+                "<br>Trade return: %{customdata[1]:.2%}"
+                "<br>PnL: $%{customdata[2]:,.0f}<extra></extra>"
+            ),
+        )
+    )
+
+fig.update_layout(
+    title="Out-of-Sample Breakout Entries And Exits: October 2025-April 2026",
+    height=430,
+    hovermode="x unified",
+    yaxis_title="QQQ Price",
+    legend_title_text="",
+)
+fig.show()
+```
+
+```{python}
+holdout_comparison
+```
+
+## Strategy Snapshot
+
+```{python}
 overview
 ```
 
@@ -25,15 +146,13 @@ overview
 - Log every trade so entries, exits, and holding periods are auditable.
 - Extend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay.
 
-## Strategy Snapshot
-
 The final baseline is a tuned `QQQ` channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact `QQQ`-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation.
 
 ## What To Review
 
+- [Results](results.qmd) leads with the fixed October 2025-April 2026 holdout evaluation and performance graph.
 - [Asset Selection](asset-selection.qmd) explains the ETF universe and why `QQQ` became the showcase asset.
 - [Methodology](methodology.qmd) documents the final trading rules, labels, feature set, and parameter choices.
-- [Results](results.qmd) summarizes the tuned baseline and the final `aggr4` ML overlay.
 - [Trade Log](trade-log.qmd) contains the blotter, ledger preview, and downloadable output files.
 - [Monitoring](monitoring.qmd) defines how to judge whether the strategy is still behaving as expected after deployment.
 - [About](about.qmd) introduces the project team.

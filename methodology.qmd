@@ -4,12 +4,10 @@ jupyter: python3
 ---
 
 ```{python}
-from analysis.breakout_strategy import run_analysis
-from analysis.filtered_backtest import run_filtered_backtest
+from analysis.report_data import load_baseline_report
 from analysis.reporting import interactive_table
 
-analysis = run_analysis()
-ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
+analysis = load_baseline_report()
 interactive_table(analysis["parameter_table"], "methodology_parameters", "Final Strategy Parameters")
 ```
 
@@ -28,6 +26,17 @@ The project then adds a supervised-learning extension. Instead of replacing the 
 - The baseline strategy is evaluated across the ETF universe, and the best risk-adjusted baseline asset is selected as the showcase symbol.
 
 The current showcase asset is `{python} analysis["overview"].loc[analysis["overview"]["Field"] == "Selected symbol", "Value"].iloc[0]`.
+
+## Sample Period And Holdout Design
+
+The project separates the historical sample into two roles:
+
+1. The **training and strategy-development sample** uses the data before `2025-10-01`. This period is used to evaluate the baseline breakout rules, create supervised-learning labels, fit the logistic-style breakout-quality model, and compare the hard-filter and position-scaling ML overlays.
+2. The **fixed out-of-sample holdout** runs from `2025-10-01` through the latest saved data in April 2026. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.
+
+This split is important because the ML label intentionally uses future data to answer "would this breakout have been profitable?" That is acceptable when constructing labels inside the training sample, but it would be look-ahead bias if the future holdout outcomes were used to train the model. The out-of-sample test avoids that by stopping training before October 2025 and then evaluating the later trades as if they were brand new live signals.
+
+The Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed October 2025-April 2026 holdout, which is the more important test of whether the model still helped after it stopped learning.
 
 ## Entry Orders
 
@@ -133,10 +142,6 @@ In the final strategy, implied volatility does not independently trigger trades.
 
 Train the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on `QQQ` based on the model's estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.
 
-```{python}
-from analysis.filtered_backtest import compare_selected_asset_ml_overlays
-
-interactive_table(compare_selected_asset_ml_overlays(), "methodology_overlay_comparison", "Hard Filter vs Position Scaling")
-```
+The Results page contains the performance comparison, including the fixed October 2025-April 2026 holdout run. Methodology is kept focused on how the signal, labels, features, and model are constructed.
 
 This strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains.

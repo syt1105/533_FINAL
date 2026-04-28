@@ -2,5 +2,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+/downloads/
+.venv/
+docs/.venv/
+
 /.quarto/
 **/*.quarto_ipynb
+**/*.quarto_ipynb_*

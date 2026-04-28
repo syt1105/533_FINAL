@@ -6,8 +6,10 @@ from analysis.breakout_strategy import run_analysis
 from analysis.features import build_selected_asset_feature_dataset, build_universe_feature_dataset, save_feature_dataset
 from analysis.filtered_backtest import (
     compare_selected_asset_ml_overlays,
+    run_fixed_live_holdout_backtest,
     run_filtered_backtest,
     run_threshold_sweep,
+    save_fixed_live_holdout_artifacts,
     save_filtered_backtest_artifacts,
     save_threshold_sweep,
 )
@@ -47,11 +49,19 @@ def main() -> None:
     threshold_sweep = run_threshold_sweep(filter_mode="scaled_selected_asset")
     save_threshold_sweep(threshold_sweep, filename="scaled_selected_asset_threshold_sweep.csv")
 
+    live_holdout_results = run_fixed_live_holdout_backtest(
+        holdout_start="2025-10-01",
+        holdout_end=None,
+    )
+    save_fixed_live_holdout_artifacts(live_holdout_results)
+
     summary = {
         "selected_symbol": analysis["overview"].loc[
             analysis["overview"]["Field"] == "Selected symbol", "Value"
         ].iloc[0],
         "baseline_trade_count": int(analysis["metrics_raw"]["Trade Count"]),
+        "live_holdout_start": live_holdout_results["summary"]["holdout_start"],
+        "live_holdout_end": live_holdout_results["summary"]["holdout_end"],
         "saved_data_pipeline": "completed",
     }
     (DOWNLOADS_DIR / "saved_data_pipeline_summary.json").write_text(

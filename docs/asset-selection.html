@@ -100,16 +100,16 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./asset-selection.html" aria-current="page"> 
-<span class="menu-text">Asset Selection</span></a>
+    <a class="nav-link" href="./results.html"> 
+<span class="menu-text">Backtest Results</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./methodology.html"> 
 <span class="menu-text">Methodology</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./results.html"> 
-<span class="menu-text">Backtest Results</span></a>
+    <a class="nav-link active" href="./asset-selection.html" aria-current="page"> 
+<span class="menu-text">Asset Selection</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./trade-log.html"> 
@@ -167,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="33d1821a" class="cell" data-execution_count="1">
+<div id="b95427f0" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <h4 class="anchored">Baseline Universe Screen</h4>
 <div class="interactive-table-wrap" id="asset_selection_screen_wrap">
@@ -178,67 +178,81 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">symbol</th>
-<th data-quarto-table-cell-role="th">trades</th>
-<th data-quarto-table-cell-role="th">sharpe</th>
-<th data-quarto-table-cell-role="th">total_return</th>
-<th data-quarto-table-cell-role="th">win_rate</th>
-<th data-quarto-table-cell-role="th">max_drawdown</th>
+<th data-quarto-table-cell-role="th">rows</th>
+<th data-quarto-table-cell-role="th">start_date</th>
+<th data-quarto-table-cell-role="th">end_date</th>
+<th data-quarto-table-cell-role="th">recent_return_63d</th>
+<th data-quarto-table-cell-role="th">annualized_volatility</th>
+<th data-quarto-table-cell-role="th">avg_dollar_volume_63d</th>
+<th data-quarto-table-cell-role="th">selection_score</th>
 <th data-quarto-table-cell-role="th">selection_status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>QQQ</td>
-<td>48</td>
-<td>1.0666</td>
-<td>0.1107</td>
-<td>0.6875</td>
-<td>-0.0230</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
-<td>IWM</td>
-<td>36</td>
-<td>0.2714</td>
-<td>0.0244</td>
-<td>0.5000</td>
-<td>-0.0209</td>
-<td>eligible</td>
-</tr>
-<tr class="odd">
-<td>GLD</td>
-<td>57</td>
-<td>0.0292</td>
-<td>0.0020</td>
-<td>0.4386</td>
-<td>-0.0473</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
 <td>XLE</td>
-<td>43</td>
-<td>0.0214</td>
-<td>0.0011</td>
-<td>0.5581</td>
-<td>-0.0425</td>
-<td>eligible</td>
-</tr>
-<tr class="odd">
-<td>SPY</td>
-<td>58</td>
-<td>0.0027</td>
-<td>-0.0009</td>
-<td>0.5862</td>
-<td>-0.0376</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.1554</td>
+<td>0.2606</td>
+<td>2857863583.7270</td>
+<td>0.5965</td>
 <td>eligible</td>
 </tr>
 <tr class="even">
+<td>QQQ</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.0614</td>
+<td>0.2240</td>
+<td>28998442776.0514</td>
+<td>0.2742</td>
+<td>eligible</td>
+</tr>
+<tr class="odd">
+<td>IWM</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.0480</td>
+<td>0.2256</td>
+<td>6503583266.0440</td>
+<td>0.2127</td>
+<td>eligible</td>
+</tr>
+<tr class="even">
+<td>SPY</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.0306</td>
+<td>0.1713</td>
+<td>40954871322.0518</td>
+<td>0.1787</td>
+<td>eligible</td>
+</tr>
+<tr class="odd">
 <td>TLT</td>
-<td>34</td>
-<td>-0.6973</td>
-<td>-0.0721</td>
-<td>0.2353</td>
-<td>-0.0747</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>-0.0186</td>
+<td>0.1584</td>
+<td>2590969369.6263</td>
+<td>-0.1172</td>
+<td>eligible</td>
+</tr>
+<tr class="even">
+<td>GLD</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>-0.0677</td>
+<td>0.1784</td>
+<td>5274605788.8946</td>
+<td>-0.3793</td>
 <td>eligible</td>
 </tr>
 </tbody>

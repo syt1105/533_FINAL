@@ -1,21 +1,35 @@
 project:
   type: website
   output-dir: docs
-  post-render:
+  preview:
+    watch-inputs: false
+    serve:
+      cmd: "python3 -u -m http.server {port}"
+      ready: "Serving HTTP"
+  resources:
+    - downloads/
+    - .nojekyll
+  pre-render:
     - python3 -m analysis.run_saved_data_pipeline
 
 website:
   title: "Volatility Breakout Strategy"
   navbar:
     left:
-      - href: index.qmd
+      - href: index.html
         text: Overview
-      - asset-selection.qmd
-      - methodology.qmd
-      - results.qmd
-      - trade-log.qmd
-      - monitoring.qmd
-      - about.qmd
+      - href: results.html
+        text: Backtest Results
+      - href: methodology.html
+        text: Methodology
+      - href: asset-selection.html
+        text: Asset Selection
+      - href: trade-log.html
+        text: Trade Log
+      - href: monitoring.html
+        text: Monitoring
+      - href: about.html
+        text: About
   page-footer:
     left: "FINTECH 533 • Volatility Breakout Strategy"
 
@@ -31,4 +45,4 @@ execute:
   echo: false
   warning: false
   message: false
-  freeze: false
+  freeze: true

@@ -32,7 +32,7 @@
     "href": "methodology.html#why-these-parameters",
     "title": "Methodology",
     "section": "Why These Parameters",
-    "text": "Why These Parameters\n\n20-day channel: this produced a stronger final QQQ showcase backtest than the highest-ranked universe sweep row, while still keeping the breakout logic interpretable and trade frequency usable.\n20-day trend filter: a shorter trend filter matched the faster breakout horizon better than the earlier 50-day version.\n0.20 ATR breakout threshold: this was large enough to avoid tiny channel pokes but not so strict that the strategy stopped trading.\n2.0 ATR initial stop: this gave the breakout room to move while still defining risk tightly enough for position sizing.\n3.0 ATR trailing stop: this lets winners run while protecting profits once the move extends.\n15-day timeout: if the breakout has not worked within roughly three trading weeks, the signal has likely decayed.\n4-day breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.\n\nThe file parameter_sweep_top100.csv records the broader universe sweep. Its highest-ranked row favored a 30-day channel with a wider 3.0 ATR stop and 2.5 ATR trail on an average cross-asset score. The final code keeps the 20-day, 2.0 ATR, 3.0 ATR setup because the final project is a showcase QQQ strategy and that configuration produced the better selected-asset backtest on the current saved sample.\n\n\nFinal Params vs Top Sweep Row\n\n  \n  \n    \n\n\n\nparameter_set\nselected_symbol\nchannel_lookback\nstop_atr\ntrailing_stop_atr\ntrade_count\nsharpe_ratio\ntotal_return\nmax_drawdown\n\n\n\n\nfinal_current_params\nQQQ\n20\n2.0000\n3.0000\n48\n1.0666\n0.1107\n-0.0230\n\n\nsweep_top_universe_params\nQQQ\n30\n3.0000\n2.5000\n43\n0.9296\n0.0615\n-0.0178"
+    "text": "Why These Parameters\n\n20-day channel: this produced a stronger final QQQ showcase backtest than the highest-ranked universe sweep row, while still keeping the breakout logic interpretable and trade frequency usable.\n20-day trend filter: a shorter trend filter matched the faster breakout horizon better than the earlier 50-day version.\n0.20 ATR breakout threshold: this was large enough to avoid tiny channel pokes but not so strict that the strategy stopped trading.\n2.0 ATR initial stop: this gave the breakout room to move while still defining risk tightly enough for position sizing.\n3.0 ATR trailing stop: this lets winners run while protecting profits once the move extends.\n15-day timeout: if the breakout has not worked within roughly three trading weeks, the signal has likely decayed.\n4-day breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.\n\nThe file parameter_sweep_top100.csv records the broader universe sweep. Its highest-ranked row favored a 30-day channel with a wider 3.0 ATR stop and 2.5 ATR trail on an average cross-asset score. The final code keeps the 20-day, 2.0 ATR, 3.0 ATR setup because the final project is a showcase QQQ strategy and that configuration produced the better selected-asset backtest on the current saved sample.\n\n\nFinal Params vs Top Sweep Row\n\n  \n  \n    \n\n\n\nparameter_set\nselected_symbol\nchannel_lookback\nstop_atr\ntrailing_stop_atr\ntrade_count\nsharpe_ratio\ntotal_return\nmax_drawdown\n\n\n\n\nfinal_current_params\nQQQ\n20\n2.0000\n3.0000\n48\n1.0666\n0.1107\n-0.0230\n\n\nsweep_top_universe_params\nQQQ\n30\n3.0000\n2.5000\n40\n0.8399\n0.0186\n-0.0252"
   },
   {
     "objectID": "methodology.html#exit-orders",
@@ -46,7 +46,7 @@
     "href": "methodology.html#baseline-selection-logic",
     "title": "Methodology",
     "section": "Baseline Selection Logic",
-    "text": "Baseline Selection Logic\nThe project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why QQQ is the current showcase asset.\n\n\nETF Universe Screen\n\n  \n  \n    \n\n\n\nsymbol\ntrades\nsharpe\ntotal_return\nwin_rate\nmax_drawdown\nselection_status\n\n\n\n\nQQQ\n48\n1.0666\n0.1107\n0.6875\n-0.0230\neligible\n\n\nIWM\n36\n0.2714\n0.0244\n0.5000\n-0.0209\neligible\n\n\nGLD\n57\n0.0292\n0.0020\n0.4386\n-0.0473\neligible\n\n\nXLE\n43\n0.0214\n0.0011\n0.5581\n-0.0425\neligible\n\n\nSPY\n58\n0.0027\n-0.0009\n0.5862\n-0.0376\neligible\n\n\nTLT\n34\n-0.6973\n-0.0721\n0.2353\n-0.0747\neligible"
+    "text": "Baseline Selection Logic\nThe project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why QQQ is the current showcase asset.\n\n\nETF Universe Screen\n\n  \n  \n    \n\n\n\nsymbol\nrows\nstart_date\nend_date\nrecent_return_63d\nannualized_volatility\navg_dollar_volume_63d\nselection_score\nselection_status\n\n\n\n\nXLE\n1256\n2021-04-26\n2026-04-24\n0.1554\n0.2606\n2857863583.7270\n0.5965\neligible\n\n\nQQQ\n1256\n2021-04-26\n2026-04-24\n0.0614\n0.2240\n28998442776.0514\n0.2742\neligible\n\n\nIWM\n1256\n2021-04-26\n2026-04-24\n0.0480\n0.2256\n6503583266.0440\n0.2127\neligible\n\n\nSPY\n1256\n2021-04-26\n2026-04-24\n0.0306\n0.1713\n40954871322.0518\n0.1787\neligible\n\n\nTLT\n1256\n2021-04-26\n2026-04-24\n-0.0186\n0.1584\n2590969369.6263\n-0.1172\neligible\n\n\nGLD\n1256\n2021-04-26\n2026-04-24\n-0.0677\n0.1784\n5274605788.8946\n-0.3793\neligible"
   },
   {
     "objectID": "methodology.html#supervised-learning-extension",
@@ -56,11 +56,18 @@
     "text": "Supervised Learning Extension\n\nLabel Construction\nFor each breakout event:\n\nlook ahead 15 trading days\nmark the trade as 1 if price reaches +1.5 ATR before -1.0 ATR\nmark it as 0 otherwise\n\nThis uses future data only to create the label. The model never sees future information as input features.\n\n\nModel Inputs\nThe final selected-asset ML overlay uses a compact core_iv feature set:\n\nbreakout_strength\ndistance_from_trend\ndistance_from_upper_channel\nchannel_width_pct\natr_pct\niv_hv_spread\niv_hv_ratio\niv_zscore_60d\niv_trend_20d\n\nThese were chosen because they balance:\n\nbreakout quality\nlocal volatility expansion\noptions-implied volatility confirmation"
   },
   {
+    "objectID": "methodology.html#role-of-options-implied-volatility",
+    "href": "methodology.html#role-of-options-implied-volatility",
+    "title": "Methodology",
+    "section": "Role Of Options Implied Volatility",
+    "text": "Role Of Options Implied Volatility\nThe baseline strategy enters trades using only price-based breakout rules, but the machine-learning overlay uses options-derived implied volatility to judge breakout quality. For each breakout event, the model includes iv_hv_spread, iv_hv_ratio, iv_zscore_60d, and iv_trend_20d, all measured using information available at the signal date.\nThe intuition is that a price breakout confirmed by rising or unusually rich implied volatility is more likely to reflect a real regime shift, because options traders are pricing a larger future move. A price breakout without IV confirmation may be a weaker signal or a temporary channel poke.\nIn the final strategy, implied volatility does not independently trigger trades. It helps the model scale position size up or down after the baseline breakout rule has already identified a trade candidate.\n\nModel Usage\nTrain the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on QQQ based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.\nThe Results page contains the performance comparison, including the fixed October 2025-April 2026 holdout run. Methodology is kept focused on how the signal, labels, features, and model are constructed.\nThis strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains."
+  },
+  {
     "objectID": "asset-selection.html",
     "href": "asset-selection.html",
     "title": "Asset Selection",
     "section": "",
-    "text": "symbol\ntrades\nsharpe\ntotal_return\nwin_rate\nmax_drawdown\nselection_status\n\n\n\n\nQQQ\n48\n1.0666\n0.1107\n0.6875\n-0.0230\neligible\n\n\nIWM\n36\n0.2714\n0.0244\n0.5000\n-0.0209\neligible\n\n\nGLD\n57\n0.0292\n0.0020\n0.4386\n-0.0473\neligible\n\n\nXLE\n43\n0.0214\n0.0011\n0.5581\n-0.0425\neligible\n\n\nSPY\n58\n0.0027\n-0.0009\n0.5862\n-0.0376\neligible\n\n\nTLT\n34\n-0.6973\n-0.0721\n0.2353\n-0.0747\neligible"
+    "text": "symbol\nrows\nstart_date\nend_date\nrecent_return_63d\nannualized_volatility\navg_dollar_volume_63d\nselection_score\nselection_status\n\n\n\n\nXLE\n1256\n2021-04-26\n2026-04-24\n0.1554\n0.2606\n2857863583.7270\n0.5965\neligible\n\n\nQQQ\n1256\n2021-04-26\n2026-04-24\n0.0614\n0.2240\n28998442776.0514\n0.2742\neligible\n\n\nIWM\n1256\n2021-04-26\n2026-04-24\n0.0480\n0.2256\n6503583266.0440\n0.2127\neligible\n\n\nSPY\n1256\n2021-04-26\n2026-04-24\n0.0306\n0.1713\n40954871322.0518\n0.1787\neligible\n\n\nTLT\n1256\n2021-04-26\n2026-04-24\n-0.0186\n0.1584\n2590969369.6263\n-0.1172\neligible\n\n\nGLD\n1256\n2021-04-26\n2026-04-24\n-0.0677\n0.1784\n5274605788.8946\n-0.3793\neligible"
   },
   {
     "objectID": "asset-selection.html#planned-universe",
@@ -88,7 +95,7 @@
     "href": "index.html",
     "title": "Volatility Breakout Strategy",
     "section": "",
-    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers.\nField\nValue\n\n\n\n\n0\nStrategy\nTuned baseline volatility and channel breakout\n\n\n1\nData source\nshinybroker / Interactive Brokers historical d...\n\n\n2\nSelected symbol\nQQQ\n\n\n3\nSample window\n2021-04-26 to 2026-04-24\n\n\n4\nStatus\nBaseline strategy tuned and implemented"
+    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
   },
   {
     "objectID": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
@@ -98,32 +105,39 @@
     "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
   },
   {
-    "objectID": "index.html#project-scope",
-    "href": "index.html#project-scope",
+    "objectID": "index.html#results-snapshot",
+    "href": "index.html#results-snapshot",
     "title": "Volatility Breakout Strategy",
-    "section": "Project Scope",
-    "text": "Project Scope\n\nBuild a transparent breakout strategy with explicit entry and exit rules.\nBacktest the strategy on historical price data using a repeatable Python workflow.\nLog every trade so entries, exits, and holding periods are auditable.\nExtend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay."
+    "section": "Results Snapshot",
+    "text": "Results Snapshot\nThe main validation test is a fixed live holdout from 2025-10-01 through 2026-04-24. The model is trained only on labeled breakout events before October 2025, then applied to the later period as unseen data.\n\n\n\n        \n          Holdout Window\n          2025-10-01 to 2026-04-24\n          Model frozen before October 2025\n        \n        \n        \n          Baseline Return\n          1.78%\n          4 trades\n        \n        \n        \n          ML Scaling Return\n          1.89%\n          Sharpe 1.90\n        \n        \n        \n          Hard Filter\n          1 trade\n          Too sparse for final use\n        \n        \n\n\nThe out-of-sample result supports the final design choice: the ML model adds value as a position-sizing overlay, while the hard filter is too aggressive because it leaves too few trades to rely on.\n\n\n                            \n                                            \n\n\n\n\n\n\n\n\n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\n0\nBaseline\n4\n0\n1.758542\n0.017800\n1.0\n-0.005132\n0.015007\n\n\n1\nML hard filter\n1\n5\n2.273939\n0.010623\n1.0\n-0.001124\n0.040780\n\n\n2\nML position scaling\n4\n0\n1.902845\n0.018891\n1.0\n-0.004776\n0.015007"
   },
   {
     "objectID": "index.html#strategy-snapshot",
     "href": "index.html#strategy-snapshot",
     "title": "Volatility Breakout Strategy",
     "section": "Strategy Snapshot",
-    "text": "Strategy Snapshot\nThe final baseline is a tuned QQQ channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact QQQ-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation."
+    "text": "Strategy Snapshot\n\n\n\n\n\n\n\n\n\nField\nValue\n\n\n\n\n0\nStrategy\nTuned baseline volatility and channel breakout\n\n\n1\nData source\nshinybroker / Interactive Brokers historical d...\n\n\n2\nSelected symbol\nQQQ\n\n\n3\nSample window\n2021-04-26 to 2026-04-24\n\n\n4\nStatus\nBaseline strategy tuned and implemented"
+  },
+  {
+    "objectID": "index.html#project-scope",
+    "href": "index.html#project-scope",
+    "title": "Volatility Breakout Strategy",
+    "section": "Project Scope",
+    "text": "Project Scope\n\nBuild a transparent breakout strategy with explicit entry and exit rules.\nBacktest the strategy on historical price data using a repeatable Python workflow.\nLog every trade so entries, exits, and holding periods are auditable.\nExtend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay.\n\nThe final baseline is a tuned QQQ channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact QQQ-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation."
   },
   {
     "objectID": "index.html#what-to-review",
     "href": "index.html#what-to-review",
     "title": "Volatility Breakout Strategy",
     "section": "What To Review",
-    "text": "What To Review\n\nAsset Selection explains the ETF universe and why QQQ became the showcase asset.\nMethodology documents the final trading rules, labels, feature set, and parameter choices.\nResults summarizes the tuned baseline and the final aggr4 ML overlay.\nTrade Log contains the blotter, ledger preview, and downloadable output files.\nMonitoring defines how to judge whether the strategy is still behaving as expected after deployment.\nAbout introduces the project team."
+    "text": "What To Review\n\nResults leads with the fixed October 2025-April 2026 holdout evaluation and performance graph.\nAsset Selection explains the ETF universe and why QQQ became the showcase asset.\nMethodology documents the final trading rules, labels, feature set, and parameter choices.\nTrade Log contains the blotter, ledger preview, and downloadable output files.\nMonitoring defines how to judge whether the strategy is still behaving as expected after deployment.\nAbout introduces the project team."
   },
   {
     "objectID": "monitoring.html",
     "href": "monitoring.html",
     "title": "Monitoring",
     "section": "",
-    "text": "strategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline_test_period\n11\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nfiltered_test_period\n11\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
+    "text": "Metric\nThreshold\n\n\n\n\nRolling expectancy\n&lt; 0 over the latest 50 trades\n\n\nRolling hit rate\nBelow the backtest range for 3 consecutive months\n\n\nDrawdown\nWorse than 1.5x historical max drawdown"
   },
   {
     "objectID": "monitoring.html#how-we-will-know-performance-is-still-in-line",
@@ -158,63 +172,56 @@
     "href": "results.html",
     "title": "Backtest Results",
     "section": "",
-    "text": "strategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
+    "text": "The most important test in this report is the fixed live holdout from 2025-10-01 through 2026-04-24. The model was trained only on labeled breakouts before 2025-10-01, then applied to the later data as if it were brand new.\n\nThe baseline breakout strategy remained profitable in the live holdout, with 4 trades and a 1.78% total return.\nThe final ML position-scaling overlay improved holdout Sharpe from 1.76 to 1.90 and total return from 1.78% to 1.89%.\nThe hard filter produced a high Sharpe but only 1 trade, so it is less reliable as a final strategy choice.\nThe evidence still supports using the model conservatively as a position-sizing overlay rather than as a strict take-or-skip gate.\n\n\n\n\n\n  \n  \n    \n\n\n\nperiod\nstrategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\nremoved_signal_count\n\n\n\n\nTraining / in-sample backtest before Oct 2025\nbaseline\n44\n0.99\n9.13%\n65.91%\n-2.30%\n0.52%\n\n\n\nFixed live holdout: Oct 2025-Apr 2026\nbaseline\n4\n1.76\n1.78%\n100.00%\n-0.51%\n1.50%\n0\n\n\nFixed live holdout: Oct 2025-Apr 2026\nml_hard_filter\n1\n2.27\n1.06%\n100.00%\n-0.11%\n4.08%\n5\n\n\nFixed live holdout: Oct 2025-Apr 2026\nml_position_scaling\n4\n1.90\n1.89%\n100.00%\n-0.48%\n1.50%\n0"
   },
   {
-    "objectID": "results.html#executive-summary",
-    "href": "results.html#executive-summary",
+    "objectID": "results.html#key-takeaways",
+    "href": "results.html#key-takeaways",
     "title": "Backtest Results",
-    "section": "Executive Summary",
-    "text": "Executive Summary\nThis project produced a two-layer final result. The core strategy is a tuned QQQ channel breakout system with explicit volatility and risk-control rules: a 20-day breakout entry, a 20-day trend filter, a 0.20 ATR breakout-strength filter, a 2.0 ATR stop-loss, a 3.0 ATR trailing stop, a 15-day time stop, and a delayed breakout-failure exit. In the final out-of-sample evaluation window, this baseline strategy generated a Sharpe ratio of 1.34, a total return of 2.91%, a win rate of 81.8%, and a max drawdown of -0.81%.\nOn top of that baseline, the project added a supervised-learning overlay rather than a fully separate trading strategy. The final ML layer is a QQQ-only logistic model that uses a compact set of breakout-quality and implied-volatility features, including IV/HV spread, IV/HV ratio, and IV trend. The report compares the professor’s hard-filter idea against the final position-scaling overlay, so the ML contribution is evaluated relative to a clear baseline rather than asserted in isolation."
+    "section": "",
+    "text": "The most important test in this report is the fixed live holdout from 2025-10-01 through 2026-04-24. The model was trained only on labeled breakouts before 2025-10-01, then applied to the later data as if it were brand new.\n\nThe baseline breakout strategy remained profitable in the live holdout, with 4 trades and a 1.78% total return.\nThe final ML position-scaling overlay improved holdout Sharpe from 1.76 to 1.90 and total return from 1.78% to 1.89%.\nThe hard filter produced a high Sharpe but only 1 trade, so it is less reliable as a final strategy choice.\nThe evidence still supports using the model conservatively as a position-sizing overlay rather than as a strict take-or-skip gate.\n\n\n\n\n\n  \n  \n    \n\n\n\nperiod\nstrategy\ntrade_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\nremoved_signal_count\n\n\n\n\nTraining / in-sample backtest before Oct 2025\nbaseline\n44\n0.99\n9.13%\n65.91%\n-2.30%\n0.52%\n\n\n\nFixed live holdout: Oct 2025-Apr 2026\nbaseline\n4\n1.76\n1.78%\n100.00%\n-0.51%\n1.50%\n0\n\n\nFixed live holdout: Oct 2025-Apr 2026\nml_hard_filter\n1\n2.27\n1.06%\n100.00%\n-0.11%\n4.08%\n5\n\n\nFixed live holdout: Oct 2025-Apr 2026\nml_position_scaling\n4\n1.90\n1.89%\n100.00%\n-0.48%\n1.50%\n0"
   },
   {
-    "objectID": "results.html#baseline-summary",
-    "href": "results.html#baseline-summary",
+    "objectID": "results.html#fixed-live-holdout-setup",
+    "href": "results.html#fixed-live-holdout-setup",
     "title": "Backtest Results",
-    "section": "Baseline Summary",
-    "text": "Baseline Summary\nThe final baseline is a tuned channel breakout strategy on QQQ with:\n\n20-day channel breakout entry\n20-day trend filter\n0.20 ATR breakout-strength filter\n2.0 ATR initial stop\n3.0 ATR trailing stop\n15-day timeout\n4-day breakout-failure delay\n\nThis baseline is already positive after costs and serves as the control strategy for the ML extension."
+    "section": "Fixed Live Holdout Setup",
+    "text": "Fixed Live Holdout Setup\nThis section is intentionally separated from the earlier backtest. The model is fit on historical labeled breakout events before October 2025. It then scores breakout candidates from October 2025 through April 2026 using only information available at each signal date. No labels or future outcomes from the holdout period are used to train the model.\nThe holdout answers the practical question: if the model had been frozen before October 2025, would it still have helped the breakout strategy in the next several months?"
   },
   {
-    "objectID": "results.html#ml-overlay-summary",
-    "href": "results.html#ml-overlay-summary",
+    "objectID": "results.html#out-of-sample-performance",
+    "href": "results.html#out-of-sample-performance",
     "title": "Backtest Results",
-    "section": "ML Overlay Summary",
-    "text": "ML Overlay Summary\nThe final ML extension is not a fully separate strategy. It is a position-scaling overlay on top of the baseline breakout rule.\n\nAsset scope: QQQ only\nModel type: logistic classifier\nLabel framework: label then predict\nFeature set: compact core_iv breakout and implied-volatility features\nUse in backtest: scale position size mildly up or down rather than deleting all low-score trades\n\nThe resulting out-of-sample comparison shows a clear but still incremental improvement in both total return and Sharpe ratio relative to the baseline. The improvement comes from mild position scaling rather than a wholesale replacement of the breakout rule.\n\n\nOut-of-Sample Overlay Comparison\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
+    "section": "Out-Of-Sample Performance",
+    "text": "Out-Of-Sample Performance\n\n\n                            \n                                            \n\n\nThe holdout result is useful because it is not just another optimized backtest. The baseline still made money, and the ML position-scaling overlay improved the risk-adjusted profile without removing the full breakout opportunity set. The hard filter had the cleanest-looking Sharpe, but it only took one trade, which makes it too fragile as the final design.\n\n\n                            \n                                            \n\n\n\n\nFixed Live Holdout Strategy Comparison\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n4\n0\n1.76\n1.78%\n100.00%\n-0.51%\n1.50%\n\n\nml_hard_filter\n1\n5\n2.27\n1.06%\n100.00%\n-0.11%\n4.08%\n\n\nml_position_scaling\n4\n0\n1.90\n1.89%\n100.00%\n-0.48%\n1.50%"
   },
   {
-    "objectID": "results.html#price-chart-with-trade-markers",
-    "href": "results.html#price-chart-with-trade-markers",
+    "objectID": "results.html#holdout-prediction-quality",
+    "href": "results.html#holdout-prediction-quality",
     "title": "Backtest Results",
-    "section": "Price Chart With Trade Markers",
-    "text": "Price Chart With Trade Markers"
+    "section": "Holdout Prediction Quality",
+    "text": "Holdout Prediction Quality\n\n\nHoldout Breakout Predictions\n\n  \n  \n    \n\n\n\nsignal_date\npredicted_probability\npredicted_label\nlabel\nlabel_event\n\n\n\n\n2025-10-02 00:00:00\n0.0795\n0\n0\nstop_first\n\n\n2025-10-08 00:00:00\n0.0760\n0\n0\nstop_first\n\n\n2025-10-24 00:00:00\n0.2011\n0\n0\nstop_first\n\n\n2025-10-27 00:00:00\n0.1072\n0\n0\nstop_first\n\n\n2026-04-13 00:00:00\n0.6082\n1\n1\ntarget_first\n\n\n2026-04-16 00:00:00\n0.3140\n1\n1\ntarget_first\n\n\n2026-04-22 00:00:00\n0.2354\n0\n0\ntimeout"
   },
   {
-    "objectID": "results.html#equity-curve",
-    "href": "results.html#equity-curve",
+    "objectID": "results.html#full-backtest-context",
+    "href": "results.html#full-backtest-context",
     "title": "Backtest Results",
-    "section": "Equity Curve",
-    "text": "Equity Curve"
-  },
-  {
-    "objectID": "results.html#drawdown",
-    "href": "results.html#drawdown",
-    "title": "Backtest Results",
-    "section": "Drawdown",
-    "text": "Drawdown"
+    "section": "Full Backtest Context",
+    "text": "Full Backtest Context\nThe fixed holdout is the main forward-style test, but the full backtest is still useful context. Across the full saved sample, the baseline strategy remains a transparent long-only QQQ channel breakout system with explicit volatility and risk-control rules: a 20-day breakout entry, a 20-day trend filter, a 0.20 ATR breakout-strength filter, a 2.0 ATR stop-loss, a 3.0 ATR trailing stop, a 15-day time stop, and a delayed breakout-failure exit.\nThe chart below shows the training and in-sample backtest regime before the fixed live holdout. This is where the breakout rules and ML labels were developed. The visual pattern is important: the strategy does not trade constantly. It waits for price to clear the channel, then exits through stop-loss, timeout, trailing-stop profit protection, or breakout-failure logic.\n\n\n                            \n                                            \n\n\n\n\n                            \n                                            \n\n\n\n\nFull-Sample Baseline Metrics\n\n  \n  \n    \n\n\n\nMetric\nValue\n\n\n\n\nSharpe Ratio\n1.07\n\n\nExpected Return Per Trade\n0.61%\n\n\nAverage Trade Lifetime\n5.8 days\n\n\nMax Drawdown\n-2.30%\n\n\nWin Rate\n68.75%\n\n\nTrade Count\n48\n\n\nTotal Return\n11.07%\n\n\n\n\n  \n\n\n\n\nFull-Sample Baseline vs ML Overlays\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097"
   },
   {
     "objectID": "results.html#trade-outcome-analysis",
     "href": "results.html#trade-outcome-analysis",
     "title": "Backtest Results",
     "section": "Trade Outcome Analysis",
-    "text": "Trade Outcome Analysis\n\n\nPayoff Shape\n\n  \n  \n    \n\n\n\nMetric\nValue\n\n\n\n\nAverage winner\n1.41%\n\n\nAverage loser\n-1.17%\n\n\nPayoff ratio\n1.21\n\n\nLargest winner\n4.40%\n\n\nLargest loser\n-2.97%\n\n\nTop 3 trade PnL share\n47.57%"
+    "text": "Trade Outcome Analysis\n\n\nOutcome Rates\n\n  \n  \n    \n\n\n\nOutcome\nTrades\nRate\n\n\n\n\nSuccessful\n33\n68.75%\n\n\nBreakout failure\n13\n27.08%\n\n\nStop-loss triggered\n2\n4.17%\n\n\n\n\n  \n\n\n\n\nPayoff Shape\n\n  \n  \n    \n\n\n\nMetric\nValue\n\n\n\n\nAverage winner\n1.41%\n\n\nAverage loser\n-1.17%\n\n\nPayoff ratio\n1.21\n\n\nLargest winner\n4.40%\n\n\nLargest loser\n-2.97%\n\n\nTop 3 trade PnL share\n47.57%"
   },
   {
     "objectID": "results.html#what-the-final-result-means",
     "href": "results.html#what-the-final-result-means",
     "title": "Backtest Results",
     "section": "What The Final Result Means",
-    "text": "What The Final Result Means\nThe project now has two meaningful layers:\n\nA tuned baseline breakout strategy that is already tradable and positive after costs.\nA compact implied-volatility-aware ML overlay that improves out-of-sample Sharpe and total return on the showcase asset, while accepting a slightly deeper drawdown.\n\nThe improvement is not huge, and that is important to state honestly. This is not a magical black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline.\nThe strategy should also be read as whale hunting. It is not trying to win every breakout. It is trying to keep failed breakouts small, exit stale trades, and preserve enough exposure for the subset of breakouts that turn into real volatility expansions."
+    "text": "What The Final Result Means\nThe project now has two meaningful layers:\n\nA tuned baseline breakout strategy that is already tradable and positive after costs.\nA compact implied-volatility-aware ML overlay that improves the fixed live holdout modestly by changing position size on breakout candidates.\n\nThe improvement is not huge, and that is important to state honestly. This is not a black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline. The important result is that the overlay still helped when it was frozen before October 2025 and then evaluated on later data.\nThe strategy should also be read as whale hunting. It is not trying to win every breakout. It is trying to keep failed breakouts small, exit stale trades, and preserve enough exposure for the subset of breakouts that turn into real volatility expansions."
   },
   {
     "objectID": "about.html",
@@ -231,18 +238,11 @@
     "text": "This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
   },
   {
-    "objectID": "about.html#abhinav-sharaff",
-    "href": "about.html#abhinav-sharaff",
+    "objectID": "about.html#team",
+    "href": "about.html#team",
     "title": "About",
-    "section": "Abhinav Sharaff",
-    "text": "Abhinav Sharaff\nAbhinav worked on the strategy research workflow, including the baseline breakout rules, backtest interpretation, Quarto reporting structure, and final project presentation materials."
-  },
-  {
-    "objectID": "about.html#yiting-sun",
-    "href": "about.html#yiting-sun",
-    "title": "About",
-    "section": "Yiting Sun",
-    "text": "Yiting Sun\nYiting worked on the data and modeling components, including the ETF universe analysis, feature engineering, supervised-learning framework, and evaluation of the implied-volatility overlay."
+    "section": "Team",
+    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun"
   },
   {
     "objectID": "about.html#project-focus",
@@ -308,17 +308,10 @@
     "text": "Why The Trade Log Matters\nThe trade log makes the backtest auditable. It shows:\n\nwhen entries and exits occurred\nhow long trades stayed open\nwhether exits came from success, stop-loss, timeout, or breakout failure\nhow profits and losses were distributed across trades\nhow the final ML overlay changes position sizing on top of those same breakout opportunities"
   },
   {
-    "objectID": "about.html#team",
-    "href": "about.html#team",
-    "title": "About",
-    "section": "Team",
-    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun"
-  },
-  {
-    "objectID": "methodology.html#role-of-options-implied-volatility",
-    "href": "methodology.html#role-of-options-implied-volatility",
+    "objectID": "methodology.html#sample-period-and-holdout-design",
+    "href": "methodology.html#sample-period-and-holdout-design",
     "title": "Methodology",
-    "section": "Role Of Options Implied Volatility",
-    "text": "Role Of Options Implied Volatility\nThe baseline strategy enters trades using only price-based breakout rules, but the machine-learning overlay uses options-derived implied volatility to judge breakout quality. For each breakout event, the model includes iv_hv_spread, iv_hv_ratio, iv_zscore_60d, and iv_trend_20d, all measured using information available at the signal date.\nThe intuition is that a price breakout confirmed by rising or unusually rich implied volatility is more likely to reflect a real regime shift, because options traders are pricing a larger future move. A price breakout without IV confirmation may be a weaker signal or a temporary channel poke.\nIn the final strategy, implied volatility does not independently trigger trades. It helps the model scale position size up or down after the baseline breakout rule has already identified a trade candidate.\n\nModel Usage\nTrain the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on QQQ based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.\n\n\nHard Filter vs Position Scaling\n\n  \n  \n    \n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\nbaseline\n11\n0\n1.5497\n0.0352\n0.9091\n-0.0081\n0.0097\n\n\nml_hard_filter\n8\n7\n1.2081\n0.0226\n0.8750\n-0.0080\n0.0083\n\n\nml_position_scaling\n11\n0\n1.5665\n0.0398\n0.9091\n-0.0094\n0.0097\n\n\n\n\n  \n\n\n\n\nThis strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains."
+    "section": "Sample Period And Holdout Design",
+    "text": "Sample Period And Holdout Design\nThe project separates the historical sample into two roles:\n\nThe training and strategy-development sample uses the data before 2025-10-01. This period is used to evaluate the baseline breakout rules, create supervised-learning labels, fit the logistic-style breakout-quality model, and compare the hard-filter and position-scaling ML overlays.\nThe fixed out-of-sample holdout runs from 2025-10-01 through the latest saved data in April 2026. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.\n\nThis split is important because the ML label intentionally uses future data to answer “would this breakout have been profitable?” That is acceptable when constructing labels inside the training sample, but it would be look-ahead bias if the future holdout outcomes were used to train the model. The out-of-sample test avoids that by stopping training before October 2025 and then evaluating the later trades as if they were brand new live signals.\nThe Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed October 2025-April 2026 holdout, which is the more important test of whether the model still helped after it stopped learning."
   }
 ]

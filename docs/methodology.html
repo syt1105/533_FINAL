@@ -100,16 +100,16 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./asset-selection.html"> 
-<span class="menu-text">Asset Selection</span></a>
+    <a class="nav-link" href="./results.html"> 
+<span class="menu-text">Backtest Results</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./methodology.html" aria-current="page"> 
 <span class="menu-text">Methodology</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./results.html"> 
-<span class="menu-text">Backtest Results</span></a>
+    <a class="nav-link" href="./asset-selection.html"> 
+<span class="menu-text">Asset Selection</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./trade-log.html"> 
@@ -141,6 +141,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#strategy-idea" id="toc-strategy-idea" class="nav-link active" data-scroll-target="#strategy-idea">Strategy Idea</a></li>
   <li><a href="#data-pipeline" id="toc-data-pipeline" class="nav-link" data-scroll-target="#data-pipeline">Data Pipeline</a></li>
+  <li><a href="#sample-period-and-holdout-design" id="toc-sample-period-and-holdout-design" class="nav-link" data-scroll-target="#sample-period-and-holdout-design">Sample Period And Holdout Design</a></li>
   <li><a href="#entry-orders" id="toc-entry-orders" class="nav-link" data-scroll-target="#entry-orders">Entry Orders</a></li>
   <li><a href="#why-these-parameters" id="toc-why-these-parameters" class="nav-link" data-scroll-target="#why-these-parameters">Why These Parameters</a></li>
   <li><a href="#exit-orders" id="toc-exit-orders" class="nav-link" data-scroll-target="#exit-orders">Exit Orders</a></li>
@@ -179,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="b5701d2e" class="cell" data-execution_count="1">
+<div id="c3afb93c" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <h4 class="anchored">Final Strategy Parameters</h4>
 <div class="interactive-table-wrap" id="methodology_parameters_wrap">
@@ -306,6 +307,16 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>The current showcase asset is QQQ.</p>
 </section>
+<section id="sample-period-and-holdout-design" class="level2">
+<h2 class="anchored" data-anchor-id="sample-period-and-holdout-design">Sample Period And Holdout Design</h2>
+<p>The project separates the historical sample into two roles:</p>
+<ol type="1">
+<li>The <strong>training and strategy-development sample</strong> uses the data before <code>2025-10-01</code>. This period is used to evaluate the baseline breakout rules, create supervised-learning labels, fit the logistic-style breakout-quality model, and compare the hard-filter and position-scaling ML overlays.</li>
+<li>The <strong>fixed out-of-sample holdout</strong> runs from <code>2025-10-01</code> through the latest saved data in April 2026. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.</li>
+</ol>
+<p>This split is important because the ML label intentionally uses future data to answer “would this breakout have been profitable?” That is acceptable when constructing labels inside the training sample, but it would be look-ahead bias if the future holdout outcomes were used to train the model. The out-of-sample test avoids that by stopping training before October 2025 and then evaluating the later trades as if they were brand new live signals.</p>
+<p>The Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed October 2025-April 2026 holdout, which is the more important test of whether the model still helped after it stopped learning.</p>
+</section>
 <section id="entry-orders" class="level2">
 <h2 class="anchored" data-anchor-id="entry-orders">Entry Orders</h2>
 <p>The final baseline entry rule is:</p>
@@ -335,7 +346,7 @@ ul.task-list li input[type="checkbox"] {
 <li><code>4-day</code> breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.</li>
 </ul>
 <p>The file <code>parameter_sweep_top100.csv</code> records the broader universe sweep. Its highest-ranked row favored a <code>30-day</code> channel with a wider <code>3.0 ATR</code> stop and <code>2.5 ATR</code> trail on an average cross-asset score. The final code keeps the <code>20-day</code>, <code>2.0 ATR</code>, <code>3.0 ATR</code> setup because the final project is a showcase <code>QQQ</code> strategy and that configuration produced the better selected-asset backtest on the current saved sample.</p>
-<div id="6addf12a" class="cell" data-execution_count="2">
+<div id="75e3c71c" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <h4 class="anchored">Final Params vs Top Sweep Row</h4>
 <div class="interactive-table-wrap" id="methodology_parameter_comparison_wrap">
@@ -374,10 +385,10 @@ ul.task-list li input[type="checkbox"] {
 <td>30</td>
 <td>3.0000</td>
 <td>2.5000</td>
-<td>43</td>
-<td>0.9296</td>
-<td>0.0615</td>
-<td>-0.0178</td>
+<td>40</td>
+<td>0.8399</td>
+<td>0.0186</td>
+<td>-0.0252</td>
 </tr>
 </tbody>
 </table>
@@ -450,7 +461,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="baseline-selection-logic" class="level2">
 <h2 class="anchored" data-anchor-id="baseline-selection-logic">Baseline Selection Logic</h2>
 <p>The project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why <code>QQQ</code> is the current showcase asset.</p>
-<div id="f8fb43a6" class="cell" data-execution_count="3">
+<div id="63a7b831" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <h4 class="anchored">ETF Universe Screen</h4>
 <div class="interactive-table-wrap" id="methodology_asset_screen_wrap">
@@ -461,67 +472,81 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">symbol</th>
-<th data-quarto-table-cell-role="th">trades</th>
-<th data-quarto-table-cell-role="th">sharpe</th>
-<th data-quarto-table-cell-role="th">total_return</th>
-<th data-quarto-table-cell-role="th">win_rate</th>
-<th data-quarto-table-cell-role="th">max_drawdown</th>
+<th data-quarto-table-cell-role="th">rows</th>
+<th data-quarto-table-cell-role="th">start_date</th>
+<th data-quarto-table-cell-role="th">end_date</th>
+<th data-quarto-table-cell-role="th">recent_return_63d</th>
+<th data-quarto-table-cell-role="th">annualized_volatility</th>
+<th data-quarto-table-cell-role="th">avg_dollar_volume_63d</th>
+<th data-quarto-table-cell-role="th">selection_score</th>
 <th data-quarto-table-cell-role="th">selection_status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>QQQ</td>
-<td>48</td>
-<td>1.0666</td>
-<td>0.1107</td>
-<td>0.6875</td>
-<td>-0.0230</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
-<td>IWM</td>
-<td>36</td>
-<td>0.2714</td>
-<td>0.0244</td>
-<td>0.5000</td>
-<td>-0.0209</td>
-<td>eligible</td>
-</tr>
-<tr class="odd">
-<td>GLD</td>
-<td>57</td>
-<td>0.0292</td>
-<td>0.0020</td>
-<td>0.4386</td>
-<td>-0.0473</td>
-<td>eligible</td>
-</tr>
-<tr class="even">
 <td>XLE</td>
-<td>43</td>
-<td>0.0214</td>
-<td>0.0011</td>
-<td>0.5581</td>
-<td>-0.0425</td>
-<td>eligible</td>
-</tr>
-<tr class="odd">
-<td>SPY</td>
-<td>58</td>
-<td>0.0027</td>
-<td>-0.0009</td>
-<td>0.5862</td>
-<td>-0.0376</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.1554</td>
+<td>0.2606</td>
+<td>2857863583.7270</td>
+<td>0.5965</td>
 <td>eligible</td>
 </tr>
 <tr class="even">
+<td>QQQ</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.0614</td>
+<td>0.2240</td>
+<td>28998442776.0514</td>
+<td>0.2742</td>
+<td>eligible</td>
+</tr>
+<tr class="odd">
+<td>IWM</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.0480</td>
+<td>0.2256</td>
+<td>6503583266.0440</td>
+<td>0.2127</td>
+<td>eligible</td>
+</tr>
+<tr class="even">
+<td>SPY</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>0.0306</td>
+<td>0.1713</td>
+<td>40954871322.0518</td>
+<td>0.1787</td>
+<td>eligible</td>
+</tr>
+<tr class="odd">
 <td>TLT</td>
-<td>34</td>
-<td>-0.6973</td>
-<td>-0.0721</td>
-<td>0.2353</td>
-<td>-0.0747</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>-0.0186</td>
+<td>0.1584</td>
+<td>2590969369.6263</td>
+<td>-0.1172</td>
+<td>eligible</td>
+</tr>
+<tr class="even">
+<td>GLD</td>
+<td>1256</td>
+<td>2021-04-26</td>
+<td>2026-04-24</td>
+<td>-0.0677</td>
+<td>0.1784</td>
+<td>5274605788.8946</td>
+<td>-0.3793</td>
 <td>eligible</td>
 </tr>
 </tbody>
@@ -611,101 +636,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="model-usage" class="level3">
 <h3 class="anchored" data-anchor-id="model-usage">Model Usage</h3>
 <p>Train the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on <code>QQQ</code> based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.</p>
-<div id="f9293ff2" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="4">
-<h4 class="anchored">Hard Filter vs Position Scaling</h4>
-<div class="interactive-table-wrap" id="methodology_overlay_comparison_wrap">
-  <input class="interactive-table-search" id="methodology_overlay_comparison_search" type="search" placeholder="Search table" aria-label="Search table">
-  <div class="interactive-table-scroll">
-    
-<table id="methodology_overlay_comparison" class="interactive-table caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th">strategy</th>
-<th data-quarto-table-cell-role="th">trade_count</th>
-<th data-quarto-table-cell-role="th">removed_signal_count</th>
-<th data-quarto-table-cell-role="th">sharpe_ratio</th>
-<th data-quarto-table-cell-role="th">total_return</th>
-<th data-quarto-table-cell-role="th">win_rate</th>
-<th data-quarto-table-cell-role="th">max_drawdown</th>
-<th data-quarto-table-cell-role="th">expected_return_per_trade</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>baseline</td>
-<td>11</td>
-<td>0</td>
-<td>1.5497</td>
-<td>0.0352</td>
-<td>0.9091</td>
-<td>-0.0081</td>
-<td>0.0097</td>
-</tr>
-<tr class="even">
-<td>ml_hard_filter</td>
-<td>8</td>
-<td>7</td>
-<td>1.2081</td>
-<td>0.0226</td>
-<td>0.8750</td>
-<td>-0.0080</td>
-<td>0.0083</td>
-</tr>
-<tr class="odd">
-<td>ml_position_scaling</td>
-<td>11</td>
-<td>0</td>
-<td>1.5665</td>
-<td>0.0398</td>
-<td>0.9091</td>
-<td>-0.0094</td>
-<td>0.0097</td>
-</tr>
-</tbody>
-</table>
-
-  </div>
-</div>
-<script>
-(function() {
-  const table = document.getElementById("methodology_overlay_comparison");
-  const search = document.getElementById("methodology_overlay_comparison_search");
-  if (!table || !search) return;
-
-  search.addEventListener("input", function() {
-    const query = search.value.toLowerCase();
-    Array.from(table.tBodies[0].rows).forEach(function(row) {
-      row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
-    });
-  });
-
-  Array.from(table.tHead.rows[0].cells).forEach(function(header, index) {
-    header.style.cursor = "pointer";
-    header.title = "Click to sort";
-    header.addEventListener("click", function() {
-      const tbody = table.tBodies[0];
-      const currentDirection = header.getAttribute("data-sort") === "asc" ? "desc" : "asc";
-      Array.from(table.tHead.rows[0].cells).forEach(function(cell) { cell.removeAttribute("data-sort"); });
-      header.setAttribute("data-sort", currentDirection);
-      const rows = Array.from(tbody.rows);
-      rows.sort(function(a, b) {
-        const av = a.cells[index].innerText.trim();
-        const bv = b.cells[index].innerText.trim();
-        const an = Number(av.replace(/[%,$]/g, ""));
-        const bn = Number(bv.replace(/[%,$]/g, ""));
-        const result = (!Number.isNaN(an) && !Number.isNaN(bn))
-          ? an - bn
-          : av.localeCompare(bv);
-        return currentDirection === "asc" ? result : -result;
-      });
-      rows.forEach(function(row) { tbody.appendChild(row); });
-    });
-  });
-})();
-</script>
-</div>
-</div>
+<p>The Results page contains the performance comparison, including the fixed October 2025-April 2026 holdout run. Methodology is kept focused on how the signal, labels, features, and model are constructed.</p>
 <p>This strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains.</p>
 
 

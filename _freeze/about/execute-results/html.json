@@ -1,0 +1,12 @@
+{
+  "hash": "8ec80a28066012e1caff0a55d3549a2e",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"About\"\njupyter: python3\n---\n\n## Project Team\n\nThis project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay.\n\n## Team\n### Abhinav Sharaff\n\n[LinkedIn](https://www.linkedin.com/in/abhinav-sharaff/)\n\n### Yiting Sun\n\n## Project Focus\n\nThe team focused on keeping the strategy explainable: clear entry and exit rules, auditable blotter and ledger outputs, and an ML extension that adjusts breakout exposure without replacing the core trading logic.\n\n",
+    "supporting": [
+      "about_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

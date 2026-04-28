@@ -4,13 +4,11 @@ jupyter: python3
 ---
 
 ```{python}
-from analysis.breakout_strategy import run_analysis
-from analysis.filtered_backtest import run_filtered_backtest
+from analysis.report_data import load_baseline_report
 from analysis.reporting import interactive_table
 from IPython.display import HTML, display
 
-analysis = run_analysis()
-ml_overlay = run_filtered_backtest(filter_mode="scaled_selected_asset")
+analysis = load_baseline_report()
 interactive_table(analysis["blotter_display"], "trade_log_blotter", "Baseline Trade Blotter")
 ```
 
@@ -77,9 +75,9 @@ interactive_table(analysis["trade_quality_summary"], "trade_log_payoff_shape", "
 ## ML Overlay Comparison
 
 ```{python}
-from analysis.filtered_backtest import compare_selected_asset_ml_overlays
+from analysis.report_data import load_overlay_comparison
 
-interactive_table(compare_selected_asset_ml_overlays(), "trade_log_overlay_comparison", "Baseline vs ML Overlays")
+interactive_table(load_overlay_comparison(), "trade_log_overlay_comparison", "Baseline vs ML Overlays")
 ```
 
 The final ML overlay keeps the same trade timestamps as the baseline and changes capital allocation rather than deleting all low-score trades. That is why the overlay comparison is best read as a portfolio-allocation enhancement, not as a second independent blotter.
