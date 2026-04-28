@@ -21,6 +21,13 @@
     "text": "Data Pipeline\n\nHistorical daily OHLCV data is pulled from Interactive Brokers through shinybroker.\nEach symbol is stored separately in data/market_history/.\nMacro and regime context is added with VIX and SHY.\nOptions-derived volatility series from IBKR are stored separately in data/options_history/.\nThe baseline strategy is evaluated across the ETF universe, and the best risk-adjusted baseline asset is selected as the showcase symbol.\n\nThe current showcase asset is QQQ."
   },
   {
+    "objectID": "methodology.html#sample-period-and-holdout-design",
+    "href": "methodology.html#sample-period-and-holdout-design",
+    "title": "Methodology",
+    "section": "Sample Period And Holdout Design",
+    "text": "Sample Period And Holdout Design\nThe project separates the historical sample into two roles:\n\nThe training and strategy-development sample uses the data before 2025-10-01. This period is used to evaluate the baseline breakout rules, create supervised-learning labels, fit the logistic-style breakout-quality model, and compare the hard-filter and position-scaling ML overlays.\nThe fixed out-of-sample holdout runs from 2025-10-01 through the latest saved data in April 2026. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.\n\nThis split is important because the ML label intentionally uses future data to answer “would this breakout have been profitable?” That is acceptable when constructing labels inside the training sample, but it would be look-ahead bias if the future holdout outcomes were used to train the model. The out-of-sample test avoids that by stopping training before October 2025 and then evaluating the later trades as if they were brand new live signals.\nThe Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed October 2025-April 2026 holdout, which is the more important test of whether the model still helped after it stopped learning."
+  },
+  {
     "objectID": "methodology.html#entry-orders",
     "href": "methodology.html#entry-orders",
     "title": "Methodology",
@@ -306,12 +313,5 @@
     "title": "Trade Log",
     "section": "Why The Trade Log Matters",
     "text": "Why The Trade Log Matters\nThe trade log makes the backtest auditable. It shows:\n\nwhen entries and exits occurred\nhow long trades stayed open\nwhether exits came from success, stop-loss, timeout, or breakout failure\nhow profits and losses were distributed across trades\nhow the final ML overlay changes position sizing on top of those same breakout opportunities"
-  },
-  {
-    "objectID": "methodology.html#sample-period-and-holdout-design",
-    "href": "methodology.html#sample-period-and-holdout-design",
-    "title": "Methodology",
-    "section": "Sample Period And Holdout Design",
-    "text": "Sample Period And Holdout Design\nThe project separates the historical sample into two roles:\n\nThe training and strategy-development sample uses the data before 2025-10-01. This period is used to evaluate the baseline breakout rules, create supervised-learning labels, fit the logistic-style breakout-quality model, and compare the hard-filter and position-scaling ML overlays.\nThe fixed out-of-sample holdout runs from 2025-10-01 through the latest saved data in April 2026. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.\n\nThis split is important because the ML label intentionally uses future data to answer “would this breakout have been profitable?” That is acceptable when constructing labels inside the training sample, but it would be look-ahead bias if the future holdout outcomes were used to train the model. The out-of-sample test avoids that by stopping training before October 2025 and then evaluating the later trades as if they were brand new live signals.\nThe Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed October 2025-April 2026 holdout, which is the more important test of whether the model still helped after it stopped learning."
   }
 ]
