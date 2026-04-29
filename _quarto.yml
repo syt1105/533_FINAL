@@ -9,6 +9,7 @@ project:
   resources:
     - downloads/
     - .nojekyll
+    - CNAME
   pre-render:
     - python3 -m analysis.run_saved_data_pipeline
 

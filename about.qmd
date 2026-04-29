@@ -21,7 +21,3 @@ In that sense, the strategy is hunting for "whales": rare but meaningful breakou
 ### Yiting Sun
 
 [LinkedIn](https://www.linkedin.com/in/yiting-sun-6096a9244/)
-
-## Project Focus
-
-The team focused on keeping the strategy explainable: clear entry and exit rules, auditable blotter and ledger outputs, and an ML extension that adjusts breakout exposure without replacing the core trading logic.
