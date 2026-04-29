@@ -100,42 +100,42 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Volatility Breakout Strategy",
+    "title": "Whale Hunters",
     "section": "",
     "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
   },
   {
-    "objectID": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
-    "href": "index.html#developing-and-backtesting-a-volatility-breakout-strategy",
-    "title": "Volatility Breakout Strategy",
+    "objectID": "index.html#whale-hunters-a-volatility-breakout-strategy",
+    "href": "index.html#whale-hunters-a-volatility-breakout-strategy",
+    "title": "Whale Hunters",
     "section": "",
     "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
   },
   {
     "objectID": "index.html#results-snapshot",
     "href": "index.html#results-snapshot",
-    "title": "Volatility Breakout Strategy",
+    "title": "Whale Hunters",
     "section": "Results Snapshot",
     "text": "Results Snapshot\nThe main validation test is a fixed live holdout from 2025-10-01 through 2026-04-24. The model is trained only on labeled breakout events before October 2025, then applied to the later period as unseen data.\n\n\n\n        \n          Holdout Window\n          2025-10-01 to 2026-04-24\n          Model frozen before October 2025\n        \n        \n        \n          Baseline Return\n          1.78%\n          4 trades\n        \n        \n        \n          ML Scaling Return\n          1.89%\n          Sharpe 1.90\n        \n        \n        \n          Hard Filter\n          1 trade\n          Too sparse for final use\n        \n        \n\n\nThe out-of-sample result supports the final design choice: the ML model adds value as a position-sizing overlay, while the hard filter is too aggressive because it leaves too few trades to rely on.\n\n\n                            \n                                            \n\n\n\n\n\n\n\n\n\n\n\nstrategy\ntrade_count\nremoved_signal_count\nsharpe_ratio\ntotal_return\nwin_rate\nmax_drawdown\nexpected_return_per_trade\n\n\n\n\n0\nBaseline\n4\n0\n1.758542\n0.017800\n1.0\n-0.005132\n0.015007\n\n\n1\nML hard filter\n1\n5\n2.273939\n0.010623\n1.0\n-0.001124\n0.040780\n\n\n2\nML position scaling\n4\n0\n1.902845\n0.018891\n1.0\n-0.004776\n0.015007"
   },
   {
     "objectID": "index.html#strategy-snapshot",
     "href": "index.html#strategy-snapshot",
-    "title": "Volatility Breakout Strategy",
+    "title": "Whale Hunters",
     "section": "Strategy Snapshot",
     "text": "Strategy Snapshot\n\n\n\n\n\n\n\n\n\nField\nValue\n\n\n\n\n0\nStrategy\nTuned baseline volatility and channel breakout\n\n\n1\nData source\nshinybroker / Interactive Brokers historical d...\n\n\n2\nSelected symbol\nQQQ\n\n\n3\nSample window\n2021-04-26 to 2026-04-24\n\n\n4\nStatus\nBaseline strategy tuned and implemented"
   },
   {
     "objectID": "index.html#project-scope",
     "href": "index.html#project-scope",
-    "title": "Volatility Breakout Strategy",
+    "title": "Whale Hunters",
     "section": "Project Scope",
     "text": "Project Scope\n\nBuild a transparent breakout strategy with explicit entry and exit rules.\nBacktest the strategy on historical price data using a repeatable Python workflow.\nLog every trade so entries, exits, and holding periods are auditable.\nExtend the baseline strategy with supervised learning tests for breakout quality, including a hard filter and the final position-scaling overlay.\n\nThe final baseline is a tuned QQQ channel-breakout strategy with explicit stop-loss, trailing-stop, timeout, and breakout-failure exits. On top of that baseline, the project adds a compact QQQ-only logistic model that uses breakout quality plus options-implied-volatility features. The report compares a hard model filter with a position-scaling overlay and uses the overlay as the final version because it keeps the breakout opportunity set while changing capital allocation."
   },
   {
     "objectID": "index.html#what-to-review",
     "href": "index.html#what-to-review",
-    "title": "Volatility Breakout Strategy",
+    "title": "Whale Hunters",
     "section": "What To Review",
     "text": "What To Review\n\nResults leads with the fixed October 2025-April 2026 holdout evaluation and performance graph.\nAsset Selection explains the ETF universe and why QQQ became the showcase asset.\nMethodology documents the final trading rules, labels, feature set, and parameter choices.\nTrade Log contains the blotter, ledger preview, and downloadable output files.\nMonitoring defines how to judge whether the strategy is still behaving as expected after deployment.\nAbout introduces the project team."
   },
@@ -242,21 +242,28 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
+    "text": "Whale Hunters was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
   },
   {
     "objectID": "about.html#project-team",
     "href": "about.html#project-team",
     "title": "About",
     "section": "",
-    "text": "This project was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
+    "text": "Whale Hunters was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay."
+  },
+  {
+    "objectID": "about.html#why-whale-hunters",
+    "href": "about.html#why-whale-hunters",
+    "title": "About",
+    "section": "Why Whale Hunters",
+    "text": "Why Whale Hunters\nWe chose the name Whale Hunters because the strategy is not designed to win constantly on small price moves. A volatility breakout system should expect many small failed breakouts, timeouts, or stop-losses, while preserving enough exposure to catch the smaller number of large trend-continuation moves that drive the payoff profile.\nIn that sense, the strategy is hunting for “whales”: rare but meaningful breakouts where price movement, volatility expansion, and options-implied volatility confirmation point to a real regime shift rather than a temporary channel poke. The name also reflects the risk-management mindset of the project: keep ordinary losses controlled, avoid overtrading, and size up only when the evidence suggests the breakout is worth pursuing."
   },
   {
     "objectID": "about.html#team",
     "href": "about.html#team",
     "title": "About",
     "section": "Team",
-    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun"
+    "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun\nLinkedIn"
   },
   {
     "objectID": "about.html#project-focus",

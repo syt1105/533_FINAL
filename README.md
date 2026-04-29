@@ -1,6 +1,6 @@
-# Volatility Breakout Strategy Lab
+# Whale Hunters
 
-This project builds, backtests, and documents a volatility and channel breakout trading strategy in Quarto, using `shinybroker` as the bridge to Interactive Brokers historical data and options-derived implied-volatility series.
+This project builds, backtests, and documents a volatility and channel breakout trading strategy in Quarto. Whale Hunters uses `shinybroker` as the bridge to Interactive Brokers historical data and options-derived implied-volatility series.
 
 The workflow does four things:
 

@@ -13,7 +13,7 @@ project:
     - python3 -m analysis.run_saved_data_pipeline
 
 website:
-  title: "Volatility Breakout Strategy"
+  title: "Whale Hunters"
   navbar:
     left:
       - href: index.html
@@ -31,7 +31,7 @@ website:
       - href: about.html
         text: About
   page-footer:
-    left: "FINTECH 533 • Volatility Breakout Strategy"
+    left: "FINTECH 533 • Whale Hunters"
 
 format:
   html:

@@ -1,10 +1,10 @@
 ---
-title: "Volatility Breakout Strategy"
+title: "Whale Hunters"
 jupyter: python3
 ---
 
 ::: {.hero-banner}
-## Developing and Backtesting a Volatility Breakout Strategy
+## Whale Hunters: A Volatility Breakout Strategy
 
 This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an `analysis/` Python package, a `shinybroker` data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers.
 :::
