@@ -238,6 +238,20 @@
     "text": "What The Final Result Means\nThe project now has two meaningful layers:\n\nA tuned baseline breakout strategy that is already tradable and positive after costs.\nA compact implied-volatility-aware ML overlay that improves the fixed live holdout modestly by changing position size on breakout candidates.\n\nThe improvement is not huge, and that is important to state honestly. This is not a black-box replacement for the breakout strategy. It is a small, interpretable enhancement on top of an already working baseline. The important result is that the overlay still helped when it was frozen before October 2025 and then evaluated on later data.\nThe strategy should also be read as whale hunting. It is not trying to win every breakout. It is trying to keep failed breakouts small, exit stale trades, and preserve enough exposure for the subset of breakouts that turn into real volatility expansions."
   },
   {
+    "objectID": "results.html#limitations",
+    "href": "results.html#limitations",
+    "title": "Backtest Results",
+    "section": "Limitations",
+    "text": "Limitations\nThe main limitation is that the fixed out-of-sample window is short. October 2025 through April 2026 is useful because it is a true forward-style test, but it still contains only a small number of completed trades. That means the holdout result should be treated as evidence that the model helped in this period, not as proof that the edge is permanent.\nThe strategy is also currently presented as a selected-asset QQQ showcase. The broader ETF screen supports that choice, but a production version should continue validating whether the same rules work across other liquid assets and whether QQQ remains the best place to express the breakout idea.\nFinally, implied volatility is a helpful confirmation signal, not a perfect truth source. Options markets can misprice future movement, implied-volatility history can be noisy, and the model may need to be re-estimated if the relationship between price breakouts and options pricing changes."
+  },
+  {
+    "objectID": "results.html#what-we-would-do-next",
+    "href": "results.html#what-we-would-do-next",
+    "title": "Backtest Results",
+    "section": "What We Would Do Next",
+    "text": "What We Would Do Next\nThe next step would be to keep extending the out-of-sample paper-trading window as new data arrives. The most important question is whether the ML position-scaling overlay continues to improve the baseline after more unseen trades.\nWe would also test the same framework on a broader universe of liquid ETFs and futures, add richer options-chain features such as skew and term structure, and compare the current logistic-style model against tree-based classifiers. Any more complex model would still need to beat the current version on walk-forward performance, not just in-sample fit.\nBefore live deployment, we would paper-trade the strategy with the same execution assumptions used in the backtest, monitor slippage and fills, and pause or retrain the model if rolling expectancy, drawdown, or the baseline-versus-overlay comparison moves outside the expected backtest range."
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -264,13 +278,6 @@
     "title": "About",
     "section": "Team",
     "text": "Team\n\nAbhinav Sharaff\nLinkedIn\n\n\nYiting Sun\nLinkedIn"
-  },
-  {
-    "objectID": "about.html#project-focus",
-    "href": "about.html#project-focus",
-    "title": "About",
-    "section": "Project Focus",
-    "text": "Project Focus\nThe team focused on keeping the strategy explainable: clear entry and exit rules, auditable blotter and ledger outputs, and an ML extension that adjusts breakout exposure without replacing the core trading logic."
   },
   {
     "objectID": "trade-log.html",
