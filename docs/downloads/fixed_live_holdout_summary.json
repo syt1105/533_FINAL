@@ -20,7 +20,7 @@
   "hard_filter_trade_count": 1,
   "hard_filter_removed_signal_count": 5,
   "baseline_metrics": {
-    "Sharpe Ratio": 1.7585422726619424,
+    "Sharpe Ratio": 1.7585422726619406,
     "Sortino Ratio": 1.3503279669276058,
     "Total Return": 0.017799687599999947,
     "Benchmark Return": 0.10050559469539988,
@@ -33,7 +33,7 @@
     "Trade Count": 4
   },
   "scaled_metrics": {
-    "Sharpe Ratio": 1.9028452321830478,
+    "Sharpe Ratio": 1.9028452321830471,
     "Sortino Ratio": 1.5792817045876157,
     "Total Return": 0.01889078081999984,
     "Benchmark Return": 0.10050559469539988,

@@ -13,9 +13,7 @@
 body {
   color: var(--brand-ink);
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 24%),
-    radial-gradient(circle at top right, rgba(217, 119, 6, 0.14), transparent 28%),
-    linear-gradient(180deg, #fbfcff 0%, #f7f3ea 54%, #eef7f4 100%);
+    linear-gradient(180deg, #fbfcff 0%, #f8f4ec 52%, #f3f6f5 100%);
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
