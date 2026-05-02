@@ -110,14 +110,17 @@ h1, h2, h3, h4, .navbar-title {
 
 .snapshot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin: 1rem 0 1.35rem;
 }
 
 .snapshot-card {
   position: relative;
-  min-height: 130px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 1rem 1.05rem;
   border-radius: 12px;
   background:
@@ -152,7 +155,8 @@ h1, h2, h3, h4, .navbar-title {
 }
 
 .snapshot-note {
-  margin-top: 0.55rem;
+  margin-top: auto;
+  padding-top: 0.8rem;
   color: #475569;
   font-size: 0.92rem;
 }
@@ -214,12 +218,16 @@ a:hover {
 
 .result-metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin: 1rem 0 2rem;
 }
 
 .result-metric-card {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 1.1rem 1rem 1rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.96);
@@ -250,6 +258,20 @@ a:hover {
 .page-footer {
   background: rgba(15, 32, 51, 0.92);
   color: #f8fafc;
+}
+
+@media (max-width: 1200px) {
+  .snapshot-grid,
+  .result-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .snapshot-grid,
+  .result-metric-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cell-output-display > div:has(.plotly-graph-div),
