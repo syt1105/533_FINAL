@@ -147,16 +147,20 @@ h1, h2, h3, h4, .navbar-title {
 }
 
 .snapshot-value {
-  margin-top: 0.45rem;
+  margin-top: 0.8rem;
   color: var(--brand-ink);
-  font-size: 1.7rem;
+  font-size: clamp(1.9rem, 3vw, 3.4rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.02;
+  min-height: 8.2rem;
+  display: flex;
+  align-items: center;
+  overflow-wrap: anywhere;
 }
 
 .snapshot-note {
   margin-top: auto;
-  padding-top: 0.8rem;
+  padding-top: 0.4rem;
   color: #475569;
   font-size: 0.92rem;
 }
@@ -245,14 +249,17 @@ a:hover {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.8;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.9rem;
 }
 
 .result-metric-value {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1;
+  font-size: clamp(1.85rem, 3vw, 2.55rem);
+  line-height: 0.98;
   font-weight: 700;
+  margin-top: auto;
+  margin-bottom: auto;
+  overflow-wrap: anywhere;
 }
 
 .page-footer {
