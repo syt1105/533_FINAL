@@ -42,9 +42,33 @@ holdout_prices = holdout_equity.loc[holdout_equity["strategy"] == "Baseline", ["
 
 ## Whale-Hunting Idea
 
-This trading strategy is built to hunt **whales**: positive-return breakout opportunities that do not appear often, but when they do, the goal is to trade only the setups with the highest confidence of follow-through. In plain English, the strategy is not trying to trade every little market wiggle. It is trying to wait for rare moments when price escapes a range, volatility expands, and the options market does not contradict the move. Those are the trades we want to size up and keep, while false breakouts and noisy channel pokes are either filtered down or sized smaller.
-
-That also explains why the trade count is not especially high. A single strategy like this may only produce a small number of trades each year, but the broader idea scales across markets. In a real portfolio or hedge-fund setting, the same whale-hunting framework could be applied to many different assets and sectors at once. Each individual strategy might only find a few high-confidence breakouts, but together they could create a steady stream of diversified opportunities over the course of a quarter.
+```{python}
+HTML(
+    """
+    <div class="whale-thesis">
+      <div class="whale-thesis-kicker">Why This Strategy Exists</div>
+      <h3>Hunt whales, not noise.</h3>
+      <p>
+        This trading strategy is built to hunt <strong>whales</strong>: positive-return breakout opportunities
+        that do not appear very often, but when they do, they offer unusually high confidence of paying off.
+        In plain English, the strategy is not trying to trade every wiggle in the market. It is trying to wait
+        for rare moments when price escapes a range, volatility expands, and the options market does not contradict
+        the move.
+      </p>
+      <p>
+        That is why the trade count is intentionally low. One strategy like this may only produce a handful of
+        high-confidence trades in a year. But the idea scales: if the same whale-hunting framework is applied across
+        many diverse markets, sectors, or futures, then each individual strategy can stay selective while the overall
+        portfolio still generates a regular flow of opportunities.
+      </p>
+      <p>
+        In a hedge-fund setting, the real edge would come from combining many strategies like this one. Each strategy
+        might only find a few "whales," but together they can produce a steady stream of high-conviction trades.
+      </p>
+    </div>
+    """
+)
+```
 
 ## Results Snapshot
 
