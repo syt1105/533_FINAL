@@ -144,17 +144,20 @@ h1, h2, h3, h4, .navbar-title {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  line-height: 1.25;
+  min-height: 4.2rem;
+  display: block;
 }
 
 .snapshot-value {
   margin-top: 0.8rem;
   color: var(--brand-ink);
-  font-size: clamp(1.9rem, 3vw, 3.4rem);
+  font-size: clamp(1.75rem, 2.7vw, 3.1rem);
   font-weight: 800;
   line-height: 1.02;
   min-height: 8.2rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   overflow-wrap: anywhere;
 }
 
@@ -249,17 +252,21 @@ a:hover {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.8;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.7rem;
+  min-height: 4.9rem;
+  line-height: 1.3;
+  display: block;
 }
 
 .result-metric-value {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.85rem, 3vw, 2.55rem);
+  font-size: clamp(1.55rem, 2.35vw, 2.15rem);
   line-height: 0.98;
   font-weight: 700;
   margin-top: auto;
   margin-bottom: auto;
   overflow-wrap: anywhere;
+  max-width: 82%;
 }
 
 .page-footer {
