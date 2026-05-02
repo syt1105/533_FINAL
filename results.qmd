@@ -151,6 +151,10 @@ def price_entry_exit_chart(price_df, trades_df, title, subtitle):
 
 ## Key Takeaways
 
+This strategy is designed to hunt **whales**: positive-return breakout trades that do not happen every day, but that are worth waiting for because they offer higher-confidence payoff when price, volatility, and options-implied volatility all line up. In other words, the goal is not to trade constantly. The goal is to stay patient, avoid noisy breakouts, and size up only when the evidence suggests the move is real.
+
+That is also why the trade count is relatively low. A single whale-hunting strategy may only produce a handful of strong signals in one market, but the concept scales. In practice, many related strategies could be deployed across diverse markets, sectors, or futures so that each one contributes a few high-confidence trades per year, and together they create a steadier stream of opportunities.
+
 The most important test in this report is the fixed live holdout from `{python} holdout_summary["holdout_start"]` through `{python} holdout_summary["holdout_end"]`. The model was trained only on labeled breakouts before `{python} holdout_summary["holdout_start"]`, then applied to the later data as if it were brand new.
 
 - The baseline breakout strategy remained profitable in the live holdout, with `{python} int(baseline_holdout["trade_count"])` trades and a `{python} f'{baseline_holdout["total_return"]:.2%}'` total return.
