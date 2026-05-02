@@ -12,9 +12,21 @@
 
 body {
   color: var(--brand-ink);
-  background:
-    linear-gradient(180deg, #fbfcff 0%, #f8f4ec 52%, #f3f6f5 100%);
+  background: #f8f7f3;
   font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+#quarto-content,
+main.content,
+.quarto-container.page-layout-article {
+  background: transparent;
+}
+
+#quarto-document-content {
+  background: rgba(255, 255, 255, 0.74);
+  border-radius: 24px;
+  padding: 1.25rem 1.35rem 2rem;
+  box-shadow: 0 18px 40px rgba(15, 32, 51, 0.05);
 }
 
 h1, h2, h3, h4, .navbar-title {
@@ -90,7 +102,7 @@ h1, h2, h3, h4, .navbar-title {
 }
 
 .table {
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.96);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(15, 32, 51, 0.06);
@@ -161,7 +173,7 @@ h1, h2, h3, h4, .navbar-title {
   overflow-x: auto;
   border: 1px solid rgba(15, 118, 110, 0.18);
   border-radius: 8px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 8px 24px rgba(15, 32, 51, 0.06);
 }
 
@@ -210,7 +222,7 @@ a:hover {
 .result-metric-card {
   padding: 1.1rem 1rem 1rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.96);
   border: 1px solid rgba(20, 50, 74, 0.08);
   box-shadow: 0 10px 24px rgba(20, 50, 74, 0.08);
 }
@@ -238,4 +250,20 @@ a:hover {
 .page-footer {
   background: rgba(15, 32, 51, 0.92);
   color: #f8fafc;
+}
+
+.cell-output-display > div:has(.plotly-graph-div),
+.cell-output-display > div:has(.dataframe),
+.cell-output-display > table,
+.plotly-graph-div {
+  background: transparent;
+}
+
+.cell-output-display > div:has(.plotly-graph-div),
+.cell-output-display > div:has(.dataframe) {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 118, 110, 0.12);
+  border-radius: 14px;
+  padding: 0.7rem 0.8rem;
+  box-shadow: 0 10px 24px rgba(15, 32, 51, 0.05);
 }
