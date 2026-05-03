@@ -180,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div id="c3afb93c" class="cell" data-execution_count="1">
+<div id="945b38a6" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <h4 class="anchored">Final Strategy Parameters</h4>
 <div class="interactive-table-wrap" id="methodology_parameters_wrap">
@@ -312,10 +312,10 @@ ul.task-list li input[type="checkbox"] {
 <p>The project separates the historical sample into two roles:</p>
 <ol type="1">
 <li>The <strong>training and strategy-development sample</strong> uses the data before <code>2025-10-01</code>. This period is used to evaluate the baseline breakout rules, create supervised-learning labels, fit the logistic-style breakout-quality model, and compare the hard-filter and position-scaling ML overlays.</li>
-<li>The <strong>fixed out-of-sample holdout</strong> runs from <code>2025-10-01</code> through the latest saved data in April 2026. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.</li>
+<li>The <strong>fixed out-of-sample holdout</strong> runs from <code>2025-10-01</code> through the latest saved data. For this period, the model is treated as frozen. It scores each new breakout using only information available at the signal date.</li>
 </ol>
 <p>This split is important because the ML label intentionally uses future data to answer “would this breakout have been profitable?” That is acceptable when constructing labels inside the training sample, but it would be look-ahead bias if the future holdout outcomes were used to train the model. The out-of-sample test avoids that by stopping training before October 2025 and then evaluating the later trades as if they were brand new live signals.</p>
-<p>The Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed October 2025-April 2026 holdout, which is the more important test of whether the model still helped after it stopped learning.</p>
+<p>The Results page therefore reports both views: the broader in-sample backtest, which shows whether the rules made sense historically, and the fixed holdout beginning in October 2025, which is the more important test of whether the model still helped after it stopped learning.</p>
 </section>
 <section id="entry-orders" class="level2">
 <h2 class="anchored" data-anchor-id="entry-orders">Entry Orders</h2>
@@ -346,7 +346,7 @@ ul.task-list li input[type="checkbox"] {
 <li><code>4-day</code> breakout-failure delay: immediate breakout-failure exits created excessive churn in early versions of the baseline, so a short grace period was added.</li>
 </ul>
 <p>The file <code>parameter_sweep_top100.csv</code> records the broader universe sweep. Its highest-ranked row favored a <code>30-day</code> channel with a wider <code>3.0 ATR</code> stop and <code>2.5 ATR</code> trail on an average cross-asset score. The final code keeps the <code>20-day</code>, <code>2.0 ATR</code>, <code>3.0 ATR</code> setup because the final project is a showcase <code>QQQ</code> strategy and that configuration produced the better selected-asset backtest on the current saved sample.</p>
-<div id="75e3c71c" class="cell" data-execution_count="2">
+<div id="4f6ebe39" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <h4 class="anchored">Final Params vs Top Sweep Row</h4>
 <div class="interactive-table-wrap" id="methodology_parameter_comparison_wrap">
@@ -374,9 +374,9 @@ ul.task-list li input[type="checkbox"] {
 <td>20</td>
 <td>2.0000</td>
 <td>3.0000</td>
-<td>48</td>
-<td>1.0666</td>
-<td>0.1107</td>
+<td>49</td>
+<td>1.0498</td>
+<td>0.1094</td>
 <td>-0.0230</td>
 </tr>
 <tr class="even">
@@ -461,7 +461,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="baseline-selection-logic" class="level2">
 <h2 class="anchored" data-anchor-id="baseline-selection-logic">Baseline Selection Logic</h2>
 <p>The project does not simply pick the ETF with the strongest recent momentum. It first runs the same breakout rules across the ETF universe, then selects the symbol with the strongest strategy-level risk-adjusted result. That is why <code>QQQ</code> is the current showcase asset.</p>
-<div id="63a7b831" class="cell" data-execution_count="3">
+<div id="9fffee08" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <h4 class="anchored">ETF Universe Screen</h4>
 <div class="interactive-table-wrap" id="methodology_asset_screen_wrap">
@@ -486,67 +486,67 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>XLE</td>
 <td>1256</td>
-<td>2021-04-26</td>
-<td>2026-04-24</td>
-<td>0.1554</td>
-<td>0.2606</td>
-<td>2857863583.7270</td>
-<td>0.5965</td>
+<td>2021-05-03</td>
+<td>2026-05-01</td>
+<td>0.1758</td>
+<td>0.2599</td>
+<td>2814457689.3773</td>
+<td>0.6765</td>
 <td>eligible</td>
 </tr>
 <tr class="even">
 <td>QQQ</td>
 <td>1256</td>
-<td>2021-04-26</td>
-<td>2026-04-24</td>
-<td>0.0614</td>
-<td>0.2240</td>
-<td>28998442776.0514</td>
-<td>0.2742</td>
+<td>2021-05-03</td>
+<td>2026-05-01</td>
+<td>0.0767</td>
+<td>0.2241</td>
+<td>28246499190.9786</td>
+<td>0.3421</td>
 <td>eligible</td>
 </tr>
 <tr class="odd">
 <td>IWM</td>
 <td>1256</td>
-<td>2021-04-26</td>
-<td>2026-04-24</td>
-<td>0.0480</td>
-<td>0.2256</td>
-<td>6503583266.0440</td>
-<td>0.2127</td>
+<td>2021-05-03</td>
+<td>2026-05-01</td>
+<td>0.0652</td>
+<td>0.2258</td>
+<td>6342934214.7254</td>
+<td>0.2889</td>
 <td>eligible</td>
 </tr>
 <tr class="even">
 <td>SPY</td>
 <td>1256</td>
-<td>2021-04-26</td>
-<td>2026-04-24</td>
-<td>0.0306</td>
+<td>2021-05-03</td>
+<td>2026-05-01</td>
+<td>0.0363</td>
 <td>0.1713</td>
-<td>40954871322.0518</td>
-<td>0.1787</td>
+<td>39569174366.4936</td>
+<td>0.2118</td>
 <td>eligible</td>
 </tr>
 <tr class="odd">
-<td>TLT</td>
+<td>GLD</td>
 <td>1256</td>
-<td>2021-04-26</td>
-<td>2026-04-24</td>
-<td>-0.0186</td>
-<td>0.1584</td>
-<td>2590969369.6263</td>
-<td>-0.1172</td>
+<td>2021-05-03</td>
+<td>2026-05-01</td>
+<td>-0.0092</td>
+<td>0.1787</td>
+<td>3976240440.2829</td>
+<td>-0.0517</td>
 <td>eligible</td>
 </tr>
 <tr class="even">
-<td>GLD</td>
+<td>TLT</td>
 <td>1256</td>
-<td>2021-04-26</td>
-<td>2026-04-24</td>
-<td>-0.0677</td>
-<td>0.1784</td>
-<td>5274605788.8946</td>
-<td>-0.3793</td>
+<td>2021-05-03</td>
+<td>2026-05-01</td>
+<td>-0.0109</td>
+<td>0.1584</td>
+<td>2483315703.2349</td>
+<td>-0.0686</td>
 <td>eligible</td>
 </tr>
 </tbody>
@@ -636,7 +636,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="model-usage" class="level3">
 <h3 class="anchored" data-anchor-id="model-usage">Model Usage</h3>
 <p>Train the model, then skip low-probability breakouts. The project tests that idea directly and compares it against a conservative sizing overlay. The final overlay does not delete trades outright. Instead, it scales position size up or down on <code>QQQ</code> based on the model’s estimated breakout quality. This kept the strategy interpretable while preserving the breakout opportunity set.</p>
-<p>The Results page contains the performance comparison, including the fixed October 2025-April 2026 holdout run. Methodology is kept focused on how the signal, labels, features, and model are constructed.</p>
+<p>The Results page contains the performance comparison, including the fixed holdout run beginning in October 2025. Methodology is kept focused on how the signal, labels, features, and model are constructed.</p>
 <p>This strategy is designed as a controlled breakout system, not a high-frequency win-rate maximizer. The economic idea is to catch a smaller number of real volatility expansions while accepting that many breakouts will fail quickly or time out. That is why the strategy uses explicit stop-losses, timeouts, and small risk-per-trade sizing. The goal is not to be right on every signal; it is to keep losses bounded while allowing genuine regime shifts to contribute meaningful gains.</p>
 
 

@@ -69,35 +69,35 @@
     "TLT",
     "XLE"
   ],
-  "post_dedup_rows": 293,
+  "post_dedup_rows": 294,
   "train_rows": 206,
-  "test_rows": 87,
-  "test_start": "2024-12-11",
+  "test_rows": 88,
+  "test_start": "2025-01-14",
   "probability_threshold": 0.3,
   "min_signal_gap_days": 7,
   "use_symbol_feature": true,
   "class_weight_balanced": true,
   "train_metrics": {
-    "accuracy": 0.6504854368932039,
-    "precision": 0.5569620253164557,
-    "recall": 0.9777777777777777,
-    "positive_prediction_rate": 0.7669902912621359,
-    "base_rate": 0.4368932038834951,
-    "roc_auc": 0.8409003831417624,
-    "log_loss": 0.5176470146396536
+    "accuracy": 0.6359223300970874,
+    "precision": 0.5493827160493827,
+    "recall": 0.978021978021978,
+    "positive_prediction_rate": 0.7864077669902912,
+    "base_rate": 0.441747572815534,
+    "roc_auc": 0.8346870520783564,
+    "log_loss": 0.523955069299932
   },
   "test_metrics": {
-    "accuracy": 0.4482758620689655,
-    "precision": 0.34782608695652173,
+    "accuracy": 0.4431818181818182,
+    "precision": 0.3404255319148936,
     "recall": 0.47058823529411764,
-    "positive_prediction_rate": 0.5287356321839081,
-    "base_rate": 0.39080459770114945,
-    "roc_auc": 0.4783573806881243,
-    "log_loss": 1.0754543291216683
+    "positive_prediction_rate": 0.5340909090909091,
+    "base_rate": 0.38636363636363635,
+    "roc_auc": 0.4564270152505447,
+    "log_loss": 1.0764762315669902
   },
   "filtered_summary": {
-    "filtered_trade_count": 46,
-    "filtered_hit_rate": 0.34782608695652173,
-    "filtered_average_label": 0.34782608695652173
+    "filtered_trade_count": 47,
+    "filtered_hit_rate": 0.3404255319148936,
+    "filtered_average_label": 0.3404255319148936
   }
 }

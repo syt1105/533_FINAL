@@ -7,6 +7,8 @@ jupyter: python3
 
 Whale Hunters was built for FINTECH 533 as a research workflow for designing, backtesting, and documenting a volatility breakout trading strategy with an implied-volatility-aware machine learning overlay.
 
+[GitHub Repository](https://github.com/syt1105/533_FINAL)
+
 ## Why Whale Hunters
 
 We chose the name **Whale Hunters** because the strategy is not designed to win constantly on small price moves. A volatility breakout system should expect many small failed breakouts, timeouts, or stop-losses, while preserving enough exposure to catch the smaller number of large trend-continuation moves that drive the payoff profile.

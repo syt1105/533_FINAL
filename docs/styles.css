@@ -113,11 +113,12 @@ h1, h2, h3, h4, .navbar-title {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin: 1rem 0 1.35rem;
+  align-items: stretch;
 }
 
 .snapshot-card {
   position: relative;
-  min-height: 320px;
+  min-height: 132px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -140,32 +141,36 @@ h1, h2, h3, h4, .navbar-title {
 
 .snapshot-label {
   color: var(--brand-muted);
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   line-height: 1.25;
-  min-height: 4.2rem;
+  min-height: 1.85rem;
   display: block;
-}
-
-.snapshot-value {
-  margin-top: 0.8rem;
-  color: var(--brand-ink);
-  font-size: clamp(1.75rem, 2.7vw, 3.1rem);
-  font-weight: 800;
-  line-height: 1.02;
-  min-height: 8.2rem;
-  display: flex;
-  align-items: flex-start;
   overflow-wrap: anywhere;
 }
 
+.snapshot-value {
+  margin-top: 0.3rem;
+  color: var(--brand-ink);
+  font-size: clamp(1.05rem, 1.35vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1.16;
+  display: flex;
+  align-items: center;
+  min-height: 2.35rem;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
 .snapshot-note {
-  margin-top: auto;
+  margin-top: 0.55rem;
   padding-top: 0.4rem;
   color: #475569;
-  font-size: 0.92rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .interactive-table-wrap {

@@ -1,2 +1,3 @@
 symbol,entry_timestamp,exit_timestamp,direction,side,qty,size_multiplier,entry_price,exit_price,stop_price,trailing_stop_exit,atr_at_entry,entry_channel_high,entry_channel_low,breakout_strength,holding_periods,exit_reason,trade_outcome,gross_pnl,transaction_cost,pnl,trade_return
 QQQ,2026-04-14,2026-04-20,LONG,1,42.0,1.0,620.23,646.79,596.5771428571429,613.9642857142858,11.826428571428567,613.67,555.6,0.31454973727124724,7,breakout_failure,Successful,1115.5199999999977,53.214839999999995,1062.3051599999976,0.040780000967382976
+QQQ,2026-05-01,2026-05-01,LONG,1,51.0,1.0,669.14,674.15,649.6571428571428,649.6571428571428,9.741428571428571,664.51,571.92,0.33157354450799426,1,timeout,Successful,255.50999999999954,68.50779,187.00220999999954,0.005479735182473012

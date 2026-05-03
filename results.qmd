@@ -73,7 +73,9 @@ training_metric_row = pd.DataFrame(
         }
     ]
 )
-holdout_metric_table = holdout_comparison.assign(period="Fixed live holdout: Oct 2025-Apr 2026")[
+holdout_metric_table = holdout_comparison.assign(
+    period=f"Fixed live holdout: {holdout_summary['holdout_start']} to {holdout_summary['holdout_end']}"
+)[
     [
         "period",
         "strategy",
@@ -195,7 +197,7 @@ interactive_table(format_metric_table(results_metric_table), "results_metric_sum
 
 ## Fixed Live Holdout Setup
 
-This section is intentionally separated from the earlier backtest. The model is fit on historical labeled breakout events before October 2025. It then scores breakout candidates from October 2025 through April 2026 using only information available at each signal date. No labels or future outcomes from the holdout period are used to train the model.
+This section is intentionally separated from the earlier backtest. The model is fit on historical labeled breakout events before October 2025. It then scores breakout candidates from October 2025 through the latest saved data using only information available at each signal date. No labels or future outcomes from the holdout period are used to train the model.
 
 The holdout answers the practical question: if the model had been frozen before October 2025, would it still have helped the breakout strategy in the next several months?
 
@@ -207,7 +209,7 @@ fig = px.line(
     x="date",
     y="equity",
     color="strategy",
-    title="Fixed Live Holdout Equity: October 2025-April 2026",
+    title=f"Fixed Live Holdout Equity: {holdout_summary['holdout_start']} to {holdout_summary['holdout_end']}",
     labels={"date": "Date", "equity": "Portfolio Value ($)", "strategy": "Strategy"},
 )
 fig.update_traces(hovertemplate="%{x|%Y-%m-%d}<br>Equity: $%{y:,.0f}<extra></extra>")
@@ -225,7 +227,7 @@ price_entry_exit_chart(
     holdout_price,
     holdout_scaled_trades,
     "Out-of-Sample Breakout Entries And Exits",
-    "October 2025-April 2026; model trained only on earlier breakouts",
+    f"{holdout_summary['holdout_start']} to {holdout_summary['holdout_end']}; model trained only on earlier breakouts",
 ).show()
 ```
 
@@ -313,7 +315,7 @@ The strategy should also be read as whale hunting. It is not trying to win every
 
 ## Limitations
 
-The main limitation is that the fixed out-of-sample window is short. October 2025 through April 2026 is useful because it is a true forward-style test, but it still contains only a small number of completed trades. That means the holdout result should be treated as evidence that the model helped in this period, not as proof that the edge is permanent.
+The main limitation is that the fixed out-of-sample window is short. The October 2025-forward holdout is useful because it is a true forward-style test, but it still contains only a small number of completed trades. That means the holdout result should be treated as evidence that the model helped in this period, not as proof that the edge is permanent.
 
 The strategy is also currently presented as a selected-asset `QQQ` showcase. The broader ETF screen supports that choice, but a production version should continue validating whether the same rules work across other liquid assets and whether `QQQ` remains the best place to express the breakout idea.
 

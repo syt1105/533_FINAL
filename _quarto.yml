@@ -11,7 +11,7 @@ project:
     - .nojekyll
     - CNAME
   pre-render:
-    - /opt/anaconda3/bin/python3 -m analysis.run_saved_data_pipeline
+    - python3 -m analysis.run_saved_data_pipeline
 
 website:
   title: "Whale Hunters"
@@ -46,4 +46,4 @@ execute:
   echo: false
   warning: false
   message: false
-  freeze: auto
+  freeze: false

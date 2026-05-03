@@ -150,7 +150,7 @@ if not holdout_trades.empty:
     )
 
 fig.update_layout(
-    title="Out-of-Sample Breakout Entries And Exits: October 2025-April 2026",
+    title=f"Out-of-Sample Breakout Entries And Exits: {live_holdout['summary']['holdout_start']} to {live_holdout['summary']['holdout_end']}",
     height=430,
     hovermode="x unified",
     yaxis_title="QQQ Price",
@@ -180,7 +180,7 @@ The final baseline is a tuned `QQQ` channel-breakout strategy with explicit stop
 
 ## What To Review
 
-- [Results](results.qmd) leads with the fixed October 2025-April 2026 holdout evaluation and performance graph.
+- [Results](results.qmd) leads with the fixed October 2025-forward holdout evaluation and performance graph.
 - [Asset Selection](asset-selection.qmd) explains the ETF universe and why `QQQ` became the showcase asset.
 - [Methodology](methodology.qmd) documents the final trading rules, labels, feature set, and parameter choices.
 - [Trade Log](trade-log.qmd) contains the blotter, ledger preview, and downloadable output files.
