@@ -102,14 +102,14 @@
     "href": "index.html",
     "title": "Whale Hunters",
     "section": "",
-    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
+    "text": "Whale Hunters looks for selective breakout trades where price escapes a recent range and volatility confirms that the move may be real. The goal is not to trade constantly; it is to stay patient, avoid noisy breakouts, and size up only when the evidence points to a stronger opportunity."
   },
   {
     "objectID": "index.html#whale-hunters-a-volatility-breakout-strategy",
     "href": "index.html#whale-hunters-a-volatility-breakout-strategy",
     "title": "Whale Hunters",
     "section": "",
-    "text": "This project studies a volatility and channel breakout strategy for liquid ETFs. It is organized as a Quarto website backed by an analysis/ Python package, a shinybroker data pipeline, and a supervised-learning extension that uses implied-volatility features from Interactive Brokers."
+    "text": "Whale Hunters looks for selective breakout trades where price escapes a recent range and volatility confirms that the move may be real. The goal is not to trade constantly; it is to stay patient, avoid noisy breakouts, and size up only when the evidence points to a stronger opportunity."
   },
   {
     "objectID": "index.html#whale-hunting-idea",
